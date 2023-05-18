@@ -15,7 +15,7 @@ namespace Engine
   {
     while (true)
     {
-      std::cout << "Engine loop\n";
+      std::cout << "Linked DLL Main loop\n";
     }
   }
 

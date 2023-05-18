@@ -1,16 +1,14 @@
 #include <iostream>
 #include <Engine.hpp>
 
-class App : public Engine::Application
+class Runtime : public Engine::Application
 {
 public:
-  App() {}
-  ~App() {}
+  Runtime() {}
+  ~Runtime() {}
 };
 
-int main()
+Engine::Application* Engine::CreateApplication()
 {
-  App* app = new App();
-  app->Run();
-  delete app;
+  return new Runtime();
 }
