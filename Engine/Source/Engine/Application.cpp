@@ -13,10 +13,7 @@ namespace Engine
 
   void Application::Run()
   {
-    while (true)
-    {
-      std::cout << "Linked DLL Main loop\n";
-    }
+    
   }
 
 }
