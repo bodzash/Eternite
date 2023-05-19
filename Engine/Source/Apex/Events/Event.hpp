@@ -1,7 +1,5 @@
 #pragma once
 #include "Apex/Core.hpp"
-#include <string>
-#include <functional>
 
 namespace Apex
 {

@@ -8,6 +8,7 @@ int main(int argc, char** argv)
 {
   // Init logger
   Apex::Log::Init();
+  AX_CORE_TRACE("Apex Engine initialized.");
 
   // Create App and run
   auto* App = Apex::CreateApplication();

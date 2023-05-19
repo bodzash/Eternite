@@ -1,5 +1,5 @@
+#include "axpch.hpp"
 #include "Application.hpp"
-#include <iostream>
 #include "Apex/Events/ApplicationEvent.hpp"
 #include "Apex/Log.hpp"
 

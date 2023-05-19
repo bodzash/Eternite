@@ -1,6 +1,5 @@
 #pragma once
 #include "Event.hpp"
-#include <sstream>
 
 namespace Apex
 {
