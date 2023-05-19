@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.26)
 
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 project(ApexGameEngine)
 
 # Common output for exe and dll files NOTE: temporary

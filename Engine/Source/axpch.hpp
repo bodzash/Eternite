@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Apex/Log.hpp"
+
 // Platform specific
 #ifdef AX_PLATFORM_WINDOWS
   #include <Windows.h>

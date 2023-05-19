@@ -26,14 +26,14 @@ namespace Apex
 #define AX_CORE_INFO(...)  ::Apex::Log::GetCoreLogger()->info(__VA_ARGS__)
 #define AX_CORE_WARN(...)  ::Apex::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define AX_CORE_ERROR(...) ::Apex::Log::GetCoreLogger()->error(__VA_ARGS__)
-#define AX_CORE_FATAL(...) ::Apex::Log::GetCoreLogger()->fatal(__VA_ARGS__)
+#define AX_CORE_FATAL(...) ::Apex::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 // Client log macros
 #define AX_TRACE(...) ::Apex::Log::GetClientLogger()->trace(__VA_ARGS__)
 #define AX_INFO(...)  ::Apex::Log::GetClientLogger()->info(__VA_ARGS__)
 #define AX_WARN(...)  ::Apex::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define AX_ERROR(...) ::Apex::Log::GetClientLogger()->error(__VA_ARGS__)
-#define AX_FATAL(...) ::Apex::Log::GetClientLogger()->fatal(__VA_ARGS__)
+#define AX_FATAL(...) ::Apex::Log::GetClientLogger()->critical(__VA_ARGS__)
 
 /*
   If dist build, define them as nothing

@@ -7,6 +7,7 @@ namespace Apex
 {
   Application::Application()
   {
+    m_Window = std::unique_ptr<Window>(Window::Create());
   }
   
   Application::~Application()
@@ -15,14 +16,10 @@ namespace Apex
 
   void Application::Run()
   {
-    WindowResizeEvent e(32, 32);
-    if (e.IsInCategory(EventCategoryApplication))
-      AX_INFO(e);
-
-    if (e.IsInCategory(EventCategoryKeyboard))
-      AX_WARN(e);
-
-    while (true);
+    while (m_Running)
+    {
+      m_Window->OnUpdate();
+    }
   }
 
 }
