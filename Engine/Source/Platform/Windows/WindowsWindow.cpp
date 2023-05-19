@@ -4,6 +4,7 @@
 #include "Apex/Events/KeyEvent.hpp"
 #include "Apex/Events/MouseEvent.hpp"
 #include "Apex/Events/ApplicationEvent.hpp"
+#include "glad/glad.h"
 
 namespace Apex
 {
@@ -49,6 +50,11 @@ namespace Apex
 
     m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
     glfwMakeContextCurrent(m_Window);
+
+    // Init GLAD
+    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    AX_CORE_ASSERT(status, "Failed to initialize Glad!");
+
     glfwSetWindowUserPointer(m_Window, &m_Data);
     SetVSync(true);
 

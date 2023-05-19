@@ -1,6 +1,7 @@
 #include "axpch.hpp"
 #include "Application.hpp"
 #include "Apex/Log.hpp"
+#include "glad/glad.h"
 
 namespace Apex
 {
@@ -30,6 +31,8 @@ namespace Apex
   {
     while (m_Running)
     {
+      glClearColor(1, 0, 1, 1);
+      glClear(GL_COLOR_BUFFER_BIT);
 
       for (Layer* layer : m_LayerStack)
         layer->OnUpdate();

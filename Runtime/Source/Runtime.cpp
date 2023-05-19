@@ -9,7 +9,7 @@ public:
   
   void OnUpdate() override
   {
-    AX_INFO("ExampleLayer::OnUpdate");
+    //AX_INFO("ExampleLayer::OnUpdate");
   }
 
   void OnEvent(Apex::Event& event) override
