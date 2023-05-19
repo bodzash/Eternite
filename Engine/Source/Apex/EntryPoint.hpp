@@ -6,11 +6,10 @@ extern Apex::Application* Apex::CreateApplication();
 
 int main(int argc, char** argv)
 {
+  // Init logger
   Apex::Log::Init();
-  AX_CORE_ERROR("Damn that shit hurt");
-  int a = 32;
-  AX_WARN("Not enough dog {0}", a);
 
+  // Create App and run
   auto* App = Apex::CreateApplication();
   App->Run();
   delete App;

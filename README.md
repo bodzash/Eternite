@@ -76,3 +76,5 @@ Testing:
 
 Misc / notes:
 precompiled header
+event system is blocking, maybe later need to implement a buffered event system
+https://youtu.be/5mlziHwq90k?list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&t=478
