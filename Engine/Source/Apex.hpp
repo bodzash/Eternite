@@ -2,6 +2,7 @@
 
 // Used by editor and runtime
 #include "Apex/Application.hpp"
+#include "Apex/Layer.hpp"
 #include "Apex/Log.hpp"
 
 // Entry point

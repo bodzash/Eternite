@@ -16,6 +16,8 @@ include_directories(${PROJECT_SOURCE_DIR}/Engine/Source)
 add_library(Engine SHARED
   Source/Apex/Application.cpp
   Source/Apex/Log.cpp
+  Source/Apex/Layer.cpp
+  Source/Apex/LayerStack.cpp
   Source/Platform/Windows/WindowsWindow.cpp
 )
 
