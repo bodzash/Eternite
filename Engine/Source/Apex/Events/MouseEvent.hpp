@@ -38,7 +38,7 @@ namespace Apex
 
     std::string ToString() const override
     {
-      std::MouseScrolledEvent ss;
+      std::stringstream ss;
       ss << "MouseMovedEvent: " << m_XOffset << ", " << m_YOffset;
       return ss.str();
     }
@@ -53,7 +53,7 @@ namespace Apex
   class APEX_API MouseButtonEvent : public Event
   {
   public:
-    inline int GetMouseButton()
+    inline int GetMouseButton() { return m_Button; }
 
     EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
@@ -72,7 +72,7 @@ namespace Apex
     
     std::string ToString() const override
     {
-      std::MouseScrolledEvent ss;
+      std::stringstream ss;
       ss << "MouseButtonPressedEvent: " << m_Button;
       return ss.str();
     }
@@ -88,7 +88,7 @@ namespace Apex
     
     std::string ToString() const override
     {
-      std::MouseScrolledEvent ss;
+      std::stringstream ss;
       ss << "MouseButtonReleasedEvent: " << m_Button;
       return ss.str();
     }
