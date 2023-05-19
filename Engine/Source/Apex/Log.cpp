@@ -1,7 +1,7 @@
 #include "Log.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
-namespace Engine
+namespace Apex
 {
 
   std::shared_ptr<spdlog::logger> Log::s_CoreLogger;

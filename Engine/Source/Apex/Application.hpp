@@ -1,10 +1,10 @@
 #pragma once
 #include "Core.hpp"
 
-namespace Engine
+namespace Apex
 {
 
-  class ENGINE_API Application
+  class APEX_API Application
   {
   public:
     Application();

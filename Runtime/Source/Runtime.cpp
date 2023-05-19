@@ -1,14 +1,14 @@
 #include <iostream>
-#include <Engine.hpp>
+#include <Apex.hpp>
 
-class Runtime : public Engine::Application
+class Runtime : public Apex::Application
 {
 public:
   Runtime() {}
   ~Runtime() {}
 };
 
-Engine::Application* Engine::CreateApplication()
+Apex::Application* Apex::CreateApplication()
 {
   return new Runtime();
 }

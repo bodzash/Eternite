@@ -1,7 +1,7 @@
 #include "Application.hpp"
 #include <iostream>
 
-namespace Engine
+namespace Apex
 {
   Application::Application()
   {

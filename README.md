@@ -1,13 +1,12 @@
-# Unnamed Game Engine
+# Apex Game Engine
 
-## Names (very important xD)
-Engine: Nuclear, Atom
-Editor: Forge
+## Name (very important xD)
+- Editor: Forge or Apex Studio or Apex Editor
 
 ## Architecture
-Engine - This is a DLL that the Runtime and Editor can link
-Runtime - This is an Executable that links up with the Engine
-Editor - Purely level/prefab editing tool
+- Engine - This is a DLL that the Runtime and Editor can link
+- Runtime - This is an Executable that links up with the Engine
+- Editor - Purely level/prefab editing tool
 
 ## Technologies:
 Rendering (only one):
@@ -38,22 +37,18 @@ Entity Component System:
 Scripting (only one and Native):
 - Lua with sol2
 - C# with mono as a DLL
-- AngelScript with ???
 - Native with C++ as a DLL
 
 Physics (only one):
 - Jolt (most likely because it's aimed at games)
 - NVIDIA PhysX (documentation kinda shit)
-- Bullet3 (lol no)
 
 Audio (only one):
-- rayaudio (temporary)
 - FMOD
 - OpenAL
 
 Networking (probably not gonna implement):
 - Steamworks or GameNetworkingSockets
-- ENet (no encryption)
 - Riptide (C# library) (in case of C# is the scripting lang)
 
 Game GUI/HUD:
@@ -71,7 +66,7 @@ Serialization
 
 Configuration:
 - yamlcpp
-- ini parser (idk)
+- some ini parser
 
 Asset packing / compression:
 - zlib
