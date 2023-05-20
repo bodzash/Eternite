@@ -14,7 +14,7 @@
 #include "Apex/Events/KeyEvent.hpp"
 #include "Apex/Events/MouseEvent.hpp"
 
-//#include "Apex/ImGui/ImGuiLayer.hpp"
+#include "Apex/ImGui/ImGuiLayer.hpp"
 
 // Entry point
 #include "Apex/EntryPoint.hpp"

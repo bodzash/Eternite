@@ -34,7 +34,7 @@ public:
   Runtime()
   {
     PushLayer(new ExampleLayer());
-    //PushOverlay(new Apex::ImGuiLayer());
+    PushOverlay(new Apex::ImGuiLayer());
   }
 
   ~Runtime()

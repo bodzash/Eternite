@@ -15,34 +15,32 @@ add_compile_definitions(GLFW_INCLUDE_NONE)
 add_subdirectory(External/Glad)
 #add_subdirectory(External/imgui)
 
-# Library inlcude
-#include_directories(${PROJECT_SOURCE_DIR}/Engine/External/spdlog/include)
-#include_directories(${PROJECT_SOURCE_DIR}/Engine/External/GLFW/include)
-#include_directories(${PROJECT_SOURCE_DIR}/Engine/External/Glad/include)
-
 include_directories(External/spdlog/include)
 include_directories(External/GLFW/include)
 include_directories(External/Glad/include)
-#include_directories(External/imgui)
+include_directories(External/imgui)
 include_directories(External/glm)
 
 # Self
 include_directories(Source)
-#include_directories(${PROJECT_SOURCE_DIR}/Engine/Source)
 
 # TODO: lets not manually include all cpp files xd
 add_library(Engine SHARED
+  # Engine
   Source/Apex/Application.cpp
   Source/Apex/Log.cpp
   Source/Apex/Layer.cpp
   Source/Apex/LayerStack.cpp
-  #Source/Apex/ImGui/ImGuiLayer.cpp
-  #Source/Platform/OpenGL/ImGuiOpenGLRenderer.cpp
+
+  # Imgui
+  Source/Apex/ImGui/ImGuiLayer.cpp
+  Source/Apex/ImGui/ImGuiBuild.cpp
+
+  # Windows
   Source/Platform/Windows/WindowsWindow.cpp
   Source/Platform/Windows/WindowsInput.cpp
 )
 
-target_link_libraries(Engine PRIVATE glfw glad)
+target_link_libraries(Engine PRIVATE glfw glad opengl32)
 
-#target_precompile_headers(Engine PRIVATE ${PROJECT_SOURCE_DIR}/Engine/Source/axpch.hpp)
 target_precompile_headers(Engine PRIVATE Source/axpch.hpp)

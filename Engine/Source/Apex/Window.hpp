@@ -12,7 +12,7 @@ namespace Apex
     unsigned int Width;
     unsigned int Height;
 
-    WindowProps(const std::string& title = "Apex Engine", unsigned int width = 800, unsigned int height = 600)
+    WindowProps(const std::string& title = "Apex Engine", unsigned int width = 1024, unsigned int height = 768)
       : Title(title), Width(width), Height(height) {}
   };
   

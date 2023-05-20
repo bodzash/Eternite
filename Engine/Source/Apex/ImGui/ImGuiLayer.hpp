@@ -10,10 +10,10 @@ namespace Apex
     ImGuiLayer();
     ~ImGuiLayer();
 
-    void OnAttach();
-    void OnDetach();
-    void OnUpdate();
-    void OnEvent(Event& event);
+    void OnAttach() override;
+    void OnDetach() override;
+    void OnUpdate() override;
+    void OnImgGuiRender();
   private:
     float m_Time = 0.f;
   };
