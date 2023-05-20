@@ -5,7 +5,7 @@
 #include "Apex/Layer.hpp"
 #include "Apex/Log.hpp"
 
-#include "Apex/ImGui/ImGuiLayer.hpp"
+//#include "Apex/ImGui/ImGuiLayer.hpp"
 
 // Entry point
 #include "Apex/EntryPoint.hpp"

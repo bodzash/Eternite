@@ -19,7 +19,7 @@ add_subdirectory(External/Glad)
 include_directories(External/spdlog/include)
 include_directories(External/GLFW/include)
 include_directories(External/Glad/include)
-include_directories(External/imgui)
+#include_directories(External/imgui)
 
 # Self
 include_directories(Source)
@@ -31,9 +31,10 @@ add_library(Engine SHARED
   Source/Apex/Log.cpp
   Source/Apex/Layer.cpp
   Source/Apex/LayerStack.cpp
-  Source/Apex/ImGui/ImGuiLayer.cpp
-  Source/Platform/OpenGL/ImGuiOpenGLRenderer.cpp
+  #Source/Apex/ImGui/ImGuiLayer.cpp
+  #Source/Platform/OpenGL/ImGuiOpenGLRenderer.cpp
   Source/Platform/Windows/WindowsWindow.cpp
+  Source/Platform/Windows/WindowsInput.cpp
 )
 
 target_link_libraries(Engine PRIVATE glfw glad)
