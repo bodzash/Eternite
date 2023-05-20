@@ -3,6 +3,10 @@ add_compile_definitions(AX_PLATFORM_WINDOWS)
 add_compile_definitions(AX_BUILD_DLL)
 add_compile_definitions(AX_ENABLE_ASSERTS)
 
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 add_subdirectory(External/GLFW)
 
 # Very cursed workaround

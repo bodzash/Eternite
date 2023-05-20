@@ -2,6 +2,7 @@
 #include "Application.hpp"
 #include "Apex/Log.hpp"
 #include "glad/glad.h"
+#include "Input.hpp"
 
 namespace Apex
 {

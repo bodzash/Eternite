@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Apex/Input.hpp"
 
 namespace Apex
