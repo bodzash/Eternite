@@ -24,6 +24,7 @@ include_directories(External/spdlog/include)
 include_directories(External/GLFW/include)
 include_directories(External/Glad/include)
 #include_directories(External/imgui)
+include_directories(External/glm)
 
 # Self
 include_directories(Source)
