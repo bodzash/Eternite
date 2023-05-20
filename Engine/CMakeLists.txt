@@ -9,6 +9,7 @@ add_subdirectory(External/GLFW)
 add_compile_definitions(GLFW_INCLUDE_NONE)
 
 add_subdirectory(External/Glad)
+#add_subdirectory(External/imgui)
 
 # Library inlcude
 #include_directories(${PROJECT_SOURCE_DIR}/Engine/External/spdlog/include)
@@ -18,6 +19,7 @@ add_subdirectory(External/Glad)
 include_directories(External/spdlog/include)
 include_directories(External/GLFW/include)
 include_directories(External/Glad/include)
+include_directories(External/imgui)
 
 # Self
 include_directories(Source)
@@ -29,6 +31,8 @@ add_library(Engine SHARED
   Source/Apex/Log.cpp
   Source/Apex/Layer.cpp
   Source/Apex/LayerStack.cpp
+  Source/Apex/ImGui/ImGuiLayer.cpp
+  Source/Platform/OpenGL/ImGuiOpenGLRenderer.cpp
   Source/Platform/Windows/WindowsWindow.cpp
 )
 
