@@ -37,7 +37,7 @@ namespace Apex
   {
     while (m_Running)
     {
-      glClearColor(1, 0, 1, 1);
+      glClearColor(0.125, 0.21, 0.44, 1);
       glClear(GL_COLOR_BUFFER_BIT);
 
       for (Layer* layer : m_LayerStack)
