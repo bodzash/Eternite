@@ -170,7 +170,7 @@ namespace Apex
     if (enabled)
       glfwSwapInterval(1);
     else
-      glfwSwapInterval(1);
+      glfwSwapInterval(0);
 
     m_Data.VSync = enabled;
   }
