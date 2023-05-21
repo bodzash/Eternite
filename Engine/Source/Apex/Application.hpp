@@ -4,6 +4,7 @@
 #include "Apex/LayerStack.hpp"
 #include "Apex/Events/Event.hpp"
 #include "Apex/Events/ApplicationEvent.hpp"
+#include "Apex/ImGui/ImGuiLayer.hpp"
 
 namespace Apex
 {
@@ -24,6 +25,7 @@ namespace Apex
 
   private:
     std::unique_ptr<Window> m_Window;
+    ImGuiLayer* m_ImGuiLayer;
     bool m_Running = true;
     LayerStack m_LayerStack;
     static Application* s_Instance;

@@ -12,8 +12,10 @@ namespace Apex
 
     void OnAttach() override;
     void OnDetach() override;
-    void OnUpdate() override;
-    void OnImgGuiRender();
+    void OnImGuiRender() override;
+
+    void Begin();
+    void End();
   private:
     float m_Time = 0.f;
   };
