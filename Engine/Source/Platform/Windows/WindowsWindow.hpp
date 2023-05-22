@@ -1,5 +1,6 @@
 #pragma once
 #include "Apex/Window.hpp"
+#include "Apex/Renderer/GraphicsContext.hpp"
 #include "GLFW/glfw3.h"
 
 namespace Apex
@@ -28,6 +29,7 @@ namespace Apex
 
   private:
     GLFWwindow* m_Window;
+    GraphicsContext* m_Context;
 
     struct WindowData
     {

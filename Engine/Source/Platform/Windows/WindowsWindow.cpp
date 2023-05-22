@@ -4,7 +4,7 @@
 #include "Apex/Events/KeyEvent.hpp"
 #include "Apex/Events/MouseEvent.hpp"
 #include "Apex/Events/ApplicationEvent.hpp"
-#include "glad/glad.h"
+#include "Platform/OpenGL/OpenGLContext.hpp"
 
 namespace Apex
 {
@@ -52,8 +52,8 @@ namespace Apex
     glfwMakeContextCurrent(m_Window);
 
     // Init GLAD
-    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    AX_CORE_ASSERT(status, "Failed to initialize Glad!");
+    m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
 
     glfwSetWindowUserPointer(m_Window, &m_Data);
     SetVSync(true);
@@ -162,7 +162,7 @@ namespace Apex
   void WindowsWindow::OnUpdate()
   {
     glfwPollEvents();
-    glfwSwapBuffers(m_Window);
+    m_Context->SwapBuffers();
   }
 
   void WindowsWindow::SetVSync(bool enabled)

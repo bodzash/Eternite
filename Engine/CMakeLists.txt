@@ -32,6 +32,9 @@ add_library(Engine STATIC
   Source/Apex/Layer.cpp
   Source/Apex/LayerStack.cpp
 
+  # Rendering
+  Source/Platform/OpenGL/OpenGLContext.cpp
+
   # Imgui
   Source/Apex/ImGui/ImGuiLayer.cpp
   Source/Apex/ImGui/ImGuiBuild.cpp
