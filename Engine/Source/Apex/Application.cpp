@@ -40,6 +40,7 @@ namespace Apex
   {
     while (m_Running)
     {
+      // TEMPORARY
       glClearColor(0.125, 0.21, 0.44, 1);
       glClear(GL_COLOR_BUFFER_BIT);
 
