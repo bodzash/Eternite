@@ -21,10 +21,6 @@ namespace Apex
     m_ImGuiLayer = new ImGuiLayer();
     PushOverlay(m_ImGuiLayer);
   }
-  
-  Application::~Application()
-  {
-  }
 
   void Application::PushLayer(Layer* layer)
   {
