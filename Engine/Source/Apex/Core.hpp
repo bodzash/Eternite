@@ -1,13 +1,17 @@
 #pragma once
 
 #ifdef AX_PLATFORM_WINDOWS
-  #ifdef AX_BUILD_DLL
-    #define APEX_API __declspec(dllexport)
+  #if AX_DYNAMIC_LINK
+    #ifdef AX_BUILD_DLL
+      #define APEX_API __declspec(dllexport)
+    #else
+      #define APEX_API __declspec(dllimport)
+    #endif
   #else
-    #define APEX_API __declspec(dllimport)
-  #endif
+    #define APEX_API
+#endif
 #else
-  #error Apex only supports Windows!
+  //#error Apex only supports Windows!
 #endif
 
 #ifdef AX_ENABLE_ASSERTS

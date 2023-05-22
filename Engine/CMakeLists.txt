@@ -25,7 +25,7 @@ include_directories(External/glm)
 include_directories(Source)
 
 # TODO: lets not manually include all cpp files xd
-add_library(Engine SHARED
+add_library(Engine STATIC
   # Engine
   Source/Apex/Application.cpp
   Source/Apex/Log.cpp
