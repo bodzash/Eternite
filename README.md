@@ -10,42 +10,41 @@
 
 ## Technologies:
 Rendering (only one):
-- bgfx (most likely)
-- diligent (rendering) engine
-- I could do raw DX12 or Vulkan but its just too much
+- bgfx *
 
 Windowing (only one):
 - GLFW
-- SDL3
+- SDL3 *
 
 3D asset importing:
-- AssImp (nice name)
+- AssImp * (nice name)
 Note: FBX files ONLY
 
 Logging:
-- spdlog
+- spdlog *
 
 Benchmarking and Profiling:
 - Cherno's timer class
 https://www.youtube.com/watch?v=qiD39bB7DvA&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=56&ab_channel=TheCherno
-- chrome profiler stuff
+- chrome profiler tool
 
 Entity Component System:
-- EnTT (not even a question)
+- EnTT * (not even a question)
 
-Scripting (only one and Native):
-- C# with mono as a DLL
-- Native with C++ as a DLL
+Scripting (only one):
+- C# with Mono
+- Lua with Sol3 *
+- AngelScript
 
 Physics (only one):
-- Jolt (most likely because it's aimed at games)
+- Jolt * (most likely because it's aimed at games)
 
 Audio (only one):
-- FMOD
+- FMOD *
 - OpenAL
 
 Game GUI/HUD:
-- NoesisGUI
+- NoesisGUI *
 Note: Blend tool can be used to create these interfaces
 
 Editor/Game debug GUI:
@@ -68,7 +67,6 @@ Testing:
 - HAHAHAHAHA
 
 Misc / notes:
-precompiled header
 event system is blocking, maybe later need to implement a buffered event system
 https://youtu.be/5mlziHwq90k?list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&t=478
 
