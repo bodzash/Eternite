@@ -81,9 +81,4 @@ namespace Apex
 		}
   }
 
-  void ImGuiLayer::OnImGuiRender()
-  {
-    ImGui::ShowDemoWindow();
-  }
-
 }

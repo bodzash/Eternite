@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef AX_PLATFORM_WINDOWS
   #if AX_DYNAMIC_LINK
     #ifdef AX_BUILD_DLL
@@ -25,3 +27,12 @@
 #define BIT(x) (1 << x)
 
 #define AX_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
+namespace Apex
+{
+  template<typename T>
+  using Scope = std::unique_ptr<T>;
+
+  template<typename T>
+  using Ref = std::shared_ptr<T>;
+}

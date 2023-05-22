@@ -13,6 +13,7 @@
 #include <unordered_set>
 
 #include "Apex/Log.hpp"
+#include "Apex/Debug/Instrumentor.hpp"
 
 // Platform specific
 #ifdef AX_PLATFORM_WINDOWS
