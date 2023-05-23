@@ -34,7 +34,7 @@ namespace Apex
 		ImGui::StyleColorsDark();
 
 		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-    ImGuiStyle& style = ImGui::GetStyle();
+		ImGuiStyle& style = ImGui::GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			style.WindowRounding = 0.0f;
@@ -44,23 +44,23 @@ namespace Apex
 		Application& app = Application::Get();
 		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
 
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL2_Init();
-  }
+		ImGui_ImplGlfw_InitForOpenGL(window, true);
+		ImGui_ImplOpenGL2_Init();
+	}
 
-  void ImGuiLayer::OnDetach()
-  {
-    ImGui_ImplOpenGL2_Shutdown();
+	void ImGuiLayer::OnDetach()
+	{
+		ImGui_ImplOpenGL2_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
-  }
+	}
 
-  void ImGuiLayer::Begin()
-  {
-    ImGui_ImplOpenGL2_NewFrame();
+	void ImGuiLayer::Begin()
+	{
+		ImGui_ImplOpenGL2_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-  }
+	}
 
 	void ImGuiLayer::End()
 	{
@@ -79,6 +79,6 @@ namespace Apex
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backupCurrentContext);
 		}
-  }
+	}
 
 }

@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Third party
 include_directories(${PROJECT_SOURCE_DIR}/Engine/External/spdlog/include)
 include_directories(${PROJECT_SOURCE_DIR}/Engine/External/glm/include)
+include_directories(${PROJECT_SOURCE_DIR}/Engine/External/imgui)
 
 # Own
 include_directories(${PROJECT_SOURCE_DIR}/Engine/Source)

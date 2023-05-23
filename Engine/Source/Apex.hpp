@@ -5,6 +5,8 @@
 #include "Apex/Layer.hpp"
 #include "Apex/Log.hpp"
 
+#include "Apex/Core/Timestep.hpp"
+
 #include "Apex/Input.hpp"
 #include "Apex/KeyCodes.hpp"
 #include "Apex/MouseButtonCodes.hpp"

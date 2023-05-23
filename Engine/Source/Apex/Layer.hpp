@@ -1,6 +1,7 @@
 #pragma once
 #include "Apex/Core.hpp"
 #include "Apex/Events/Event.hpp"
+#include "Apex/Core/Timestep.hpp"
 
 namespace Apex
 {
@@ -13,7 +14,7 @@ namespace Apex
 
     virtual void OnAttach() {}
     virtual void OnDetach() {}
-    virtual void OnUpdate() {}
+    virtual void OnUpdate(Timestep ts) {}
     virtual void OnImGuiRender() {}
     virtual void OnEvent(Event& event) {}
 

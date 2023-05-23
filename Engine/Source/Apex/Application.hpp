@@ -5,6 +5,7 @@
 #include "Apex/Events/Event.hpp"
 #include "Apex/Events/ApplicationEvent.hpp"
 #include "Apex/ImGui/ImGuiLayer.hpp"
+#include "Apex/Core/Timestep.hpp"
 
 namespace Apex
 {
@@ -28,6 +29,7 @@ namespace Apex
     ImGuiLayer* m_ImGuiLayer;
     bool m_Running = true;
     LayerStack m_LayerStack;
+    float m_LastFrameTime = 0.f;
     static Application* s_Instance;
   };
 

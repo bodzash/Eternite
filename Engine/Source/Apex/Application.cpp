@@ -3,6 +3,7 @@
 #include "Apex/Log.hpp"
 #include "glad/glad.h"
 #include "Input.hpp"
+#include "GLFW/glfw3.h"
 
 namespace Apex
 {
@@ -40,10 +41,13 @@ namespace Apex
       glClearColor(0.125, 0.21, 0.44, 1);
       glClear(GL_COLOR_BUFFER_BIT);
 
-      for (Layer* layer : m_LayerStack)
-        layer->OnUpdate();
-      
+      float time = (float)glfwGetTime(); // TEMPORARY
+      Timestep timestep = time - m_LastFrameTime;
+      m_LastFrameTime = time;
 
+      for (Layer* layer : m_LayerStack)
+        layer->OnUpdate(timestep);
+      
       // TODO: move to render thread
       m_ImGuiLayer->Begin();
       for (Layer* layer : m_LayerStack)

@@ -1,5 +1,6 @@
 //#include <axpch.hpp>
 #include <Apex.hpp>
+#include "imgui.h"
 
 class ExampleLayer : public Apex::Layer
 {
@@ -7,25 +8,25 @@ public:
   ExampleLayer()
     : Layer("Example") {}
   
-  void OnUpdate() override
+  void OnUpdate(Apex::Timestep ts) override
   {
-    //AX_INFO("ExampleLayer::OnUpdate");
+    AX_INFO("Delta time: {0}s [{1}ms]", ts.GetSeconds(), ts.GetMilliseconds());
+
     if (Apex::Input::IsKeyPressed(AX_KEY_TAB))
 			AX_TRACE("Tab key is pressed (poll)!");
+    
+  }
+
+  void OnImGuiRender()
+  {
+    ImGui::Text("Hello World");
   }
 
   void OnEvent(Apex::Event& event) override
   {
-    //AX_TRACE("{0}", event);
 
-    if (event.GetEventType() == Apex::EventType::KeyPressed)
-    {
-      Apex::KeyPressedEvent& e = (Apex::KeyPressedEvent&)event;
-      if (e.GetKeyCode() == AX_KEY_TAB)
-				AX_TRACE("Tab key is pressed (event)!");
-			AX_TRACE("{0}", (char)e.GetKeyCode());
-    }
   }
+
 };
 
 class Runtime : public Apex::Application
