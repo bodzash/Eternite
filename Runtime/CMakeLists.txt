@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 include_directories(${PROJECT_SOURCE_DIR}/Engine/External/spdlog/include)
 include_directories(${PROJECT_SOURCE_DIR}/Engine/External/glm/include)
 include_directories(${PROJECT_SOURCE_DIR}/Engine/External/imgui)
+include_directories(${PROJECT_SOURCE_DIR}/Engine/External/entt/src)
 
 # Own
 include_directories(${PROJECT_SOURCE_DIR}/Engine/Source)

@@ -14,23 +14,29 @@ add_compile_definitions(GLFW_INCLUDE_NONE)
 
 add_subdirectory(External/Glad)
 #add_subdirectory(External/imgui)
+add_subdirectory(External/entt)
 
 include_directories(External/spdlog/include)
 include_directories(External/GLFW/include)
 include_directories(External/Glad/include)
 include_directories(External/imgui)
 include_directories(External/glm)
+include_directories(External/entt/src)
 
 # Self
 include_directories(Source)
 
 # TODO: lets not manually include all cpp files xd
 add_library(Engine STATIC
-  # Engine
+  # Core
   Source/Apex/Application.cpp
   Source/Apex/Log.cpp
   Source/Apex/Layer.cpp
   Source/Apex/LayerStack.cpp
+
+  # Scene
+  Source/Apex/Scene/Scene.cpp
+  Source/Apex/Scene/Entity.cpp
 
   # Rendering
   Source/Apex/Renderer/Renderer.cpp

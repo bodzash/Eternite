@@ -7,6 +7,10 @@
 
 #include "Apex/Core/Timestep.hpp"
 
+#include "Apex/Scene/Scene.hpp"
+#include "Apex/Scene/Entity.hpp"
+#include "Apex/Scene/Components.hpp"
+
 #include "Apex/Input.hpp"
 #include "Apex/KeyCodes.hpp"
 #include "Apex/MouseButtonCodes.hpp"
