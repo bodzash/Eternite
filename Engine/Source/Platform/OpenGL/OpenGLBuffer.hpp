@@ -26,9 +26,6 @@ namespace Apex
 		OpenGLIndexBuffer(uint32_t* indices, uint32_t count);
 		virtual ~OpenGLIndexBuffer();
 
-		virtual void Bind() const;
-		virtual void Unbind() const;
-
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 

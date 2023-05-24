@@ -36,8 +36,10 @@ add_library(Engine STATIC
   Source/Apex/Renderer/Renderer.cpp
   Source/Apex/Renderer/Shader.cpp
   Source/Apex/Renderer/Buffer.cpp
+  Source/Apex/Renderer/VertexArray.cpp
   Source/Platform/OpenGL/OpenGLContext.cpp
-  Source/Platform/OpenGL/OpenGLBuffer.cpp 
+  Source/Platform/OpenGL/OpenGLBuffer.cpp
+  Source/Platform/OpenGL/OpenGLVertexArray.cpp
 
   # Imgui
   Source/Apex/ImGui/ImGuiLayer.cpp
