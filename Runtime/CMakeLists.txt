@@ -10,6 +10,7 @@ include_directories(${PROJECT_SOURCE_DIR}/Engine/External/spdlog/include)
 include_directories(${PROJECT_SOURCE_DIR}/Engine/External/glm/include)
 include_directories(${PROJECT_SOURCE_DIR}/Engine/External/imgui)
 include_directories(${PROJECT_SOURCE_DIR}/Engine/External/entt/src)
+include_directories(${PROJECT_SOURCE_DIR}/Engine/External/glm)
 
 # Own
 include_directories(${PROJECT_SOURCE_DIR}/Engine/Source)

@@ -7,6 +7,15 @@
 
 #include "Apex/Core/Timestep.hpp"
 
+#include "Apex/Renderer/Renderer.hpp"
+#include "Apex/Renderer/RenderCommand.hpp"
+
+#include "Apex/Renderer/Buffer.hpp"
+#include "Apex/Renderer/Shader.hpp"
+#include "Apex/Renderer/VertexArray.hpp"
+
+#include "Apex/Renderer/PerspectiveCamera.hpp"
+
 #include "Apex/Scene/Scene.hpp"
 #include "Apex/Scene/Entity.hpp"
 #include "Apex/Scene/Components.hpp"
