@@ -4,13 +4,11 @@
 namespace Apex
 {
 
-	// DO NOT USE IT HAS BGFX EQUALIVENT
 	enum class ShaderDataType
 	{
 		None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
 	};
 
-	// NO USE
 	static uint32_t ShaderDataTypeSize(ShaderDataType type)
 	{
 		switch (type)
@@ -32,7 +30,6 @@ namespace Apex
 		return 0;
 	}
 
-	// IDK
 	struct BufferElement
 	{
 		std::string Name;
@@ -70,8 +67,6 @@ namespace Apex
 		}
 	};
 
-
-	// DO NOT USE IT HAS BGFX EQUALIVENT
 	class BufferLayout
 	{
 	public:
@@ -107,7 +102,6 @@ namespace Apex
 		uint32_t m_Stride = 0;
 	};
 
-	// YES
 	class VertexBuffer
 	{
 	public:
@@ -122,7 +116,6 @@ namespace Apex
 		static VertexBuffer* Create(float* vertices, uint32_t size);
 	};
 
-	// YES
 	class IndexBuffer
 	{
 	public:
@@ -135,5 +128,6 @@ namespace Apex
 
 		static IndexBuffer* Create(uint32_t* indices, uint32_t size);
 	};
+
 
 }
