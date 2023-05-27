@@ -1,4 +1,4 @@
-#If windows
+# Add defines
 add_compile_definitions(AX_PLATFORM_WINDOWS)
 add_compile_definitions(AX_BUILD_DLL)
 add_compile_definitions(AX_ENABLE_ASSERTS)
@@ -7,15 +7,16 @@ add_compile_definitions(AX_ENABLE_ASSERTS)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_subdirectory(External/GLFW)
+# Set rules for sdl
 
-# Very cursed workaround
-add_compile_definitions(GLFW_INCLUDE_NONE)
+# Set rules for bgfx
 
-add_subdirectory(External/Glad)
-#add_subdirectory(External/imgui)
+# Add subdirectories
+add_subdirectory(External/SDL)
+add_subdirectory(External/bgfx)
 add_subdirectory(External/entt)
 
+# Third party includes
 include_directories(External/spdlog/include)
 include_directories(External/GLFW/include)
 include_directories(External/Glad/include)
@@ -23,10 +24,11 @@ include_directories(External/imgui)
 include_directories(External/glm)
 include_directories(External/entt/src)
 
-# Self
-include_directories(Source)
+# Self include directories
+# include_directories(Source)
 
 # TODO: lets not manually include all cpp files xd
+# Create a static library
 add_library(Engine STATIC
   # Core
   Source/Apex/Application.cpp
@@ -49,7 +51,6 @@ add_library(Engine STATIC
   Source/Apex/Renderer/PerspectiveCamera.cpp
   Source/Apex/Renderer/PerspectiveCameraController.cpp
   
-
   Source/Platform/OpenGL/OpenGLContext.cpp
   Source/Platform/OpenGL/OpenGLBuffer.cpp
   Source/Platform/OpenGL/OpenGLVertexArray.cpp
@@ -64,6 +65,8 @@ add_library(Engine STATIC
   Source/Platform/Windows/WindowsInput.cpp
 )
 
+# Link up
 target_link_libraries(Engine PRIVATE glfw glad opengl32)
 
+# PCH
 target_precompile_headers(Engine PRIVATE Source/axpch.hpp)
