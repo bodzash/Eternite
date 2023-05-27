@@ -9,6 +9,8 @@ namespace Apex
     public:
         Shader(std::string& vertexSrc, std::string& fragmentSrc);
         ~Shader();
+        
+        static Shader* Create(const std::string& vertexSrc, const std::string& fragmentSrc);
 
         void Bind() const;
         void Unbind() const;

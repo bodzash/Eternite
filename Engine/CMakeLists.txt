@@ -43,9 +43,12 @@ add_library(Engine STATIC
   Source/Apex/Renderer/Shader.cpp
   Source/Apex/Renderer/Buffer.cpp
   Source/Apex/Renderer/VertexArray.cpp
+  Source/Apex/Renderer/Texture.cpp
   Source/Apex/Renderer/RendererAPI.cpp
   Source/Apex/Renderer/RenderCommand.cpp
   Source/Apex/Renderer/PerspectiveCamera.cpp
+  Source/Apex/Renderer/PerspectiveCameraController.cpp
+  
 
   Source/Platform/OpenGL/OpenGLContext.cpp
   Source/Platform/OpenGL/OpenGLBuffer.cpp
