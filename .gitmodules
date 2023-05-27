@@ -13,3 +13,6 @@
 [submodule "Engine/External/entt"]
 	path = Engine/External/entt
 	url = https://github.com/skypjack/entt.git
+[submodule "Engine/External/SDL"]
+	path = Engine/External/SDL
+	url = https://github.com/libsdl-org/SDL.git
