@@ -1,6 +1,41 @@
 # Apex Game Engine
 A 3D FPS focused game engine
 
+## Notes to self:
+Create a Data/AssetLibrary class that holds:
+```cpp
+    // uint64_t are uuid's (could use strings too i guess)
+    std::unordered_map<uint64_t, Mesh> m_Meshes;
+    std::unordered_map<uint64_t, Shader> m_Shaders;
+    std::unordered_map<uint64_t, Material> m_Materials;
+    std::unordered_map<uint64_t, Texture> m_Textures;
+
+    void ImportMesh() {}
+```
+
+Implement components in seperate .h and .cpp files and include all of them 
+in Components.h
+
+Camera, RigidBody, PointLight, Mesh, Transform, ... and other components
+
+FrameBuffer class
+
+PhysicsWorld, PhysicsMesh class
+
+Folder re-structure: (Will not be nested inside Apex folder)
+When these folder become big, use subfolders
+Components -> ECS comp.
+Core -> Application, Window
+Events -> duh
+Renderer -> same
+Scene -> same
+Physics
+Scripting -> Native(folder), Lua(folder)
+Interface -> ImGui(folder), Noesis(folder)
+Navigation (maybe for ai pathfinding)
+Audio 
+
+
 ## Architecture
 - Engine - This is a lib that the Runtime and Editor can link
 - Runtime - This is an Executable that links up with the Engine
