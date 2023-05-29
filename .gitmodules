@@ -10,9 +10,9 @@
 [submodule "Engine/External/entt"]
 	path = Engine/External/entt
 	url = https://github.com/skypjack/entt.git
-[submodule "Engine/External/SDL"]
-	path = Engine/External/SDL
-	url = https://github.com/libsdl-org/SDL.git
 [submodule "Engine/External/bgfx"]
 	path = Engine/External/bgfx
 	url = https://github.com/bkaradzic/bgfx.cmake.git
+[submodule "Engine/External/glfw"]
+	path = Engine/External/glfw
+	url = https://github.com/glfw/glfw.git
