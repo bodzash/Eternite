@@ -28,21 +28,8 @@ set(BGFX_INSTALL OFF CACHE BOOL "" FORCE)
 # Add subdirectories
 add_subdirectory(External/glfw)
 add_subdirectory(External/bgfx)
+# add_subdirectory(External/glm)
 add_subdirectory(External/entt)
-
-# Third party includes
-include_directories(External/spdlog/include)
-include_directories(External/GLFW/include)
-include_directories(External/imgui)
-include_directories(External/glm)
-include_directories(External/entt/src)
-include_directories(External/entt/src)
-include_directories(External/bgf/bgfx.cmake/bx/include)
-include_directories(External/bgf/bgfx.cmake/bimg/include)
-include_directories(External/bgf/bgfx.cmake/bgfx/include)
-
-# Self include directories
-include_directories(Source)
 
 # TODO: lets not manually include all cpp files xd
 # Create a static library
@@ -81,6 +68,19 @@ add_library(Engine STATIC
   Source/Platform/Windows/WindowsWindow.cpp
   Source/Platform/Windows/WindowsInput.cpp
 )
+
+# Third party includes
+target_include_directories(Engine PUBLIC External/spdlog/include)
+target_include_directories(Engine PUBLIC External/glfw/include)
+target_include_directories(Engine PUBLIC External/imgui)
+target_include_directories(Engine PUBLIC External/glm)
+target_include_directories(Engine PUBLIC External/entt/src)
+target_include_directories(Engine PUBLIC External/bgf/bgfx.cmake/bx/include)
+target_include_directories(Engine PUBLIC External/bgf/bgfx.cmake/bimg/include)
+target_include_directories(Engine PUBLIC External/bgf/bgfx.cmake/bgfx/include)
+
+# Self include directories
+target_include_directories(Engine PUBLIC Source)
 
 # Link up
 target_link_libraries(Engine PRIVATE gflw bgfx bx)

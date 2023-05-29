@@ -5,21 +5,21 @@ add_compile_definitions(AX_PLATFORM_WINDOWS)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Third party
-include_directories(Engine/External/spdlog/include)
-include_directories(Engine/External/imgui)
-include_directories(Engine/External/entt/src)
-include_directories(Engine/External/glm/glm)
-
-# Self include directories
-include_directories(Engine/Source)
-include_directories(Runtime/Source)
-
-# Link library
-link_directories(Engine/Source)
-
 # Create executable
 add_executable(Runtime Source/Runtime.cpp)
 
+# Third party
+target_include_directories(Runtime PRIVATE Engine/External/spdlog/include)
+target_include_directories(Runtime PRIVATE Engine/External/imgui)
+target_include_directories(Runtime PRIVATE Engine/External/entt/src)
+target_include_directories(Runtime PRIVATE Engine/External/glm/glm)
+
+# Self include directories
+#target_include_directories(Runtime PRIVATE Engine/Source)
+#target_include_directories(Runtime PRIVATE Runtime/Source)
+
+# Link library
+target_link_directories(Runtime PUBLIC Engine/Source)
+
 # Link up
-target_link_libraries(Runtime Engine)
+target_link_libraries(Runtime PRIVATE Engine)

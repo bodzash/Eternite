@@ -1,6 +1,6 @@
 #pragma once
 
-// Used by editor and runtime
+// To be used by editor and runtime
 #include "Core/Application.hpp"
 #include "Core/Layer.hpp"
 #include "Core/Log.hpp"
@@ -20,9 +20,9 @@
 #include "Scene/Entity.hpp"
 #include "Scene/Components.hpp"
 
-#include "Input.hpp"
-#include "KeyCodes.hpp"
-#include "MouseButtonCodes.hpp"
+#include "Core/Input.hpp"
+#include "Core/KeyCodes.hpp"
+#include "Core/MouseButtonCodes.hpp"
 
 // Events TEMPORARY
 #include "Events/ApplicationEvent.hpp"
