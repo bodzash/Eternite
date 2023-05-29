@@ -1,35 +1,35 @@
 #pragma once
 
-// Used by editor and runtime
-#include "Apex/Application.hpp"
-#include "Apex/Layer.hpp"
-#include "Apex/Log.hpp"
+// To be used by editor and runtime
+#include "Core/Application.hpp"
+#include "Core/Layer.hpp"
+#include "Core/Log.hpp"
 
-#include "Apex/Core/Timestep.hpp"
+#include "Core/Timestep.hpp"
 
-#include "Apex/Renderer/Renderer.hpp"
-#include "Apex/Renderer/RenderCommand.hpp"
+#include "Renderer/Renderer.hpp"
+#include "Renderer/RenderCommand.hpp"
 
-#include "Apex/Renderer/Buffer.hpp"
-#include "Apex/Renderer/Shader.hpp"
-#include "Apex/Renderer/VertexArray.hpp"
+#include "Renderer/Buffer.hpp"
+#include "Renderer/Shader.hpp"
+#include "Renderer/VertexArray.hpp"
 
-#include "Apex/Renderer/PerspectiveCamera.hpp"
+#include "Renderer/Camera.hpp"
 
-#include "Apex/Scene/Scene.hpp"
-#include "Apex/Scene/Entity.hpp"
-#include "Apex/Scene/Components.hpp"
+#include "Scene/Scene.hpp"
+#include "Scene/Entity.hpp"
+#include "Scene/Components.hpp"
 
-#include "Apex/Input.hpp"
-#include "Apex/KeyCodes.hpp"
-#include "Apex/MouseButtonCodes.hpp"
+#include "Core/Input.hpp"
+#include "Core/KeyCodes.hpp"
+#include "Core/MouseButtonCodes.hpp"
 
 // Events TEMPORARY
-#include "Apex/Events/ApplicationEvent.hpp"
-#include "Apex/Events/KeyEvent.hpp"
-#include "Apex/Events/MouseEvent.hpp"
+#include "Events/ApplicationEvent.hpp"
+#include "Events/KeyEvent.hpp"
+#include "Events/MouseEvent.hpp"
 
-#include "Apex/ImGui/ImGuiLayer.hpp"
+#include "ImGui/ImGuiLayer.hpp"
 
 // Entry point
-#include "Apex/EntryPoint.hpp"
+#include "Core/EntryPoint.hpp"

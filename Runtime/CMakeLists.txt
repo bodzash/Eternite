@@ -1,21 +1,25 @@
-# If windows
+# Add defines
 add_compile_definitions(AX_PLATFORM_WINDOWS)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Third party
-include_directories(${PROJECT_SOURCE_DIR}/Engine/External/spdlog/include)
-include_directories(${PROJECT_SOURCE_DIR}/Engine/External/glm/include)
-include_directories(${PROJECT_SOURCE_DIR}/Engine/External/imgui)
-include_directories(${PROJECT_SOURCE_DIR}/Engine/External/entt/src)
-include_directories(${PROJECT_SOURCE_DIR}/Engine/External/glm)
-
-# Own
-include_directories(${PROJECT_SOURCE_DIR}/Engine/Source)
-include_directories(${PROJECT_SOURCE_DIR}/Runtime/Source)
-
-link_directories(${PROJECT_SOURCE_DIR}/Engine/Source)
+# Create executable
 add_executable(Runtime Source/Runtime.cpp)
-target_link_libraries(Runtime Engine)
+
+# Third party
+target_include_directories(Runtime PRIVATE Engine/External/spdlog/include)
+target_include_directories(Runtime PRIVATE Engine/External/imgui)
+target_include_directories(Runtime PRIVATE Engine/External/entt/src)
+target_include_directories(Runtime PRIVATE Engine/External/glm/glm)
+
+# Self include directories
+#target_include_directories(Runtime PRIVATE Engine/Source)
+#target_include_directories(Runtime PRIVATE Runtime/Source)
+
+# Link library
+target_link_directories(Runtime PUBLIC Engine/Source)
+
+# Link up
+target_link_libraries(Runtime PRIVATE Engine)

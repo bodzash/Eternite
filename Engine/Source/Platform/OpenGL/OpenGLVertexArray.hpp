@@ -1,5 +1,5 @@
 #pragma once
-#include "Apex/Renderer/VertexArray.hpp"
+#include "Renderer/VertexArray.hpp"
 
 namespace Apex
 {

@@ -1,9 +1,6 @@
 [submodule "Engine/External/spdlog"]
 	path = Engine/External/spdlog
 	url = https://github.com/gabime/spdlog.git
-[submodule "Engine/External/GLFW"]
-	path = Engine/External/GLFW
-	url = https://github.com/glfw/glfw
 [submodule "Engine/External/glm"]
 	path = Engine/External/glm
 	url = https://github.com/g-truc/glm.git
@@ -13,3 +10,9 @@
 [submodule "Engine/External/entt"]
 	path = Engine/External/entt
 	url = https://github.com/skypjack/entt.git
+[submodule "Engine/External/bgfx"]
+	path = Engine/External/bgfx
+	url = https://github.com/bkaradzic/bgfx.cmake.git
+[submodule "Engine/External/glfw"]
+	path = Engine/External/glfw
+	url = https://github.com/glfw/glfw.git
