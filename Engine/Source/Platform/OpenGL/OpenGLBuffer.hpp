@@ -1,5 +1,5 @@
 #pragma once
-#include "Apex/Renderer/Buffer.hpp"
+#include "Renderer/Buffer.hpp"
 
 namespace Apex
 {

@@ -1,12 +1,12 @@
 #include "axpch.hpp"
 #include "Shader.hpp"
-#include "glad/glad.h"
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Apex
 {
     Shader::Shader(std::string& vertexSrc, std::string& fragmentSrc)
     {
+		/*
     	// Create an empty vertex shader handle
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
@@ -107,27 +107,28 @@ namespace Apex
 		// Always detach shaders after a successful link.
 		glDetachShader(program, vertexShader);
 		glDetachShader(program, fragmentShader);
+		*/
 	}
 
 	Shader::~Shader()
 	{
-		glDeleteProgram(m_RendererID);
+		//glDeleteProgram(m_RendererID);
 	}
 
 	void Shader::Bind() const
 	{
-		glUseProgram(m_RendererID);
+		//glUseProgram(m_RendererID);
 	}
 
 	void Shader::Unbind() const
 	{
-		glUseProgram(0);
+		//glUseProgram(0);
 	}
 
 	void Shader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix)
 	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		//glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 }

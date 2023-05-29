@@ -1,5 +1,5 @@
 #pragma once
-#include "Apex/Core.hpp"
+#include "Core/Core.hpp"
 
 namespace Apex
 {

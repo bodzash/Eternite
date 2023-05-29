@@ -1,7 +1,7 @@
 #pragma once
 #include "axpch.hpp"
-#include "Apex/Core.hpp"
-#include "Apex/Events/Event.hpp"
+#include "Core.hpp"
+#include "Events/Event.hpp"
 
 namespace Apex
 {

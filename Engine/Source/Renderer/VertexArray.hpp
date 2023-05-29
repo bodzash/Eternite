@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "Apex/Renderer/Buffer.hpp"
+#include "Renderer/Buffer.hpp"
 
 namespace Apex
 {

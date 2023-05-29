@@ -1,5 +1,4 @@
 #pragma once
-
 #include <memory>
 
 #ifdef AX_PLATFORM_WINDOWS

@@ -7,49 +7,66 @@ add_compile_definitions(AX_ENABLE_ASSERTS)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Set rules for sdl
+# Set rules for glfw
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 
 # Set rules for bgfx
+set(BGFX_AMALGAMATED OFF CACHE BOOL "" FORCE)
+set(BX_AMALGAMATED OFF CACHE BOOL "" FORCE)
+set(BGFX_BUILD_EXAMPLES ON CACHE BOOL "" FORCE)
+set(BGFX_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
+set(BGFX_BUILD_TOOLS_BIN2C OFF CACHE BOOL "" FORCE)
+set(BGFX_BUILD_TOOLS_GEOMETRY OFF CACHE BOOL "" FORCE)
+set(BGFX_BUILD_TOOLS_SHADER OFF CACHE BOOL "" FORCE)
+set(BGFX_BUILD_TOOLS_TEXTURE OFF CACHE BOOL "" FORCE)
+set(BGFX_CONFIG_MULTITHREADED OFF CACHE BOOL "" FORCE) # TEMPORARY change this later
+set(BGFX_INSTALL OFF CACHE BOOL "" FORCE)
 
 # Add subdirectories
-add_subdirectory(External/SDL)
+add_subdirectory(External/glfw)
 add_subdirectory(External/bgfx)
 add_subdirectory(External/entt)
 
 # Third party includes
 include_directories(External/spdlog/include)
 include_directories(External/GLFW/include)
-include_directories(External/Glad/include)
 include_directories(External/imgui)
 include_directories(External/glm)
 include_directories(External/entt/src)
+include_directories(External/entt/src)
+include_directories(External/bgf/bgfx.cmake/bx/include)
+include_directories(External/bgf/bgfx.cmake/bimg/include)
+include_directories(External/bgf/bgfx.cmake/bgfx/include)
 
 # Self include directories
-# include_directories(Source)
+include_directories(Source)
 
 # TODO: lets not manually include all cpp files xd
 # Create a static library
 add_library(Engine STATIC
   # Core
-  Source/Apex/Application.cpp
-  Source/Apex/Log.cpp
-  Source/Apex/Layer.cpp
-  Source/Apex/LayerStack.cpp
+  Source/Core/Application.cpp
+  Source/Core/Log.cpp
+  Source/Core/Layer.cpp
+  Source/Core/LayerStack.cpp
 
   # Scene
-  Source/Apex/Scene/Scene.cpp
-  Source/Apex/Scene/Entity.cpp
+  Source/Scene/Scene.cpp
+  Source/Scene/Entity.cpp
 
   # Rendering
-  Source/Apex/Renderer/Renderer.cpp
-  Source/Apex/Renderer/Shader.cpp
-  Source/Apex/Renderer/Buffer.cpp
-  Source/Apex/Renderer/VertexArray.cpp
-  Source/Apex/Renderer/Texture.cpp
-  Source/Apex/Renderer/RendererAPI.cpp
-  Source/Apex/Renderer/RenderCommand.cpp
-  Source/Apex/Renderer/PerspectiveCamera.cpp
-  Source/Apex/Renderer/PerspectiveCameraController.cpp
+  Source/Renderer/Renderer.cpp
+  Source/Renderer/Shader.cpp
+  Source/Renderer/Buffer.cpp
+  Source/Renderer/VertexArray.cpp
+  Source/Renderer/Texture.cpp
+  Source/Renderer/RendererAPI.cpp
+  Source/Renderer/RenderCommand.cpp
+  Source/Renderer/Camera.cpp
+  Source/Renderer/CameraController.cpp
   
   Source/Platform/OpenGL/OpenGLContext.cpp
   Source/Platform/OpenGL/OpenGLBuffer.cpp
@@ -57,8 +74,8 @@ add_library(Engine STATIC
   Source/Platform/OpenGL/OpenGLRendererAPI.cpp
 
   # Imgui
-  Source/Apex/ImGui/ImGuiLayer.cpp
-  Source/Apex/ImGui/ImGuiBuild.cpp
+  Source/ImGui/ImGuiLayer.cpp
+  Source/ImGui/ImGuiBuild.cpp
 
   # Windows
   Source/Platform/Windows/WindowsWindow.cpp
@@ -66,7 +83,7 @@ add_library(Engine STATIC
 )
 
 # Link up
-target_link_libraries(Engine PRIVATE glfw glad opengl32)
+target_link_libraries(Engine PRIVATE gflw bgfx bx)
 
 # PCH
 target_precompile_headers(Engine PRIVATE Source/axpch.hpp)

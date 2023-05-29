@@ -1,7 +1,7 @@
 #pragma once
-#include "Apex/Core.hpp"
-#include "Apex/Events/Event.hpp"
-#include "Apex/Core/Timestep.hpp"
+#include "Core.hpp"
+#include "Events/Event.hpp"
+#include "Core/Timestep.hpp"
 
 namespace Apex
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Apex/Renderer/GraphicsContext.hpp"
+#include "Renderer/GraphicsContext.hpp"
 
 // forward decl
 struct GLFWwindow;

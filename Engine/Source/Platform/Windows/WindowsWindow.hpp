@@ -1,6 +1,6 @@
 #pragma once
-#include "Apex/Window.hpp"
-#include "Apex/Renderer/GraphicsContext.hpp"
+#include "Core/Window.hpp"
+#include "Renderer/GraphicsContext.hpp"
 #include "GLFW/glfw3.h"
 
 namespace Apex

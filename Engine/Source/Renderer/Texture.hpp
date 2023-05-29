@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Apex/Core.hpp"
+#include "Core/Core.hpp"
 
 namespace Apex
 {

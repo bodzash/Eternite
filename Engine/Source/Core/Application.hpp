@@ -1,11 +1,11 @@
 #pragma once
 #include "Core.hpp"
 #include "Window.hpp"
-#include "Apex/LayerStack.hpp"
-#include "Apex/Events/Event.hpp"
-#include "Apex/Events/ApplicationEvent.hpp"
-#include "Apex/ImGui/ImGuiLayer.hpp"
-#include "Apex/Core/Timestep.hpp"
+#include "LayerStack.hpp"
+#include "Timestep.hpp"
+#include "Events/Event.hpp"
+#include "Events/ApplicationEvent.hpp"
+#include "ImGui/ImGuiLayer.hpp"
 
 namespace Apex
 {

@@ -1,9 +1,7 @@
 #include "axpch.hpp"
 #include "Application.hpp"
-#include "Apex/Log.hpp"
-#include "glad/glad.h"
+#include "Log.hpp"
 #include "Input.hpp"
-#include "GLFW/glfw3.h"
 #include <glfw/glfw3.h>
 
 namespace Apex

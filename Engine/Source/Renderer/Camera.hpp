@@ -4,10 +4,10 @@
 namespace Apex
 {
 
-    class PerspectiveCamera
+    class Camera
     {
     public:
-        PerspectiveCamera(/* TODO: TAKE IN SOME ARGUMETNS */);
+        Camera(/* TODO: TAKE IN SOME ARGUMETNS */);
 
         const glm::vec3& GetPosition() const { return m_Position; }
         void SetPosition(const glm::vec3& position) { m_Position = position; RecalculateViewMatrix(); }

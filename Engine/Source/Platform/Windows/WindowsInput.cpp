@@ -1,6 +1,6 @@
 #include "axpch.hpp"
 #include "WindowsInput.hpp"
-#include "Apex/Application.hpp"
+#include "Core/Application.hpp"
 #include "GLFW/glfw3.h"
 
 namespace Apex

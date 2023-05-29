@@ -1,5 +1,5 @@
 #pragma once
-#include "Apex/Renderer/RendererAPI.hpp"
+#include "Renderer/RendererAPI.hpp"
 
 namespace Apex
 {

@@ -1,9 +1,9 @@
 #include "axpch.hpp"
 #include "WindowsWindow.hpp"
-#include "Apex/Core.hpp"
-#include "Apex/Events/KeyEvent.hpp"
-#include "Apex/Events/MouseEvent.hpp"
-#include "Apex/Events/ApplicationEvent.hpp"
+#include "Core/Core.hpp"
+#include "Events/KeyEvent.hpp"
+#include "Events/MouseEvent.hpp"
+#include "Events/ApplicationEvent.hpp"
 #include "Platform/OpenGL/OpenGLContext.hpp"
 
 namespace Apex

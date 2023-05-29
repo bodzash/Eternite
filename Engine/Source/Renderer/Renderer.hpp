@@ -1,6 +1,6 @@
 #pragma once
 #include "RenderCommand.hpp"
-#include "PerspectiveCamera.hpp"
+#include "Camera.hpp"
 #include "Shader.hpp"
 
 namespace Apex
@@ -9,7 +9,7 @@ namespace Apex
 	class Renderer
 	{
 	public:
-		static void BeginScene(PerspectiveCamera& camera);
+		static void BeginScene(Camera& camera);
 		static void EndScene();
 
 		static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transform);

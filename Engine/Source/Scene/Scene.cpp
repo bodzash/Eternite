@@ -1,7 +1,7 @@
 #include "axpch.hpp"
 #include "Scene.hpp"
-#include "Apex/Scene/Components.hpp"
-#include "Apex/Scene/Entity.hpp"
+#include "Scene/Components.hpp"
+#include "Scene/Entity.hpp"
 #include "glm/glm.hpp"
 
 namespace Apex

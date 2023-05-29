@@ -1,6 +1,6 @@
 #pragma once
 #include "entt/entt.hpp"
-#include "Apex/Core/Timestep.hpp"
+#include "Core/Timestep.hpp"
 
 namespace Apex
 {
