@@ -3,9 +3,8 @@
 #include "ImGuiLayer.hpp"
 #include "imgui.h"
 
-//#define IMGUI_IMPL_API
 #include "backends/imgui_impl_glfw.h"
-#include "backends/imgui_impl_opengl2.h"
+#include "imgui_impl_bgfx.h"
 
 // TEMPORARY
 #include "GLFW/glfw3.h"
@@ -45,19 +44,19 @@ namespace Apex
 		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
 
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
-		ImGui_ImplOpenGL2_Init();
+		ImGui_Implbgfx_Init(0);
 	}
 
 	void ImGuiLayer::OnDetach()
 	{
-		ImGui_ImplOpenGL2_Shutdown();
+		ImGui_Implbgfx_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 	}
 
 	void ImGuiLayer::Begin()
 	{
-		ImGui_ImplOpenGL2_NewFrame();
+		ImGui_Implbgfx_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 	}
@@ -70,7 +69,7 @@ namespace Apex
 
 		// Rendering
 		ImGui::Render();
-		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+		ImGui_Implbgfx_RenderDrawLists(ImGui::GetDrawData());
 
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{

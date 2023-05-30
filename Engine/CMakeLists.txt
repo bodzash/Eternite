@@ -28,8 +28,8 @@ set(BGFX_INSTALL OFF CACHE BOOL "" FORCE)
 # Add subdirectories
 add_subdirectory(External/glfw)
 add_subdirectory(External/bgfx)
-# add_subdirectory(External/glm)
-add_subdirectory(External/entt)
+#add_subdirectory(External/glm)
+#add_subdirectory(External/entt)
 
 # TODO: lets not manually include all cpp files xd
 # Create a static library
@@ -83,7 +83,7 @@ target_include_directories(Engine PUBLIC External/bgf/bgfx.cmake/bgfx/include)
 target_include_directories(Engine PUBLIC Source)
 
 # Link up
-target_link_libraries(Engine PRIVATE gflw bgfx bx)
+target_link_libraries(Engine PRIVATE glfw bgfx bx)
 
 # PCH
 target_precompile_headers(Engine PRIVATE Source/axpch.hpp)
