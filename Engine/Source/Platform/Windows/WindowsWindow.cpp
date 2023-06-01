@@ -48,8 +48,9 @@ namespace Apex
       s_GLFWInitialized = true;
     }
 
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-    glfwMakeContextCurrent(m_Window);
+    //glfwMakeContextCurrent(m_Window);
 
     // Init GLAD
     m_Context = new OpenGLContext(m_Window);
@@ -162,15 +163,17 @@ namespace Apex
   void WindowsWindow::OnUpdate()
   {
     glfwPollEvents();
-    m_Context->SwapBuffers();
+    //m_Context->SwapBuffers();
   }
 
   void WindowsWindow::SetVSync(bool enabled)
   {
+    /*
     if (enabled)
       glfwSwapInterval(1);
     else
       glfwSwapInterval(0);
+    */
 
     m_Data.VSync = enabled;
   }

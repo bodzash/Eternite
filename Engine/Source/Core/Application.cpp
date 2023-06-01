@@ -3,6 +3,7 @@
 #include "Log.hpp"
 #include "Input.hpp"
 #include <glfw/glfw3.h>
+#include "bgfx/bgfx.h"
 
 namespace Apex
 {
@@ -36,9 +37,8 @@ namespace Apex
   {
     while (m_Running)
     {
-      // TEMPORARY
-      //glClearColor(0.125, 0.21, 0.44, 1);
-      //glClear(GL_COLOR_BUFFER_BIT);
+      // Clear the screen (CURSED: PROBABLY SHOULDN'T BE HERE)
+      bgfx::touch(0);
 
       float time = (float)glfwGetTime(); // TEMPORARY
       Timestep timestep = time - m_LastFrameTime;
@@ -48,12 +48,17 @@ namespace Apex
         layer->OnUpdate(timestep);
       
       // TODO: move to render thread
+      
       m_ImGuiLayer->Begin();
       for (Layer* layer : m_LayerStack)
         layer->OnImGuiRender();
       m_ImGuiLayer->End();
+      
 
       m_Window->OnUpdate();
+
+      // TEMPORARY
+      bgfx::frame();
     }
   }
 

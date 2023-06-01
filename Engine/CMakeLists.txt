@@ -1,7 +1,8 @@
 # Add defines
 add_compile_definitions(AX_PLATFORM_WINDOWS)
-add_compile_definitions(AX_BUILD_DLL)
+#add_compile_definitions(AX_BUILD_DLL)
 add_compile_definitions(AX_ENABLE_ASSERTS)
+add_compile_definitions(BGFX_CONFIG_MAX_RECT_CACHE=16384)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)

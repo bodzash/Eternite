@@ -1,6 +1,11 @@
 #include "axpch.hpp"
 #include "OpenGLContext.hpp"
 #include <GLFW/glfw3.h>
+#include "bgfx/bgfx.h"
+#include "bgfx/platform.h"
+
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include "GLFW/glfw3native.h"
 
 namespace Apex {
 
@@ -12,19 +17,27 @@ namespace Apex {
 
 	void OpenGLContext::Init()
 	{
-		glfwMakeContextCurrent(m_WindowHandle);
-		//int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		//AX_CORE_ASSERT(status, "Failed to initialize Glad!");
+		int windowWidth, windowHeight;
 
-    //AX_CORE_INFO("OpenGL Info:");
-		//AX_CORE_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
-		//AX_CORE_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
-		//AX_CORE_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
+		glfwGetWindowSize(m_WindowHandle, &windowWidth, &windowHeight);
+
+		bgfx::Init bgfxInit;
+		bgfxInit.platformData.nwh = glfwGetWin32Window(m_WindowHandle);
+		bgfxInit.type = bgfx::RendererType::Count;
+		bgfxInit.resolution.width = windowWidth;
+		bgfxInit.resolution.height = windowHeight;
+		bgfxInit.resolution.reset = BGFX_RESET_VSYNC;
+
+		bgfx::init(bgfxInit);
+
+		const bgfx::ViewId kClearView = 0;
+		bgfx::setViewClear(kClearView, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF); //0x443355FF
+		bgfx::setViewRect(kClearView, 0, 0, bgfx::BackbufferRatio::Equal);
 	}
 
 	void OpenGLContext::SwapBuffers()
 	{
-		glfwSwapBuffers(m_WindowHandle);
+		//glfwSwapBuffers(m_WindowHandle);
 	}
 
 }
