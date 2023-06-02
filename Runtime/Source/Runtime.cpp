@@ -10,10 +10,10 @@ public:
   
   void OnUpdate(Apex::Timestep ts) override
   {
-    AX_INFO("Delta time: {0}s [{1}ms]", ts.GetSeconds(), ts.GetMilliseconds());
+    //AX_INFO("Delta time: {0}s [{1}ms]", ts.GetSeconds(), ts.GetMilliseconds());
 
-    if (Apex::Input::IsKeyPressed(AX_KEY_TAB))
-			AX_TRACE("Tab key is pressed (poll)!");
+    //if (Apex::Input::IsKeyPressed(AX_KEY_TAB))
+		//	AX_TRACE("Tab key is pressed (poll)!");
     
   }
 

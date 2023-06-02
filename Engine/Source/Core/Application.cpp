@@ -68,10 +68,21 @@ namespace Apex
     return true;
   }
 
+  bool Application::OnWindowResize(WindowResizeEvent& e)
+  {
+    std::int32_t displayWidth, displayHeight;
+    glfwGetFramebufferSize((GLFWwindow*)m_Window->GetNativeWindow(), &displayWidth, &displayHeight);
+    bgfx::reset(displayWidth, displayHeight, BGFX_RESET_VSYNC);
+    bgfx::setViewRect(0, 0, 0, bgfx::BackbufferRatio::Equal);
+
+    return true;
+  }
+
   void Application::OnEvent(Event& e)
   {
     EventDispatcher dispatcher(e);
     dispatcher.Dispatch<WindowCloseEvent>(AX_BIND_EVENT_FN(Application::OnWindowClose));
+    dispatcher.Dispatch<WindowResizeEvent>(AX_BIND_EVENT_FN(Application::OnWindowResize));
     
     //AX_CORE_TRACE("{0}", e);
 

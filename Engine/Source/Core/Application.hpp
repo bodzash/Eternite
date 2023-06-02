@@ -23,6 +23,7 @@ namespace Apex
     inline Window& GetWindow() { return *m_Window; }
   private:
     bool OnWindowClose(WindowCloseEvent& e);
+    bool OnWindowResize(WindowResizeEvent& e);
 
   private:
     std::unique_ptr<Window> m_Window;
