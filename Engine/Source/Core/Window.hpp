@@ -2,6 +2,8 @@
 #include "axpch.hpp"
 #include "Core.hpp"
 #include "Events/Event.hpp"
+#include "Renderer/GraphicsContext.hpp"
+#include "GLFW/glfw3.h"
 
 namespace Apex
 {
@@ -12,31 +14,50 @@ namespace Apex
     unsigned int Width;
     unsigned int Height;
 
-    WindowProps(const std::string& title = "Apex Engine", unsigned int width = 1024, unsigned int height = 768)
+    WindowProps(const std::string& title = "Apex Engine", unsigned int width = 800, unsigned int height = 600)
       : Title(title), Width(width), Height(height) {}
   };
-  
 
   // Interface representing a desktop window
-  class APEX_API Window
+  class Window
   {
   public:
     using EventCallbackFn = std::function<void(Event&)>;
 
-    virtual ~Window() = default;
+    ~Window();
 
-    virtual void OnUpdate() = 0;
+    void Init(const WindowProps& props);
+    void Shutdown();
 
-    virtual unsigned int GetWidth() const = 0;
-    virtual unsigned int GetHeight() const = 0;
+    void OnUpdate();
+
+    unsigned int GetWidth() const;
+    unsigned int GetHeight() const;
 
     // Window attributes
-    virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
-    virtual void SetVSync(bool enabled) = 0;
-    virtual bool IsVSync() const = 0;
-    virtual void* GetNativeWindow() const = 0;
+    void SetEventCallback(const EventCallbackFn& callback);
+    void SetVSync(bool enabled);
+    bool IsVSync() const;
+    void* GetNativeWindow() const;
 
     static Window* Create(const WindowProps& props = WindowProps());
+
+private:
+    Window(const WindowProps& props);
+
+    GLFWwindow* m_Window;
+    GraphicsContext* m_Context;
+
+    struct WindowData
+    {
+      std::string Title;
+      unsigned int Width, Height;
+      bool VSync;
+
+      EventCallbackFn EventCallback;
+    };
+
+    WindowData m_Data;
   };
   
 

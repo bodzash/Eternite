@@ -3,6 +3,8 @@
 #include "Renderer.hpp"
 #include "Platform/OpenGL/OpenGLVertexArray.hpp"
 
+// TODO: remove abstraction
+
 namespace Apex
 {
 

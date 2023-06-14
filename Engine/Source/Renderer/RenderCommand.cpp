@@ -1,6 +1,8 @@
 #include "axpch.hpp"
 #include "RenderCommand.hpp"
-#include "Platform/OpenGL/OpenGLRendererAPI.hpp"
+//#include "Platform/OpenGL/OpenGLRendererAPI.hpp"
+
+// TODO: REMOVE ABSTRACTION
 
 namespace Apex
 {

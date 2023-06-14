@@ -1,5 +1,5 @@
 #include "axpch.hpp"
-#include "OpenGLContext.hpp"
+#include "GraphicsContext.hpp"
 #include <GLFW/glfw3.h>
 #include "bgfx/bgfx.h"
 #include "bgfx/platform.h"
@@ -9,19 +9,20 @@
 
 namespace Apex {
 
-	OpenGLContext::OpenGLContext(GLFWwindow* windowHandle)
+	GraphicsContext::GraphicsContext(GLFWwindow* windowHandle)
 		: m_WindowHandle(windowHandle)
 	{
 		AX_CORE_ASSERT(windowHandle, "Window handle is null!")
 	}
 
-	void OpenGLContext::Init()
+	void GraphicsContext::Init()
 	{
 		int windowWidth, windowHeight;
 
 		glfwGetWindowSize(m_WindowHandle, &windowWidth, &windowHeight);
 
 		bgfx::Init bgfxInit;
+        // TODO:
 		bgfxInit.platformData.nwh = glfwGetWin32Window(m_WindowHandle);
 		bgfxInit.type = bgfx::RendererType::Count;
 		bgfxInit.resolution.width = windowWidth;
@@ -35,7 +36,7 @@ namespace Apex {
 		bgfx::setViewRect(kClearView, 0, 0, bgfx::BackbufferRatio::Equal);
 	}
 
-	void OpenGLContext::SwapBuffers()
+	void GraphicsContext::SwapBuffers()
 	{
 		//glfwSwapBuffers(m_WindowHandle);
 	}
