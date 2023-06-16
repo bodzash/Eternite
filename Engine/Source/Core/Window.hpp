@@ -18,7 +18,7 @@ namespace Apex
       : Title(title), Width(width), Height(height) {}
   };
 
-  // Interface representing a desktop window
+  // Desktop window
   class Window
   {
   public:
@@ -31,14 +31,14 @@ namespace Apex
 
     void OnUpdate();
 
-    unsigned int GetWidth() const;
-    unsigned int GetHeight() const;
+    inline unsigned int GetWidth() const { return m_Data.Width; }
+    inline unsigned int GetHeight() const { return m_Data.Height; }
 
     // Window attributes
-    void SetEventCallback(const EventCallbackFn& callback);
+    inline void SetEventCallback(const EventCallbackFn& callback) { m_Data.EventCallback = callback; }
+    inline void* GetNativeWindow() const { return m_Window; }
     void SetVSync(bool enabled);
     bool IsVSync() const;
-    void* GetNativeWindow() const;
 
     static Window* Create(const WindowProps& props = WindowProps());
 

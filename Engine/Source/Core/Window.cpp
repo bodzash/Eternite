@@ -43,7 +43,7 @@ namespace Apex
     if (!s_GLFWInitialized)
     {
       int succes = glfwInit();
-      //AX_CORE_INFO("GLFW Init result: {0}", succes);
+      AX_CORE_INFO("GLFW Init result: {0}", succes);
       AX_CORE_ASSERT(succes, "Could not initialize GLFW!");
       glfwSetErrorCallback(GLFWErrorCallback);
       s_GLFWInitialized = true;
@@ -168,11 +168,7 @@ namespace Apex
 
   void Window::SetVSync(bool enabled)
   {
-    if (enabled)
-      glfwSwapInterval(1);
-    else
-      glfwSwapInterval(0);
-
+    // TODO: make bgfx turn off/on vsync
     m_Data.VSync = enabled;
   }
 
