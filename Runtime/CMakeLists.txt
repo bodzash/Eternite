@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Create executable
-add_executable(Runtime Source/Runtime.cpp)
+add_executable(Runtime Source/Runtime.cpp ../Content/Metadata/Favicon.ico)
 
 # Third party
 target_include_directories(Runtime PRIVATE Engine/External/spdlog/include)
