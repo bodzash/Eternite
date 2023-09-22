@@ -10,5 +10,5 @@ project(ApexGameEngine)
 
 # Define sub-projects
 add_subdirectory(Engine)
-add_subdirectory(Runtime)
-#add_subdirectory(Editor)
+add_subdirectory(GameClient)
+add_subdirectory(GameServer)
