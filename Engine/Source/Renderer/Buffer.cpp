@@ -1,7 +1,8 @@
 #include "axpch.hpp"
 #include "Buffer.hpp"
 #include "Renderer.hpp"
-#include "Platform/OpenGL/OpenGLBuffer.hpp"
+
+// TODO: u know what to do :D
 
 namespace Apex
 {
@@ -11,7 +12,7 @@ namespace Apex
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:    AX_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-			case RendererAPI::API::OpenGL:  return new OpenGLVertexBuffer(vertices, size);
+			//case RendererAPI::API::OpenGL:  return new OpenGLVertexBuffer(vertices, size);
 		}
 
 		AX_CORE_ASSERT(false, "Unknown RendererAPI!");
@@ -23,7 +24,7 @@ namespace Apex
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:    AX_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-			case RendererAPI::API::OpenGL:  return new OpenGLIndexBuffer(indices, size);
+			//case RendererAPI::API::OpenGL:  return new OpenGLIndexBuffer(indices, size);
 		}
 
 		AX_CORE_ASSERT(false, "Unknown RendererAPI!");

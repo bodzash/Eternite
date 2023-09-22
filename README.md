@@ -1,102 +1,115 @@
-# Apex Game Engine
-A 3D FPS focused game engine
+# Requirements for the game and the engine
 
-## Notes to self:
-Create a Data/AssetLibrary class that holds:
-```cpp
-    // uint64_t are uuid's (could use strings too i guess)
-    std::unordered_map<uint64_t, Mesh> m_Meshes;
-    std::unordered_map<uint64_t, Shader> m_Shaders;
-    std::unordered_map<uint64_t, Material> m_Materials;
-    std::unordered_map<uint64_t, Texture> m_Textures;
+## 3D Tech and Art
 
-    void ImportMesh() {}
-```
+Art style is "cartoony" like LoL, WoW, Owerwatch
 
-Implement components in seperate .h and .cpp files and include all of them 
-in Components.h
+Handpainted textures with AO and other detail already painted into them
 
-Camera, RigidBody, PointLight, Mesh, Transform, ... and other components
+So there is no need for a more complicated Renderer
 
-FrameBuffer class
+Character should have a 6k - 10k polygon budget in total
 
-PhysicsWorld, PhysicsMesh class
+Optimal texture sizes should be 1024x or 512x
 
-Folder re-structure: (Will not be nested inside Apex folder)
-When these folder become big, use subfolders
-Components -> ECS comp.
-Core -> Application, Window
-Events -> duh
-Renderer -> same
-Scene -> same
-Physics
-Scripting -> Native(folder), Lua(folder)
-Interface -> ImGui(folder), Noesis(folder)
-Navigation (maybe for ai pathfinding)
-Audio 
+No need for in game lighting
 
+Animation system
 
-## Architecture
-- Engine - This is a lib that the Runtime and Editor can link
-- Runtime - This is an Executable that links up with the Engine
-- Editor - Level/prefab etc editing tool
+- Anim playback (no shit)
+- Skinning (no shit)
+- Joint attachement
+- Blending between two animations
+- Partial blending (seperate upperbody and lowerbody)
 
-## Technologies:
-Rendering (only one):
-- bgfx *
-- Forge (later hopefuly)
+## VFX / Particles
 
-Windowing (only one):
-- GLFW
-- SDL3 *
+Need for animated textures
 
-3D asset importing:
-- AssImp * (nice name btw)
-- OpenFBX
+Also regular textures
 
-Logging:
-- spdlog *
+Transparent textures
 
-Benchmarking and Profiling:
-- optick *
+- Cards (quads)
+- Camera facing cards
+- Ribbons
+- Meshes
+- Skinned meshes
+- Decals
 
-Entity Component System:
-- EnTT * (not even a question)
+All these with animated textures wrapped unto them
 
-Scripting (only one):
-- C# with Mono
-- Lua with Sol3 *
-- Native *
+Some above/bellow character meshes
 
-Physics (only one):
-- Jolt * (most likely because it's aimed at games)
+Instanced rendering of quads
 
-Naviagtion in 3d space (for AI)
-- Recast Navigation *
+And of course need to create a Particle System
 
-Audio (only one):
-- FMOD *
-- OpenAL
+Well architected shader system >:(
 
-Game GUI/HUD:
-- NoesisGUI *
-Note: Blend tool can be used to create these interfaces
+3D VFX / Particle editor tool
 
-Editor/Game debug GUI:
-- DearImgui
-- Imguizmo
+## Asset loading
 
-Serialization
-- Text format: yamlcpp
-- Binary format: cereal
+Load PNG textures and generate mipmaps with bgfx
 
-Configuration:
-- yamlcpp
-- toml
+The only material meshes need is the diffuse
 
-Asset packing / compression:
-- zlib
+One mesh can reference multiple textures
 
-Misc / notes:
-event system is blocking, maybe later need to implement a buffered event system
-https://youtu.be/5mlziHwq90k?list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&t=478
+Assimp library is bloated and slow to compile so focus on one file format:
+
+- FBX
+- GLTF
+
+Loading skeleton and animations
+
+Need to set up Blender as a level editor :D
+
+Loading level model and metadata
+
+Prebake shadows in Blender
+
+## Gameplay / Code
+
+2D Physics engine should be good enough
+
+Optimized Actor - Component System (not ECS)
+
+## UI and HUD
+
+## Networking and Netcode
+
+Optional compile Engine in Headless mode
+
+Server with debug draw
+
+Config server with steam_api bullshit mode
+
+Fuck me...
+
+## Back-end services
+
+Steam, PlayFab integration
+
+Achievements
+
+Fake and real money In-game Shop
+
+Storing currency, characters, skins
+
+## Packaging / Serialization
+
+Need to convert asset files into binary
+
+Maybe we need to put files into one big file :D
+
+Optimize asset files for runtime
+
+## CI/CD
+
+More like fuck you
+
+## Deployment of product
+
+Distribute on Steam

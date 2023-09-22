@@ -1,13 +1,21 @@
 #pragma once
 
+// forward decl
+struct GLFWwindow;
+
 namespace Apex
 {
 
-    class GraphicsContext
-    {
-    public:
-		virtual void Init() = 0;
-		virtual void SwapBuffers() = 0;
-    };
+  class GraphicsContext
+  {
+  public:
+    GraphicsContext(GLFWwindow* windowHandle);
+
+    void Init();
+    void SwapBuffers();
+
+  private:
+    GLFWwindow* m_WindowHandle;
+  };
 
 }

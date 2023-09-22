@@ -13,9 +13,3 @@
 #include <unordered_set>
 
 #include "Core/Log.hpp"
-//#include "Apex/Debug/Instrumentor.hpp"
-
-// Platform specific
-#ifdef AX_PLATFORM_WINDOWS
-  #include <Windows.h>
-#endif

@@ -1,6 +1,5 @@
 # Add defines
 add_compile_definitions(AX_PLATFORM_WINDOWS)
-#add_compile_definitions(AX_BUILD_DLL)
 add_compile_definitions(AX_ENABLE_ASSERTS)
 add_compile_definitions(BGFX_CONFIG_MAX_RECT_CACHE=16384)
 
@@ -17,13 +16,13 @@ set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 # Set rules for bgfx
 set(BGFX_AMALGAMATED OFF CACHE BOOL "" FORCE)
 set(BX_AMALGAMATED OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_EXAMPLES ON CACHE BOOL "" FORCE)
+set(BGFX_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BGFX_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
 set(BGFX_BUILD_TOOLS_BIN2C OFF CACHE BOOL "" FORCE)
 set(BGFX_BUILD_TOOLS_GEOMETRY OFF CACHE BOOL "" FORCE)
 set(BGFX_BUILD_TOOLS_SHADER OFF CACHE BOOL "" FORCE)
 set(BGFX_BUILD_TOOLS_TEXTURE OFF CACHE BOOL "" FORCE)
-set(BGFX_CONFIG_MULTITHREADED OFF CACHE BOOL "" FORCE) # TEMPORARY change this later
+set(BGFX_CONFIG_MULTITHREADED ON CACHE BOOL "" FORCE) # TEMPORARY change this later
 set(BGFX_INSTALL OFF CACHE BOOL "" FORCE)
 
 # Add subdirectories
@@ -40,6 +39,8 @@ add_library(Engine STATIC
   Source/Core/Log.cpp
   Source/Core/Layer.cpp
   Source/Core/LayerStack.cpp
+  Source/Core/Window.cpp
+  Source/Core/Input.cpp
 
   # Scene
   Source/Scene/Scene.cpp
@@ -55,19 +56,11 @@ add_library(Engine STATIC
   Source/Renderer/RenderCommand.cpp
   Source/Renderer/Camera.cpp
   Source/Renderer/CameraController.cpp
-  
-  Source/Platform/OpenGL/OpenGLContext.cpp
-  Source/Platform/OpenGL/OpenGLBuffer.cpp
-  Source/Platform/OpenGL/OpenGLVertexArray.cpp
-  Source/Platform/OpenGL/OpenGLRendererAPI.cpp
+  Source/Renderer/GraphicsContext.cpp
 
   # Imgui
   Source/ImGui/ImGuiLayer.cpp
   Source/ImGui/ImGuiBuild.cpp
-
-  # Windows
-  Source/Platform/Windows/WindowsWindow.cpp
-  Source/Platform/Windows/WindowsInput.cpp
 )
 
 # Third party includes
