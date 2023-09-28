@@ -1,5 +1,5 @@
 #pragma once
-#include "entt/entt.h"
+#include "entt/entt.hpp"
 #include "Scene.h"
 
 namespace Apex {
