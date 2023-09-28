@@ -1,6 +1,7 @@
 #pragma once
+#include "Apex/Core.h"
 
-#include "Apex/Core.hpp"
+// TODO: delete this, will use bgfx
 
 namespace Apex {
 

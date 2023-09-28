@@ -1,5 +1,5 @@
-#include "axpch.hpp"
-#include "Entity.hpp"
+#include "axpch.h"
+#include "Entity.h"
 
 namespace Apex
 {

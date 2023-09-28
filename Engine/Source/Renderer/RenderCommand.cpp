@@ -1,11 +1,9 @@
-#include "axpch.hpp"
-#include "RenderCommand.hpp"
-//#include "Platform/OpenGL/OpenGLRendererAPI.hpp"
+#include "axpch.h"
+#include "RenderCommand.h"
 
-// TODO: REMOVE ABSTRACTION
+// TODO: REMOVE ABSTRACTION, looks useless
 
-namespace Apex
-{
+namespace Apex {
 
 	//RendererAPI* RenderCommand::s_RendererAPI = new OpenGLRendererAPI;
 

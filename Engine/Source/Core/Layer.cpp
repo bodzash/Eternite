@@ -1,14 +1,12 @@
-#include "axpch.hpp"
-#include "Layer.hpp"
+#include "axpch.h"
+#include "Layer.h"
 
-
-namespace Apex
-{
+namespace Apex {
   
-  Layer::Layer(const std::string& name)
-    : m_DebugName(name)
-  {
+    Layer::Layer(const std::string& name)
+        : m_DebugName(name)
+    {
 
-  }
+    }
 
 }

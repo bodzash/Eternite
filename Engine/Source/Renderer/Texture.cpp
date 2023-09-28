@@ -1,10 +1,11 @@
-#include "axpch.hpp"
-#include "Texture.hpp"
-#include "Renderer.hpp"
-//#include "Platform/OpenGL/OpenGLTexture.hpp"
+#include "axpch.h"
+#include "Texture.h"
+#include "Renderer.h"
+//#include "Platform/OpenGL/OpenGLTexture.h"
 
-namespace Apex
-{
+// TODO: idk? lol
+
+namespace Apex {
 
 	Ref<Texture2D> Texture2D::Create(const std::string& path)
 	{

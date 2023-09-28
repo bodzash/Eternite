@@ -1,8 +1,7 @@
-#include "Camera.hpp"
+#include "Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-namespace Apex
-{
+namespace Apex {
 
     Camera::Camera(/* TODO: TAKE IN SOME ARGUMETNS */)
     {

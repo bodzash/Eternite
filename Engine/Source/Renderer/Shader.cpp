@@ -1,9 +1,11 @@
-#include "axpch.hpp"
-#include "Shader.hpp"
+#include "axpch.h"
+#include "Shader.h"
 #include <glm/gtc/type_ptr.hpp>
 
-namespace Apex
-{
+// TODO: implement this :D
+
+namespace Apex {
+
     Shader::Shader(std::string& vertexSrc, std::string& fragmentSrc)
     {
 		/*

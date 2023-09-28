@@ -1,11 +1,10 @@
-#include "axpch.hpp"
-#include "CameraController.hpp"
-#include "Core/Input.hpp"
-#include "Core/KeyCodes.hpp"
-#include "Core/Timestep.hpp"
+#include "axpch.h"
+#include "CameraController.h"
+#include "Core/Input.h"
+#include "Core/KeyCodes.h"
+#include "Core/Timestep.h"
 
-namespace Apex
-{
+namespace Apex {
 
 	CameraController::CameraController(float aspectRatio, bool rotation)
 		//: m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)

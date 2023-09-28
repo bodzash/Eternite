@@ -1,10 +1,10 @@
-#include "axpch.hpp"
-#include "VertexArray.hpp"
-#include "Renderer.hpp"
-// TODO: remove abstraction
+#include "axpch.h"
+#include "VertexArray.h"
+#include "Renderer.h"
 
-namespace Apex
-{
+// TODO: remove abstraction, this is not needed at all :D
+
+namespace Apex {
 
 	VertexArray* VertexArray::Create()
 	{

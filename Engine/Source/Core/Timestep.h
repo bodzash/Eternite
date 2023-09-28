@@ -1,7 +1,6 @@
 #pragma once
 
-namespace Apex
-{
+namespace Apex {
 
     class Timestep
     {

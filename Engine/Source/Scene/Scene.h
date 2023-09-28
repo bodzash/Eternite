@@ -1,10 +1,10 @@
 #pragma once
 #include "entt/entt.hpp"
-#include "Core/Timestep.hpp"
+#include "Core/Timestep.h"
 
-namespace Apex
-{
+namespace Apex {
 
+    // Fwd decl
     class Entity;
 
     class Scene

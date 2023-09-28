@@ -1,10 +1,11 @@
 #pragma once
-#include "RendererAPI.hpp"
+#include "RendererAPI.h"
 
-namespace Apex
-{
+// TODO: this looks like a nice API to have
 
-class RenderCommand
+namespace Apex {
+
+	class RenderCommand
 	{
 	public:
 		static void Init()

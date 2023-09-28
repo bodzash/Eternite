@@ -1,8 +1,7 @@
-#include "axpch.hpp"
-#include "Renderer.hpp"
+#include "axpch.h"
+#include "Renderer.h"
 
-namespace Apex
-{
+namespace Apex {
 
 	Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
 

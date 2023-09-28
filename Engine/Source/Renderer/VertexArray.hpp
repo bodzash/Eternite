@@ -1,9 +1,10 @@
 #pragma once
 #include <memory>
-#include "Renderer/Buffer.hpp"
+#include "Renderer/Buffer.h"
 
-namespace Apex
-{
+// TODO: not neede
+
+namespace Apex {
 
 	class VertexArray
 	{

@@ -1,8 +1,7 @@
 #pragma once
 #include "glm/glm.hpp"
 
-namespace Apex
-{
+namespace Apex {
 
     class Camera
     {
@@ -18,8 +17,6 @@ namespace Apex
         const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
         const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
         const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix;; }
-    private:
-        void RecalculateViewMatrix();
 
     private:
         glm::mat4 m_ProjectionMatrix;
@@ -29,6 +26,8 @@ namespace Apex
         glm::vec3 m_Position;
         //glm::vec3 m_Rotation;
         // TODO: others here
+
+        void RecalculateViewMatrix();
     };
 
 }

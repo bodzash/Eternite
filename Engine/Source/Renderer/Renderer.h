@@ -1,10 +1,9 @@
 #pragma once
-#include "RenderCommand.hpp"
-#include "Camera.hpp"
-#include "Shader.hpp"
+#include "RenderCommand.h"
+#include "Camera.h"
+#include "Shader.h"
 
-namespace Apex
-{
+namespace Apex {
 
 	class Renderer
 	{

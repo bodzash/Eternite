@@ -1,8 +1,7 @@
 #pragma once
-#include "Core.hpp"
+#include "Core.h"
 
-namespace Apex
-{
+namespace Apex {
 
 	class Input
 	{

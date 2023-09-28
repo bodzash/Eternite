@@ -1,9 +1,10 @@
 #pragma once
 #include <string>
-#include "Core/Core.hpp"
+#include "Core/Core.h"
 
-namespace Apex
-{
+// TODO: should work differently, and probably this is not needed
+
+namespace Apex {
 
 	class Texture
 	{

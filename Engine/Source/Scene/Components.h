@@ -1,8 +1,8 @@
 #pragma once
 //#include "glm/glm.hpp"
 
-namespace Apex
-{
+namespace Apex {
+
     struct TagComponent
     {
         std::string Tag;

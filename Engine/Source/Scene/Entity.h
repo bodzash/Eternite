@@ -1,11 +1,10 @@
 #pragma once
-#include "entt/entt.hpp"
-#include "Scene.hpp"
+#include "entt/entt.h"
+#include "Scene.h"
 
-namespace Apex
-{
+namespace Apex {
+
     // TODO: should remove Component postfix from methods
-
     class Entity
     {
     public:
@@ -41,6 +40,7 @@ namespace Apex
         }
 
         operator bool() const { return m_Handle != entt::null; }
+
     private:
         entt::entity m_Handle = entt::null;
         Scene* m_Scene;

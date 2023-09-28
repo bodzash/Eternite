@@ -1,4 +1,4 @@
-#include <Apex.hpp>
+#include <Apex.h>
 
 class ExampleLayer : public Apex::Layer
 {

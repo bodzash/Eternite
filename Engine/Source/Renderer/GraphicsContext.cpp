@@ -1,5 +1,5 @@
-#include "axpch.hpp"
-#include "GraphicsContext.hpp"
+#include "axpch.h"
+#include "GraphicsContext.h"
 #include <GLFW/glfw3.h>
 #include "bgfx/bgfx.h"
 #include "bgfx/platform.h"
@@ -22,7 +22,7 @@ namespace Apex {
 		glfwGetWindowSize(m_WindowHandle, &windowWidth, &windowHeight);
 
 		bgfx::Init bgfxInit;
-        // TODO:
+        // TODO: something idk yet
 		bgfxInit.platformData.nwh = glfwGetWin32Window(m_WindowHandle);
 		bgfxInit.type = bgfx::RendererType::Count;
 		bgfxInit.resolution.width = windowWidth;

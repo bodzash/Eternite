@@ -1,10 +1,9 @@
-#include "axpch.hpp"
-#include "Input.hpp"
-#include "Core/Application.hpp"
+#include "axpch.h"
+#include "Input.h"
+#include "Core/Application.h"
 #include "GLFW/glfw3.h"
 
-namespace Apex
-{
+namespace Apex {
 
 	Input* Input::s_Instance = new Input();
 

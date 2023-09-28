@@ -1,7 +1,7 @@
-#include "axpch.hpp"
-#include "Application.hpp"
-#include "Log.hpp"
-#include "Input.hpp"
+#include "axpch.h"
+#include "Application.h"
+#include "Log.h"
+#include "Input.h"
 #include <glfw/glfw3.h>
 #include "bgfx/bgfx.h"
 

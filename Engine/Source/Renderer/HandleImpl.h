@@ -1,8 +1,9 @@
 #pragma once
 #include "bgfx/bgfx.h"
 
-namespace Apex
-{
+// TODO: could be useful but should be deleted
+
+namespace Apex {
 
     template<typename T>
     class HandleImpl

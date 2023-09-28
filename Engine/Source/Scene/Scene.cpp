@@ -1,11 +1,10 @@
-#include "axpch.hpp"
-#include "Scene.hpp"
-#include "Scene/Components.hpp"
-#include "Scene/Entity.hpp"
+#include "axpch.h"
+#include "Scene.h"
+#include "Scene/Components.h"
+#include "Scene/Entity.h"
 #include "glm/glm.hpp"
 
-namespace Apex
-{
+namespace Apex {
 
     // .connect provides these params
     static void OnTransformConstructed(entt::registry& reg, entt::entity ent)
@@ -53,4 +52,5 @@ namespace Apex
     {
 
     }
+
 }
