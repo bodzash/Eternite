@@ -1,41 +1,34 @@
-//#include <axpch.hpp>
 #include <Apex.hpp>
 #include "imgui.h"
 
 class ExampleLayer : public Apex::Layer
 {
 public:
-  ExampleLayer()
-    : Layer("Example") {}
-  
-  void OnUpdate(Apex::Timestep ts) override
-  {}
+	ExampleLayer()
+		: Layer("Example") {}
 
-  void OnImGuiRender()
-  {
-    ImGui::ShowDemoWindow();
-  }
+	void OnUpdate(Apex::Timestep ts) override {}
 
-  void OnEvent(Apex::Event& event) override
-  {}
+	void OnImGuiRender()
+	{
+		ImGui::ShowDemoWindow();
+	}
 
+	void OnEvent(Apex::Event& event) override {}
 };
 
-class Runtime : public Apex::Application
+class GameClient : public Apex::Application
 {
 public:
-  Runtime()
-  {
-    PushLayer(new ExampleLayer());
-  }
+	GameClient()
+	{
+		PushLayer(new ExampleLayer());
+	}
 
-  ~Runtime()
-  {
-
-  }
+	~GameClient() {}
 };
 
 Apex::Application* Apex::CreateApplication()
 {
-  return new Runtime();
+	return new GameClient();
 }

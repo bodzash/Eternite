@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # State project
-project(ApexGameEngine)
+project(Eternite)
 
 # Define sub-projects
 add_subdirectory(Engine)
