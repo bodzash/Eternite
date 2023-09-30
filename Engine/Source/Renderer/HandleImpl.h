@@ -1,7 +1,7 @@
 #pragma once
 #include "bgfx/bgfx.h"
 
-// TODO: could be useful but should be deleted
+// TODO: could be useful
 
 namespace Apex {
 

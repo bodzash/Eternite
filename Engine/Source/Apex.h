@@ -1,6 +1,5 @@
 #pragma once
 
-// To be used by client/server and tools
 #include "Core/Application.h"
 #include "Core/Layer.h"
 #include "Core/Log.h"

@@ -42,7 +42,7 @@ namespace Apex {
 		{
 			return GetCategoryFlags() & category;
 		}
-		bool bHandled = false;
+		bool Handled = false;
 
 		//protected:
 		friend class EventDispatcher;
@@ -59,7 +59,7 @@ namespace Apex {
 		{
 			if (m_Event.GetEventType() == T::GetStaticType())
 			{
-				m_Event.bHandled = func(static_cast<T&>(m_Event));
+				m_Event.Handled = func(static_cast<T&>(m_Event));
 				return true;
 			}
 			return false;

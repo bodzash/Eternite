@@ -22,7 +22,7 @@ namespace Apex {
 		glfwGetWindowSize(m_WindowHandle, &windowWidth, &windowHeight);
 
 		bgfx::Init bgfxInit;
-        // TODO: something idk yet
+        // TODO: read these in from a file lool
 		bgfxInit.platformData.nwh = glfwGetWin32Window(m_WindowHandle);
 		bgfxInit.type = bgfx::RendererType::Count;
 		bgfxInit.resolution.width = windowWidth;
@@ -31,14 +31,15 @@ namespace Apex {
 
 		bgfx::init(bgfxInit);
 
-		const bgfx::ViewId kClearView = 0;
-		bgfx::setViewClear(kClearView, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF); //0x443355FF
-		bgfx::setViewRect(kClearView, 0, 0, bgfx::BackbufferRatio::Equal);
+		// should be static or smthing
+		const bgfx::ViewId ClearView = 0;
+		bgfx::setViewClear(ClearView, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF); //0x443355FF
+		bgfx::setViewRect(ClearView, 0, 0, bgfx::BackbufferRatio::Equal);
 	}
 
 	void GraphicsContext::SwapBuffers()
 	{
-		//glfwSwapBuffers(m_WindowHandle);
+		bgfx::frame();
 	}
 
 }

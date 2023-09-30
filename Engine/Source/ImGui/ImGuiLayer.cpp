@@ -1,13 +1,13 @@
 #include "axpch.h"
 #include "Core/Application.h"
 #include "ImGuiLayer.h"
-#include "imgui.h"
+#include <imgui.h>
 
-#include "backends/imgui_impl_glfw.h"
-#include "imgui_impl_bgfx.h"
+#include <backends/imgui_impl_glfw.h>
+//#include <backends/imgui_impl_dx9.cpp>
+//#include "imgui_impl_bgfx.h"
 
-// TEMPORARY
-#include "GLFW/glfw3.h"
+#include <GLFW/glfw3.h>
 
 namespace Apex
 {
@@ -16,7 +16,8 @@ namespace Apex
     : Layer("ImGuiLayer") {}
 
   void ImGuiLayer::OnAttach()
-  {   
+  {
+		/*
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -43,24 +44,30 @@ namespace Apex
 
 		ImGui_ImplGlfw_InitForOther(window, true);
 		ImGui_Implbgfx_Init(0);
+		*/
 	}
 
 	void ImGuiLayer::OnDetach()
 	{
+		/*
 		ImGui_Implbgfx_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
+		*/
 	}
 
 	void ImGuiLayer::Begin()
 	{
+		/*
 		ImGui_Implbgfx_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		*/
 	}
 
 	void ImGuiLayer::End()
 	{
+		/*
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
 		io.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
@@ -76,6 +83,7 @@ namespace Apex
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backupCurrentContext);
 		}
+		*/
 	}
 
 }

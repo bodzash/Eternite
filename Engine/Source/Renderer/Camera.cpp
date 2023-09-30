@@ -5,7 +5,7 @@ namespace Apex {
 
     Camera::Camera(/* TODO: TAKE IN SOME ARGUMETNS */)
     {
-        // TODO: implement member initializer
+        // TODO: implement as member initializers
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
     }
 

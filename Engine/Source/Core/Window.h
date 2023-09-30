@@ -58,5 +58,4 @@ namespace Apex {
 		WindowData m_Data;
 	};
 
-
 };

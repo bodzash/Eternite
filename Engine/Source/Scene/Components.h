@@ -1,5 +1,7 @@
 #pragma once
-//#include "glm/glm.hpp"
+#include "glm/glm.hpp"
+
+// TODO: put components into their own files
 
 namespace Apex {
 
@@ -15,8 +17,6 @@ namespace Apex {
     
     struct TransformComponent
     {
-        float temp;
-        /*
         glm::mat4 Transform{ 1.f };
 
         TransformComponent() = default;
@@ -26,12 +26,12 @@ namespace Apex {
 
         operator glm::mat4& () { return Transform; }
         operator const glm::mat4& () const { return Transform; }
-        */
     };
 
     struct MeshComponent
     {
-        //glm::mat4 Transform;
+        // TODO: do not use strings, use a smart pointer (ref or scope) :D
+        std::string Name;
 
         MeshComponent() = default;
         MeshComponent(const MeshComponent&) = default;

@@ -2,6 +2,8 @@
 #include <glm/glm.hpp>
 #include "VertexArray.h"
 
+// TODO: remove this
+
 namespace Apex {
 
 	class RendererAPI

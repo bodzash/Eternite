@@ -44,7 +44,7 @@ namespace Apex {
     private:
         entt::entity m_Handle = entt::null;
         Scene* m_Scene;
-        // SHOULD BE WEAK_REF
+        // SHOULD BE WEAK_REF or Ref<Scene>
     };
 
 }

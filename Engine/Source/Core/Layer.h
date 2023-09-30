@@ -18,7 +18,8 @@ namespace Apex {
 		virtual void OnEvent(Event& event) {}
 
 		inline const std::string& GetName() { return m_DebugName; }
-		protected:
+
+	protected:
 		std::string m_DebugName;
 	};
 

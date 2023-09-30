@@ -29,7 +29,7 @@
 
 namespace Apex {
 
-  template<typename T>
+	template<typename T>
 	using Scope = std::unique_ptr<T>;
 	template<typename T, typename ... Args>
 	constexpr Scope<T> CreateScope(Args&& ... args)
@@ -44,5 +44,7 @@ namespace Apex {
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
+
+	// TODO: implement weakref might need it :D
 
 }

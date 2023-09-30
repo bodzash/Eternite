@@ -2,7 +2,7 @@
 #include <string>
 #include "Core/Core.h"
 
-// TODO: should work differently, and probably this is not needed
+// TODO: should work differently and no need for "Texture2D"
 
 namespace Apex {
 

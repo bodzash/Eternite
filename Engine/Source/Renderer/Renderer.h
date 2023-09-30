@@ -3,6 +3,8 @@
 #include "Camera.h"
 #include "Shader.h"
 
+// TODO: should be filled with lot of static funcs
+
 namespace Apex {
 
 	class Renderer

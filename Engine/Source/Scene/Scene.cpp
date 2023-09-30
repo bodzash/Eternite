@@ -4,32 +4,19 @@
 #include "Scene/Entity.h"
 #include "glm/glm.hpp"
 
+//now .has<T> for entt::registry no more support, replace with all_of or any_of
+
 namespace Apex {
 
     // .connect provides these params
     static void OnTransformConstructed(entt::registry& reg, entt::entity ent)
     {
-
+        AX_WARN("TransformComponent Constructed!");
     }
 
     Scene::Scene(/* args */)
     {
-        struct TransformComponent
-        {
-            glm::mat4 Transform;
-
-            TransformComponent() = default;
-            TransformComponent(const TransformComponent&) = default;
-            TransformComponent(const glm::mat4& transform)
-                : Transform(transform) {}
-
-            operator glm::mat4& () { return Transform; }
-            operator const glm::mat4& () const { return Transform; }
-
-            //now .has<T> for entt::registry no more support, replace with all_of or any_of
-        };
-
-
+        // Set up component life cycle methods
         m_Registry.on_construct<TransformComponent>().connect<&OnTransformConstructed>();
     }
 
@@ -52,5 +39,13 @@ namespace Apex {
     {
 
     }
+
+/*
+#pragma region ComponentLifeCycles
+#pragma endregion
+
+#pragma region xyzSystem
+#pragma endregion
+*/
 
 }

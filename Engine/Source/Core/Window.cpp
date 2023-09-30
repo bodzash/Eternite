@@ -162,12 +162,12 @@ namespace Apex {
 	void Window::OnUpdate()
 	{
 		glfwPollEvents();
-		//m_Context->SwapBuffers();
+		m_Context->SwapBuffers();
 	}
 
 	void Window::SetVSync(bool enabled)
 	{
-		// TODO: make bgfx turn off/on vsync
+		// TODO: make bgfx turn off/on vsync with bgfx::reset(displayWidth, displayHeight, BGFX_RESET_VSYNC);
 		m_Data.VSync = enabled;
 	}
 
