@@ -3,6 +3,25 @@
 
 using namespace Apex;
 
+class PlayerController : public NativeBehaviour
+{
+public:
+	void OnCreate() override
+	{
+	}
+
+	void OnUpdate(Timestep ts) override
+	{
+		GetComponent<TransformComponent>().Translation.x += 4.0f * ts;
+		//GetComponent<TransformComponent>().Translation.x += 4.0f * ts;
+		AX_TRACE(GetComponent<TransformComponent>().Translation.x);
+	}
+
+	void OnDestroy() override
+	{
+	}
+};
+
 class GameLayer : public Layer
 {
 public:
@@ -12,6 +31,7 @@ public:
 	void OnAttach() override
 	{
 		Entity ent = m_Scene.CreateEntity();
+		ent.AddComponent<ScriptComponent>().Bind<PlayerController>();
 	}
 
 	void OnUpdate(Timestep ts) override

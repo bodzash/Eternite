@@ -1,10 +1,9 @@
 #pragma once
-#include "entt/entt.hpp"
+#include <entt/entt.hpp>
 #include "Scene.h"
 
 namespace Apex {
 
-    // TODO: should remove Component postfix from methods
     class Entity
     {
     public:
@@ -44,7 +43,7 @@ namespace Apex {
     private:
         entt::entity m_Handle = entt::null;
         Scene* m_Scene;
-        // SHOULD BE WEAK_REF or Ref<Scene>
+        // SHOULD BE WEAK_REF or Ref<Scene> (ref is shared ptr)
     };
 
 }
