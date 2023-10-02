@@ -1,8 +1,10 @@
 # Folders
 .vs
 .vscode
+.idea
 Build
 
 # Files
+.env
 
 # Extensions

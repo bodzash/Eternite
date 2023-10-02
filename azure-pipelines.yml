@@ -10,5 +10,5 @@ steps:
 - script: echo Hello, world!
   displayName: "Run a one-line script"
 
-- script: echo Should run a build script here :)
+- script: echo Should run the build script here
   displayName: "Run build script"
