@@ -39,30 +39,19 @@ Transparent textures
 
 All these with animated textures wrapped unto them
 
-Some above/bellow character meshes
-
-Instanced rendering of quads
+Instanced rendering of quads would be very nice
 
 And of course need to create a Particle System
 
-Well architected shader system >:(
+Well architected shader system
 
 3D VFX / Particle editor tool
 
 ## Asset loading
 
-Load PNG textures and generate mipmaps with bgfx
+Load PNG textures and generate mipmaps with raylib
 
 The only material meshes need is the diffuse
-
-One mesh can reference multiple textures
-
-Assimp library is bloated and slow to compile so focus on one file format:
-
-- FBX
-- GLTF
-
-Loading skeleton and animations
 
 Need to set up Blender as a level editor :D
 
@@ -77,6 +66,7 @@ Prebake shadows in Blender
 Optimized Actor - Component System (not ECS)
 
 ## UI and HUD
+I dont know yet :)
 
 ## Networking and Netcode
 
@@ -108,8 +98,4 @@ Optimize asset files for runtime
 
 ## CI/CD
 
-More like fuck you
-
-## Deployment of product
-
-Distribute on Steam
+Set it up...

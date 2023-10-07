@@ -1,35 +1,16 @@
 # Add defines
 add_compile_definitions(AX_PLATFORM_WINDOWS)
 add_compile_definitions(AX_ENABLE_ASSERTS)
-add_compile_definitions(BGFX_CONFIG_MAX_RECT_CACHE=16384)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Set rules for glfw
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
+# Set rules for raylib
+set(OPENGL_VERSION 2.1)
 
-# Set rules for bgfx
-set(BGFX_AMALGAMATED OFF CACHE BOOL "" FORCE)
-set(BX_AMALGAMATED OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TOOLS_BIN2C OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TOOLS_GEOMETRY OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TOOLS_SHADER OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TOOLS_TEXTURE OFF CACHE BOOL "" FORCE)
-set(BGFX_CONFIG_MULTITHREADED ON CACHE BOOL "" FORCE) # TEMPORARY change this later
-set(BGFX_INSTALL OFF CACHE BOOL "" FORCE)
-
-# Add subdirectories
-add_subdirectory(External/glfw)
-add_subdirectory(External/bgfx)
-#add_subdirectory(External/glm)
-#add_subdirectory(External/entt)
+# Add subdirectories (modules with cmake file)
+add_subdirectory(External/raylib)
 
 # TODO: lets not manually include all cpp files xd
 # Create a static library
@@ -64,19 +45,16 @@ add_library(Engine STATIC
 
 # Third party includes
 target_include_directories(Engine PUBLIC External/spdlog/include)
-target_include_directories(Engine PUBLIC External/glfw/include)
 target_include_directories(Engine PUBLIC External/imgui)
 target_include_directories(Engine PUBLIC External/glm)
 target_include_directories(Engine PUBLIC External/entt/src)
-target_include_directories(Engine PUBLIC External/bgf/bgfx.cmake/bx/include)
-target_include_directories(Engine PUBLIC External/bgf/bgfx.cmake/bimg/include)
-target_include_directories(Engine PUBLIC External/bgf/bgfx.cmake/bgfx/include)
+target_include_directories(Engine PUBLIC External/raylib/src)
 
 # Self include directories
-target_include_directories(Engine PUBLIC Source)
+# target_include_directories(Engine PUBLIC Source)
 
 # Link up
-target_link_libraries(Engine PRIVATE glfw bgfx bx)
+target_link_libraries(Engine PRIVATE raylib)
 
 # PCH
 target_precompile_headers(Engine PRIVATE Source/axpch.h)
