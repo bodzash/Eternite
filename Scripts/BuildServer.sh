@@ -1,0 +1,1 @@
+echo Should create legit pipeline instead of using batch files

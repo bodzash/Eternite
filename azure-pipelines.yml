@@ -1,4 +1,5 @@
 # TODO: make this better
+# Should create legit pipeline instead of using batch files
 
 trigger:
 - master
@@ -7,5 +8,5 @@ pool:
   vmImage: windows-2019
 
 steps:
-- script: ./Scripts/Build.sh
-  displayName: "Run build script"
+- script: .\Scripts\BuildClient.bat
+  displayName: "Build Client on Windows"
