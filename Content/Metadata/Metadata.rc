@@ -12,7 +12,7 @@ BEGIN
       VALUE "FileVersion", "1.0"
       VALUE "InternalName", "Eternite"
       VALUE "LegalCopyright", "Laszlo Bozzay"
-      VALUE "OriginalFilename", "Eternite.exe"
+      VALUE "OriginalFilename", "Client.exe"
       VALUE "ProductName", "Eternite"
       VALUE "ProductVersion", "1.0"
     END

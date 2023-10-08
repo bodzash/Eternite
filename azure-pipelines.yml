@@ -1,14 +1,11 @@
-# TODO: implement build script :)
+# TODO: make this better
 
 trigger:
 - master
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: windows-2019
 
 steps:
-- script: echo Hello, world!
-  displayName: "Run a one-line script"
-
-- script: echo Should run the build script here
+- script: ./Scripts/Build.sh
   displayName: "Run build script"
