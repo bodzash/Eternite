@@ -1,5 +1,8 @@
 #include <Apex.h>
-//#include <imgui.h>
+
+namespace Raylib {
+	#include <raylib.h>
+}
 
 using namespace Apex;
 
@@ -12,10 +15,24 @@ public:
 
 	void OnUpdate(Timestep ts) override
 	{
-		GetComponent<TransformComponent>().Translation.x += 64.0f * ts;
-		//GetComponent<TransformComponent>().Translation.x += 4.0f * ts;
-		AX_TRACE(GetComponent<TransformComponent>().Translation.x);
-		AX_TRACE("Frame: {}", ts);
+	}
+
+	void OnDestroy() override
+	{
+	}
+};
+
+class CameraController : public NativeBehaviour
+{
+public:
+	void OnCreate() override
+	{
+	}
+
+	void OnUpdate(Timestep ts) override
+	{
+		auto& cc = GetComponent<CameraComponent>();
+		Raylib::UpdateCamera(&cc.Camera, Raylib::CAMERA_FREE);
 	}
 
 	void OnDestroy() override
@@ -31,8 +48,13 @@ public:
 
 	void OnAttach() override
 	{
+		Entity cam = m_Scene.CreateEntity();
+		cam.AddComponent<CameraComponent>().Primary = true;
+		cam.AddComponent<ScriptComponent>().Bind<CameraController>();
+
 		Entity ent = m_Scene.CreateEntity();
 		ent.AddComponent<ScriptComponent>().Bind<PlayerController>();
+		ent.AddComponent<MeshComponent>("Leblanc_Skin04.gltf");
 	}
 
 	void OnUpdate(Timestep ts) override
@@ -40,45 +62,9 @@ public:
 		m_Scene.OnUpdate(ts);
 	}
 
-	void OnEvent(Event& event) override
-	{
-		if (event.GetEventType() == EventType::KeyPressed)
-		{
-			AX_TRACE("GameLayer");
-			event.Handled = true;
-		}
-	}
-
 private:
 	Scene m_Scene;
 };
-
-/*
-class ExampleLayer : public Layer
-{
-public:
-	ExampleLayer()
-		: Layer("Example") {}
-	
-	int count = 0;
-
-	void OnUpdate(Timestep ts) override	{}
-
-	void OnImGuiRender() override
-	{
-		ImGui::Text("Count: %d", count);
-
-		if (ImGui::Button("Save"))
-			count++;
-	}
-
-	void OnEvent(Event& event) override
-	{
-		if (event.GetEventType() == EventType::KeyPressed)
-			AX_TRACE("ExampleLayer");
-	}
-};
-*/
 
 class GameClient : public Application
 {

@@ -1,6 +1,7 @@
 #include "axpch.h"
 #include "Scene.h"
 #include "Scene/Components.h"
+#include "Scene/ComponentsGraphic.h"
 #include "Scene/Entity.h"
 #include <glm/glm.hpp>
 
@@ -75,8 +76,44 @@ namespace Apex {
         }
 
         // Rendering
-        {
 
+        {
+            Raylib::BeginDrawing();
+            Raylib::ClearBackground({138, 142, 140, 255});
+
+            Raylib::Camera3D* mainCamera = nullptr;
+            TransformComponent cameraTransform;
+            {
+                auto view = m_Registry.view<TransformComponent, CameraComponent>();
+                for (auto e : view)
+                {
+                    auto [transform, camera] = view.get<TransformComponent, CameraComponent>(e);
+
+                    if (camera.Primary)
+                    {
+                        mainCamera = &camera.Camera;
+                        cameraTransform = transform;
+                        break;
+                    }
+                }
+            }
+
+            if (mainCamera)
+            {
+                Raylib::BeginMode3D(*mainCamera);
+                {
+                    auto view = m_Registry.view<TransformComponent, MeshComponent>();
+                    for (auto e : view)
+                    {
+                        auto [transform, mesh] = view.get<TransformComponent, MeshComponent>(e);
+
+                        Raylib::DrawModel(mesh.Model, { transform.Translation.x, transform.Translation.y, transform.Translation.z }, 0.05f, Raylib::WHITE);
+                    }
+                }
+                Raylib::EndMode3D();
+            }
+
+			Raylib::EndDrawing();
         }
     }
 
@@ -95,13 +132,5 @@ namespace Apex {
 	}
 
 #pragma endregion
-
-/*
-#pragma region ComponentLifeCycles
-#pragma endregion
-
-#pragma region xyzSystem
-#pragma endregion
-*/
 
 }

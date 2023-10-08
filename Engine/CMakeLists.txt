@@ -30,7 +30,6 @@ add_library(Engine STATIC
 	# Rendering
 	Source/Renderer/Camera.cpp
 	Source/Renderer/CameraController.cpp
-	Source/Renderer/GraphicsContext.cpp
 	Source/Renderer/Renderer.cpp
 
 	# Imgui

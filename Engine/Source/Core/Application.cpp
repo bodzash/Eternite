@@ -58,9 +58,11 @@ namespace Apex {
 			m_ImGuiLayer->End();
 
 			//m_Window->OnUpdate();
+			/*
 			Raylib::BeginDrawing();
             	Raylib::ClearBackground({138, 142, 140, 255});
 			Raylib::EndDrawing();
+			*/
 
 			m_Running = !Raylib::WindowShouldClose();
 		}

@@ -14,6 +14,8 @@
 #include "Scene/Entity.h"
 #include "Scene/NativeBehaviour.h"
 #include "Scene/Components.h"
+// TODO: temporary
+#include "Scene/ComponentsGraphic.h"
 
 #include "Core/Input.h"
 #include "Core/KeyCodes.h"

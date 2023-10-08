@@ -48,25 +48,6 @@ namespace Apex {
 		}
     };
 
-    struct MeshComponent
-    {
-        // TODO: do not use strings, use a smart pointer (ref or scope) :D
-        std::string Name;
-
-        MeshComponent() = default;
-        MeshComponent(const MeshComponent&) = default;
-        // should have one more constructor that takes in a smart pointer to the mesh
-    };
-
-    struct CameraComponent
-    {
-        //SceneCamera Camera;
-        bool Primary = false;
-
-        CameraComponent() = default;
-        CameraComponent(const CameraComponent&) = default;
-    };
-
     struct ScriptComponent
     {
         NativeBehaviour* Instance = nullptr;
