@@ -1,17 +1,13 @@
 #pragma once
 
 #include "Core/Application.h"
+#include "Core/HeadlessApplication.h"
 #include "Core/Layer.h"
 #include "Core/Log.h"
 
 #include "Core/Timestep.h"
 
 #include "Renderer/Renderer.h"
-#include "Renderer/RenderCommand.h"
-
-#include "Renderer/Shader.h"
-#include "Renderer/VertexArray.h"
-
 #include "Renderer/Camera.h"
 
 #include "Scene/Scene.h"

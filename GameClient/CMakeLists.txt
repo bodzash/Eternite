@@ -1,5 +1,4 @@
 # Add defines
-add_compile_definitions(AX_PLATFORM_WINDOWS)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -8,6 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Create executable
 add_executable(Client
     # ../Content/Metadata/Metadata.rc
+
+    # Core
     Source/Client.cpp
 )
 
@@ -21,7 +22,7 @@ target_include_directories(Client PRIVATE Engine/External/glm/glm)
 #target_include_directories(Client PRIVATE Engine/Source)
 #target_include_directories(Client PRIVATE Client/Source)
 
-# Link library
+# Link libraries
 target_link_directories(Client PUBLIC Engine/Source)
 
 # Link up

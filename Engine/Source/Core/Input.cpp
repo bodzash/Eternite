@@ -1,12 +1,13 @@
 #include "axpch.h"
 #include "Input.h"
 #include "Core/Application.h"
-#include "GLFW/glfw3.h"
+//#include "GLFW/glfw3.h"
 
 namespace Apex {
 
 	Input* Input::s_Instance = new Input();
 
+	/*
 	bool Input::IsKeyPressed(int keycode)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
@@ -43,5 +44,5 @@ namespace Apex {
         std::tie(x, y) = GetMousePosition();
         return y;
 	}
-
+	*/
 }

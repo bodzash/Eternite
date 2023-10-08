@@ -8,13 +8,13 @@ namespace Apex {
 	class GraphicsContext
 	{
 	public:
-		GraphicsContext(GLFWwindow* windowHandle);
+		GraphicsContext(/*GLFWwindow* windowHandle*/);
 
 		void Init();
 		void SwapBuffers();
 
 	private:
-		GLFWwindow* m_WindowHandle;
+		//GLFWwindow* m_WindowHandle;
 	};
 
 }

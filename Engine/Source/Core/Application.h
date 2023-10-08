@@ -19,10 +19,10 @@ namespace Apex {
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
 		inline static Application& Get() { return *s_Instance; }
-		inline Window& GetWindow() { return *m_Window; }
+		//inline Window& GetWindow() { return *m_Window; }
 
 	private:
-		std::unique_ptr<Window> m_Window;
+		//std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
@@ -33,7 +33,7 @@ namespace Apex {
 		bool OnWindowResize(WindowResizeEvent& e);
 	};
 
-	// To be defined in "client" program
+	// To be defined in Client program
 	Application* CreateApplication();
 
 }

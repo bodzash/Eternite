@@ -2,21 +2,28 @@
 #include "Application.h"
 #include "Log.h"
 #include "Input.h"
-#include <glfw/glfw3.h>
-#include "bgfx/bgfx.h"
+
+namespace Raylib {
+	#include <raylib.h>
+}
 
 namespace Apex {
 	#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 	Application* Application::s_Instance = nullptr;
 
+	// TODO: Implement a HeadlessApplication class for server
 	Application::Application()
 	{
 		AX_CORE_ASSERT(!s_Instance, "Application instance already exists!");
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(AX_BIND_EVENT_FN(Application::OnEvent));
+		//m_Window = std::unique_ptr<Window>(Window::Create());
+		//m_Window->SetEventCallback(AX_BIND_EVENT_FN(Application::OnEvent));
+
+		Raylib::SetConfigFlags(Raylib::FLAG_WINDOW_RESIZABLE);
+    	Raylib::InitWindow(800, 600, "Eternite");
+		Raylib::SetTargetFPS(60);
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -36,19 +43,13 @@ namespace Apex {
 	{
 		while (m_Running)
 		{
-			// TODO: shouldnt be here
-			bgfx::touch(0);
-
-			float time = (float)glfwGetTime();
-			Timestep timestep = time - m_LastFrameTime;
-			m_LastFrameTime = time;
+			Timestep timestep = Raylib::GetFrameTime();
 
 			for (Layer* layer : m_LayerStack)
 			{
 				layer->OnUpdate(timestep);
 			}
-			
-			// TODO: something
+
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
 			{
@@ -56,7 +57,12 @@ namespace Apex {
 			}
 			m_ImGuiLayer->End();
 
-			m_Window->OnUpdate();
+			//m_Window->OnUpdate();
+			Raylib::BeginDrawing();
+            	Raylib::ClearBackground({138, 142, 140, 255});
+			Raylib::EndDrawing();
+
+			m_Running = !Raylib::WindowShouldClose();
 		}
 	}
 
@@ -68,11 +74,7 @@ namespace Apex {
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
-		// TODO: should create a window method and gfx context methods to handle this :)
-		std::int32_t displayWidth, displayHeight;
-		glfwGetFramebufferSize((GLFWwindow*)m_Window->GetNativeWindow(), &displayWidth, &displayHeight);
-		bgfx::reset(displayWidth, displayHeight, BGFX_RESET_VSYNC);
-		bgfx::setViewRect(0, 0, 0, bgfx::BackbufferRatio::Equal);
+		// TODO: run some window resize code
 
 		return true;
 	}

@@ -1,20 +1,6 @@
 #pragma once
 #include <memory>
 
-#ifdef AX_PLATFORM_WINDOWS
-	#if AX_DYNAMIC_LINK
-	#ifdef AX_BUILD_DLL
-		#define APEX_API __declspec(dllexport)
-	#else
-		#define APEX_API __declspec(dllimport)
-	#endif
-	#else
-		#define APEX_API
-#endif
-#else
-  	//#error Apex only supports Windows!
-#endif
-
 #ifdef AX_ENABLE_ASSERTS
 	#define AX_ASSERT(x, ...) { if(!x) { AX_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
 	#define AX_CORE_ASSERT(x, ...) { if(!x) { AX_CORE_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }

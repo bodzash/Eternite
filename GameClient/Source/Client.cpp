@@ -1,5 +1,5 @@
 #include <Apex.h>
-#include <imgui.h>
+//#include <imgui.h>
 
 using namespace Apex;
 
@@ -12,9 +12,10 @@ public:
 
 	void OnUpdate(Timestep ts) override
 	{
-		GetComponent<TransformComponent>().Translation.x += 4.0f * ts;
+		GetComponent<TransformComponent>().Translation.x += 64.0f * ts;
 		//GetComponent<TransformComponent>().Translation.x += 4.0f * ts;
 		AX_TRACE(GetComponent<TransformComponent>().Translation.x);
+		AX_TRACE("Frame: {}", ts);
 	}
 
 	void OnDestroy() override

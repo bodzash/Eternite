@@ -11,6 +11,7 @@ namespace Apex {
 
 	static bool s_GLFWInitialized = false;
 
+	/*
 	static void GLFWErrorCallback(int error, const char* description)
 	{
 		AX_CORE_ERROR("GLFW Error ({0}): ", error, description);
@@ -175,5 +176,6 @@ namespace Apex {
 	{
 		return m_Data.VSync;
 	}
+	*/
 
 }

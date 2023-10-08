@@ -1,22 +1,16 @@
 #include "axpch.h"
 #include "GraphicsContext.h"
-#include <GLFW/glfw3.h>
-#include "bgfx/bgfx.h"
-#include "bgfx/platform.h"
-
-#define GLFW_EXPOSE_NATIVE_WIN32
-#include "GLFW/glfw3native.h"
 
 namespace Apex {
 
-	GraphicsContext::GraphicsContext(GLFWwindow* windowHandle)
-		: m_WindowHandle(windowHandle)
+	GraphicsContext::GraphicsContext()
 	{
-		AX_CORE_ASSERT(windowHandle, "Window handle is null!")
+		//AX_CORE_ASSERT(windowHandle, "Window handle is null!")
 	}
 
 	void GraphicsContext::Init()
 	{
+		/*
 		int windowWidth, windowHeight;
 
 		glfwGetWindowSize(m_WindowHandle, &windowWidth, &windowHeight);
@@ -35,11 +29,12 @@ namespace Apex {
 		const bgfx::ViewId ClearView = 0;
 		bgfx::setViewClear(ClearView, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF); //0x443355FF
 		bgfx::setViewRect(ClearView, 0, 0, bgfx::BackbufferRatio::Equal);
+		*/
 	}
 
 	void GraphicsContext::SwapBuffers()
 	{
-		bgfx::frame();
+		//bgfx::frame();
 	}
 
 }
