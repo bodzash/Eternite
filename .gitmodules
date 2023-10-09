@@ -13,3 +13,6 @@
 [submodule "Engine/External/raylib"]
 	path = Engine/External/raylib
 	url = https://github.com/raysan5/raylib.git
+[submodule "Engine/External/box2d"]
+	path = Engine/External/box2d
+	url = https://github.com/erincatto/box2d.git
