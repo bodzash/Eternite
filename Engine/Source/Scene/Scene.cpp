@@ -9,32 +9,30 @@
 #include <box2d/b2_fixture.h>
 #include <box2d/b2_polygon_shape.h>
 
-//now .has<T> for entt::registry no more support, replace with all_of or any_of
-
 namespace Apex {
 
-    static void OnTransformCreated(entt::registry& reg, entt::entity ent)
-    {
-        //AX_INFO("TransformComponent Constructed!");
-    }
+// Template specialization must be defined before usage
+#pragma region ComponentLifeCycle
 
-    static void OnScriptCreated(entt::registry& reg, entt::entity ent)
-    {
-        /*
-        auto& sc = reg.get<ScriptComponent>(ent);
-        sc.Instance = sc.InstantiateScript();
-        sc.Instance->m_Entity = Entity{ ent, this };
-        sc.Instance->OnCreate();
-        */
-    }
+    template<>
+	void Scene::OnComponentAdded<RigidBodyComponent>(entt::entity e)
+	{
+        AX_CORE_INFO("Created RigidBodyComponent on {0}", (uint32_t)entity);
+	}
+
+    template<>
+	void Scene::OnComponentRemoved<RigidBodyComponent>(entt::entity e)
+	{
+        AX_CORE_WARN("Removed RigidBodyComponent on {0}", (uint32_t)entity);
+	}
+
+#pragma endregion
 
     Scene::Scene(/* args */)
     {
-        // Set up component life cycle methods
-        // TODO: make a wrapper around these
-        //m_Registry.on_construct<TransformComponent>().connect<&OnComponentAdded<TransformComponent>>();
-        m_Registry.on_construct<TransformComponent>().connect<OnTransformCreated>();
-        m_Registry.on_construct<ScriptComponent>().connect<OnScriptCreated>();
+        // Physics
+        m_Registry.on_construct<RigidBodyComponent>().connect<&Scene::OnComponentAdded<RigidBodyComponent>>(this);
+        m_Registry.on_destroy<RigidBodyComponent>().connect<&Scene::OnComponentRemoved<RigidBodyComponent>>(this);
     }
 
     Scene::~Scene()
@@ -49,7 +47,7 @@ namespace Apex {
         auto tag = entity.AddComponent<TagComponent>();
         tag.Tag = name.empty() ? "Unknown" : name;
 
-        // should create relation component here :)
+        // TODO: should create relation component here :)
 
         return entity;
     }
@@ -204,21 +202,5 @@ namespace Apex {
 			Raylib::EndDrawing();
         }
 	}
-
-#pragma region ComponentLifeCycles
-
-    template<typename T>
-	void Scene::OnComponentAdded(Entity entity, T& component)
-	{
-		static_assert(sizeof(T) == 0);
-	}
-
-    template<>
-	void Scene::OnComponentAdded<TransformComponent>(Entity entity, TransformComponent& component)
-	{
-        AX_WARN("TransformComponent Constructed!");
-	}
-
-#pragma endregion
 
 }

@@ -18,8 +18,16 @@ public:
 	{
 		if (Raylib::IsKeyPressed(Raylib::KEY_F))
 		{
-			auto& tc = GetComponent<TransformComponent>();
-			tc.Translation.x += 12.f * ts;
+			RemoveComponent<RigidBodyComponent>();
+			RemoveComponent<BoxColliderComponent>();
+			//auto& tc = GetComponent<TransformComponent>();
+			//tc.Translation.x += 12.f * ts;
+		}
+
+		if (Raylib::IsKeyPressed(Raylib::KEY_G))
+		{
+			AddComponent<RigidBodyComponent>();
+			AddComponent<BoxColliderComponent>();
 		}
 	}
 
