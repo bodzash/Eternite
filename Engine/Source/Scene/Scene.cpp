@@ -4,6 +4,10 @@
 #include "Scene/ComponentsGraphic.h"
 #include "Scene/Entity.h"
 #include <glm/glm.hpp>
+#include <box2d/b2_world.h>
+#include <box2d/b2_body.h>
+#include <box2d/b2_fixture.h>
+#include <box2d/b2_polygon_shape.h>
 
 //now .has<T> for entt::registry no more support, replace with all_of or any_of
 
@@ -50,9 +54,57 @@ namespace Apex {
         return entity;
     }
 
-    void Scene::OnUpdate(Timestep ts)
+	void Scene::OnRuntimeStart()
     {
-        // Update scripts
+        m_PhysicsWorld = new b2World({ 0.f, 0.f });
+
+        // Should do this when a component gets created
+        auto view = m_Registry.view<TransformComponent, RigidBodyComponent>();
+        for (auto e : view)
+        {
+            Entity entity = { e, this };
+            auto& tc = entity.GetComponent<TransformComponent>();
+            auto& rbc = entity.GetComponent<RigidBodyComponent>();
+
+            b2BodyDef bodyDef;
+            bodyDef.type = (b2BodyType)rbc.Type;
+            bodyDef.position.Set(tc.Translation.x, tc.Translation.z);
+            bodyDef.angle = tc.Rotation.y;
+            // ...
+            // add user data and thingsx like that
+
+            b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
+            body->SetFixedRotation(rbc.FixedRotation);
+            // ...
+            rbc.RuntimeBody = body;
+
+            if (entity.HasComponent<BoxColliderComponent>())
+            {
+                auto& bcc = entity.GetComponent<BoxColliderComponent>();
+
+                b2PolygonShape shape;
+                shape.SetAsBox(tc.Scale.x * bcc.Size.x, tc.Scale.z * bcc.Size.y);
+
+                b2FixtureDef fixtureDef;
+                fixtureDef.shape = &shape;
+                fixtureDef.density = bcc.Density;
+                fixtureDef.friction = bcc.Friction;
+                fixtureDef.restitution = bcc.Restitution;
+                fixtureDef.restitutionThreshold = bcc.RestitutionThreshold;
+                body->CreateFixture(&fixtureDef);
+            }
+        }
+    }
+
+	void Scene::OnRuntimeStop()
+    {
+        delete m_PhysicsWorld;
+        m_PhysicsWorld = nullptr;
+    }
+
+	void Scene::OnUpdate(Timestep ts)
+	{
+		// Update scripts
         {
             m_Registry.view<ScriptComponent>().each([=](auto entity, auto& sc)
             {
@@ -72,11 +124,28 @@ namespace Apex {
 
         // Physics
         {
+            const int32_t velocityIteration = 6;
+            const int32_t positionIteration = 2;
+            m_PhysicsWorld->Step(ts, velocityIteration, positionIteration);
 
+            // Retrieve transforms
+            auto view = m_Registry.view<RigidBodyComponent>();
+            for (auto e : view)
+            {
+                Entity entity = { e, this };
+                
+                auto& tc = entity.GetComponent<TransformComponent>();
+                auto& rbc = entity.GetComponent<RigidBodyComponent>();
+
+                b2Body* body = static_cast<b2Body*>(rbc.RuntimeBody);
+                const auto& pos = body->GetPosition();
+                tc.Translation.x = pos.x;
+                tc.Translation.z = pos.y;
+                tc.Rotation.y = body->GetAngle();
+            }
         }
 
         // Rendering
-
         {
             Raylib::BeginDrawing();
             Raylib::ClearBackground({138, 142, 140, 255});
@@ -101,21 +170,40 @@ namespace Apex {
             if (mainCamera)
             {
                 Raylib::BeginMode3D(*mainCamera);
+                Raylib::DrawGrid(20, 1.0f);
+
+                // Mesh rendering
                 {
                     auto view = m_Registry.view<TransformComponent, MeshComponent>();
                     for (auto e : view)
                     {
-                        auto [transform, mesh] = view.get<TransformComponent, MeshComponent>(e);
+                        auto [tf, mesh] = view.get<TransformComponent, MeshComponent>(e);
+                        // TODO: use the Ex version or someshit
+                        Raylib::DrawModel(mesh.Model,
+                            { tf.Translation.x, tf.Translation.y, tf.Translation.z },
+                            0.005f, {255, 255, 255, 255});
+                    }
+                }
 
-                        Raylib::DrawModel(mesh.Model, { transform.Translation.x, transform.Translation.y, transform.Translation.z }, 0.05f, Raylib::WHITE);
+                // Debug BoxCollider
+                {
+                    auto view = m_Registry.view<TransformComponent, BoxColliderComponent>();
+                    for (auto e : view)
+                    {
+                        auto [tf, box] = view.get<TransformComponent, BoxColliderComponent>(e);
+                        Raylib::DrawCubeWiresV({ tf.Translation.x, tf.Translation.y + 0.5f, tf.Translation.z},
+                            { box.Size.x, 1.0f, box.Size.y }, {255, 255, 255, 255});
                     }
                 }
                 Raylib::EndMode3D();
             }
-
+            else
+            {
+                AX_CORE_WARN("There is no camera present in the scene!");
+            }
 			Raylib::EndDrawing();
         }
-    }
+	}
 
 #pragma region ComponentLifeCycles
 

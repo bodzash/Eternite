@@ -2,6 +2,9 @@
 #include "entt/entt.hpp"
 #include "Core/Timestep.h"
 
+// Fwd decl
+class b2World;
+
 namespace Apex {
 
     // Fwd decl
@@ -20,8 +23,8 @@ namespace Apex {
         // find entity by name
         // get primary camera
 
-        void OnStart();
-        void OnStop();
+        void OnRuntimeStart();
+        void OnRuntimeStop();
         void OnPhysicsStart();
         void OnPhysicsStop();
         void OnUpdate(Timestep ts);
@@ -31,6 +34,7 @@ namespace Apex {
 
     private:
         entt::registry m_Registry;
+        b2World* m_PhysicsWorld = nullptr;
         //std::unordered_map<UUID, entt::entity> m_EntityMap;
         //void OnScriptCreated(entt::registry& reg, entt::entity ent);
 

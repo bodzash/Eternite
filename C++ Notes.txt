@@ -1,0 +1,9 @@
+USE STD::ANY AND STD::ANY_CAST WHEN READING PACKETS IN STEAMWORKS
+static_cast, reinterpet cast
+SHOULD USE UNIQUE_PTR INSTEAD OF RAW BULLSHIT OR REF/SCOPE :D
+UTF8 is enough for fonts and shit
+When shooting just shoot immediately on locally and ignore when network packet comes in
+Use enums for packet id's
+
+State Replication = variables (Health)
+Event Replication = functions (Unit spawned)
