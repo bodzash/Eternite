@@ -10,25 +10,42 @@ using namespace Apex;
 class PlayerController : public NativeBehaviour
 {
 public:
+	float Speed = 3.f;
+
 	void OnCreate() override
 	{
 	}
 
 	void OnUpdate(Timestep ts) override
 	{
+		auto& tc = GetComponent<TransformComponent>();
+
 		if (Raylib::IsKeyPressed(Raylib::KEY_F))
 		{
 			RemoveComponent<RigidBodyComponent>();
 			RemoveComponent<BoxColliderComponent>();
-			//auto& tc = GetComponent<TransformComponent>();
-			//tc.Translation.x += 12.f * ts;
 		}
 
 		if (Raylib::IsKeyPressed(Raylib::KEY_G))
 		{
-			AddComponent<RigidBodyComponent>();
-			AddComponent<BoxColliderComponent>();
+			if (!HasComponent<RigidBodyComponent>())
+			{
+				AddComponent<RigidBodyComponent>();
+				AddComponent<BoxColliderComponent>();
+			}
 		}
+
+		if (Raylib::IsKeyDown(Raylib::KEY_W))
+			tc.Translation.z -= Speed * ts;
+
+		if (Raylib::IsKeyDown(Raylib::KEY_S))
+			tc.Translation.z += Speed * ts;
+
+		if (Raylib::IsKeyDown(Raylib::KEY_A))
+			tc.Translation.x -= Speed * ts;
+
+		if (Raylib::IsKeyDown(Raylib::KEY_D))
+			tc.Translation.x += Speed * ts;
 	}
 
 	void OnDestroy() override
@@ -83,22 +100,25 @@ public:
 
 	void OnAttach() override
 	{
+		m_Scene.OnRuntimeStart();
+
+		// Scene Camera
 		Entity cam = m_Scene.CreateEntity();
 		cam.AddComponent<CameraComponent>().Primary = true;
 		cam.AddComponent<ScriptComponent>().Bind<CameraController>();
 
+		// Player
 		Entity ent = m_Scene.CreateEntity();
 		ent.AddComponent<ScriptComponent>().Bind<PlayerController>();
-		ent.AddComponent<MeshComponent>("Data/Models/Leblanc/Leblanc_Skin04.gltf",
+		ent.AddComponent<ModelComponent>("Data/Models/Leblanc/Leblanc_Skin04.gltf",
 			"Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
 		ent.AddComponent<RigidBodyComponent>();
 		ent.AddComponent<BoxColliderComponent>();
 
+		// Wall
 		Entity wall = m_Scene.CreateEntity();
 		wall.AddComponent<RigidBodyComponent>(RigidBodyComponent::BodyType::Static);
 		wall.AddComponent<BoxColliderComponent>(glm::vec2{ 0.f, 0.f }, glm::vec2{ 1.f, 1.f });
-
-		m_Scene.OnRuntimeStart();
 	}
 
 	void OnDetach() override
@@ -126,7 +146,7 @@ public:
 
 Apex::Application* Apex::CreateApplication()
 {
-	// TODO: ONLY PRESENT IN DEBUG, BECAUSE OF CMAKE >:|
+	// TODO: ONLY PRESENT IN INTERNAL BUILD, NOT IN DIST
 	auto path = std::filesystem::current_path().parent_path().parent_path().parent_path();
 	std::filesystem::current_path(path);
 	AX_INFO("Path changed: {0}", path);

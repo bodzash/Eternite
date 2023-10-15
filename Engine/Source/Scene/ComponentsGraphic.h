@@ -12,17 +12,17 @@ namespace Raylib {
 
 namespace Apex {
 
-    struct MeshComponent
+    struct ModelComponent
     {
         // TODO: DO NOT LOAD MODELS, TEXTURES LIKE THIS, CREATE A RESOURCE MANAGER
         Raylib::Model Model = { 0 };
         
-        MeshComponent(std::string_view path)
+        ModelComponent(std::string_view path)
         {
             Model = Raylib::LoadModel(path.data());
         }
 
-        MeshComponent(std::string_view modelPath, std::string_view materialPath)
+        ModelComponent(std::string_view modelPath, std::string_view materialPath)
         {
             Model = Raylib::LoadModel(modelPath.data());
 
@@ -32,10 +32,18 @@ namespace Apex {
             Model.materials[0].maps[Raylib::MATERIAL_MAP_DIFFUSE].texture = texture;
             UnloadImage(img);
         }
-        MeshComponent() = default;
-        MeshComponent(const MeshComponent&) = default;
+        ModelComponent() = default;
+        ModelComponent(const ModelComponent&) = default;
         // should have one more constructor that takes in a smart pointer to the mesh and shit
     };
+
+    /*
+    struct MeshComponent
+    {
+        MeshComponent() = default;
+        MeshComponent(const MeshComponent&) = default;
+    };
+    */
 
     struct CameraComponent
     {

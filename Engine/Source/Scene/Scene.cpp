@@ -14,17 +14,78 @@ namespace Apex {
 // Template specialization must be defined before usage
 #pragma region ComponentLifeCycle
 
+#pragma region RigidBodyComponent
     template<>
 	void Scene::OnComponentAdded<RigidBodyComponent>(entt::entity e)
 	{
-        AX_CORE_INFO("Created RigidBodyComponent on {0}", (uint32_t)entity);
+        Entity entity = { e, this };
+        auto& tc = entity.GetComponent<TransformComponent>();
+        auto& rbc = entity.GetComponent<RigidBodyComponent>();
+
+        b2BodyDef bodyDef;
+        bodyDef.type = (b2BodyType)rbc.Type;
+        bodyDef.position.Set(tc.Translation.x, tc.Translation.z);
+        bodyDef.angle = tc.Rotation.y;
+        // ...
+        // add user data for coll and trig cb and things like that
+
+        b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
+        body->SetFixedRotation(rbc.FixedRotation);
+        // ...
+        // can set other things for the body
+
+        rbc.RuntimeBody = body;
 	}
 
     template<>
 	void Scene::OnComponentRemoved<RigidBodyComponent>(entt::entity e)
 	{
-        AX_CORE_WARN("Removed RigidBodyComponent on {0}", (uint32_t)entity);
+        Entity entity = { e, this };
+        auto& rbc = entity.GetComponent<RigidBodyComponent>();
+        m_PhysicsWorld->DestroyBody(static_cast<b2Body*>(rbc.RuntimeBody));
+
+        // TODO: should delete collider components as well since fixtures are axed too
+        if (entity.HasComponent<BoxColliderComponent>())
+        {
+            entity.RemoveComponent<BoxColliderComponent>();
+        }
 	}
+#pragma endregion
+
+#pragma region RigidBodyComponent
+    template<>
+	void Scene::OnComponentAdded<BoxColliderComponent>(entt::entity e)
+	{
+        Entity entity = { e, this };
+        auto& tc = entity.GetComponent<TransformComponent>();
+        auto& bcc = entity.GetComponent<BoxColliderComponent>();
+
+        if (entity.HasComponent<RigidBodyComponent>())
+        {
+            auto& rbc = entity.GetComponent<RigidBodyComponent>();
+
+            b2PolygonShape shape;
+            shape.SetAsBox(tc.Scale.x * bcc.Size.x, tc.Scale.z * bcc.Size.y);
+
+            b2FixtureDef fixtureDef;
+            fixtureDef.shape = &shape;
+            fixtureDef.density = bcc.Density;
+            fixtureDef.friction = bcc.Friction;
+            fixtureDef.restitution = bcc.Restitution;
+            fixtureDef.restitutionThreshold = bcc.RestitutionThreshold;
+            static_cast<b2Body*>(rbc.RuntimeBody)->CreateFixture(&fixtureDef);
+        }
+        else
+        {
+            AX_ASSERT(false, "Before adding BoxColliderComponent, RigidBodyComponent must be present!");
+        }
+    }
+
+    template<>
+	void Scene::OnComponentRemoved<BoxColliderComponent>(entt::entity e)
+	{
+	}
+#pragma endregion
 
 #pragma endregion
 
@@ -33,6 +94,9 @@ namespace Apex {
         // Physics
         m_Registry.on_construct<RigidBodyComponent>().connect<&Scene::OnComponentAdded<RigidBodyComponent>>(this);
         m_Registry.on_destroy<RigidBodyComponent>().connect<&Scene::OnComponentRemoved<RigidBodyComponent>>(this);
+
+        m_Registry.on_construct<BoxColliderComponent>().connect<&Scene::OnComponentAdded<BoxColliderComponent>>(this);
+        m_Registry.on_destroy<BoxColliderComponent>().connect<&Scene::OnComponentRemoved<BoxColliderComponent>>(this);
     }
 
     Scene::~Scene()
@@ -55,43 +119,6 @@ namespace Apex {
 	void Scene::OnRuntimeStart()
     {
         m_PhysicsWorld = new b2World({ 0.f, 0.f });
-
-        // Should do this when a component gets created
-        auto view = m_Registry.view<TransformComponent, RigidBodyComponent>();
-        for (auto e : view)
-        {
-            Entity entity = { e, this };
-            auto& tc = entity.GetComponent<TransformComponent>();
-            auto& rbc = entity.GetComponent<RigidBodyComponent>();
-
-            b2BodyDef bodyDef;
-            bodyDef.type = (b2BodyType)rbc.Type;
-            bodyDef.position.Set(tc.Translation.x, tc.Translation.z);
-            bodyDef.angle = tc.Rotation.y;
-            // ...
-            // add user data and thingsx like that
-
-            b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
-            body->SetFixedRotation(rbc.FixedRotation);
-            // ...
-            rbc.RuntimeBody = body;
-
-            if (entity.HasComponent<BoxColliderComponent>())
-            {
-                auto& bcc = entity.GetComponent<BoxColliderComponent>();
-
-                b2PolygonShape shape;
-                shape.SetAsBox(tc.Scale.x * bcc.Size.x, tc.Scale.z * bcc.Size.y);
-
-                b2FixtureDef fixtureDef;
-                fixtureDef.shape = &shape;
-                fixtureDef.density = bcc.Density;
-                fixtureDef.friction = bcc.Friction;
-                fixtureDef.restitution = bcc.Restitution;
-                fixtureDef.restitutionThreshold = bcc.RestitutionThreshold;
-                body->CreateFixture(&fixtureDef);
-            }
-        }
     }
 
 	void Scene::OnRuntimeStop()
@@ -145,6 +172,7 @@ namespace Apex {
 
         // Rendering
         {
+#ifndef AX_HEADLESS
             Raylib::BeginDrawing();
             Raylib::ClearBackground({138, 142, 140, 255});
 
@@ -170,16 +198,16 @@ namespace Apex {
                 Raylib::BeginMode3D(*mainCamera);
                 Raylib::DrawGrid(20, 1.0f);
 
-                // Mesh rendering
+                // Model rendering
                 {
-                    auto view = m_Registry.view<TransformComponent, MeshComponent>();
+                    auto view = m_Registry.view<TransformComponent, ModelComponent>();
                     for (auto e : view)
                     {
-                        auto [tf, mesh] = view.get<TransformComponent, MeshComponent>(e);
+                        auto [tf, model] = view.get<TransformComponent, ModelComponent>(e);
                         // TODO: use the Ex version or someshit
-                        Raylib::DrawModel(mesh.Model,
+                        Raylib::DrawModel(model.Model,
                             { tf.Translation.x, tf.Translation.y, tf.Translation.z },
-                            0.005f, {255, 255, 255, 255});
+                            0.01f, {255, 255, 255, 255});
                     }
                 }
 
@@ -189,8 +217,8 @@ namespace Apex {
                     for (auto e : view)
                     {
                         auto [tf, box] = view.get<TransformComponent, BoxColliderComponent>(e);
-                        Raylib::DrawCubeWiresV({ tf.Translation.x, tf.Translation.y + 0.5f, tf.Translation.z},
-                            { box.Size.x, 1.0f, box.Size.y }, {255, 255, 255, 255});
+                        Raylib::DrawCubeWiresV({ tf.Translation.x, tf.Translation.y + 1.0f, tf.Translation.z},
+                            { box.Size.x * 2, 2.0f, box.Size.y * 2 }, {255, 255, 255, 255});
                     }
                 }
                 Raylib::EndMode3D();
@@ -201,6 +229,7 @@ namespace Apex {
             }
 			Raylib::EndDrawing();
         }
+#endif // AX_HEADLESS
 	}
 
 }
