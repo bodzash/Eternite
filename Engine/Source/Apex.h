@@ -19,7 +19,7 @@
 
 #include "Core/Input.h"
 #include "Core/KeyCodes.h"
-#include "Core/MouseButtonCodes.h"
+#include "Core/MouseCodes.h"
 
 // Events TEMPORARY
 #include "Events/ApplicationEvent.h"

@@ -3,7 +3,9 @@
 #include <glm/gtx/quaternion.hpp>
 #include "NativeBehaviour.h"
 
-// TODO: put components into their own files probably
+// Fwd decl
+class b2Body;
+class b2Fixture;
 
 namespace Apex {
 
@@ -63,10 +65,14 @@ namespace Apex {
         bool FixedRotation = false;
 
         // Runtime storage
-        void* RuntimeBody = nullptr;
+        b2Body* RuntimeBody = nullptr;
 
         RigidBodyComponent() = default;
         RigidBodyComponent(const RigidBodyComponent&) = default;
+
+        void SetTransform(glm::vec2 position, float rotation);
+        void SetPosition(glm::vec2 position);
+        void SetRotation(float rotation);
     };
 
     // TODO: create implicit constructors and hide Runtime_xxx stuff make Scene a friend
@@ -81,7 +87,7 @@ namespace Apex {
         float RestitutionThreshold = 0.1f;
 
         // Runtime storage
-        void* RuntimeFixture = nullptr;
+        b2Fixture* RuntimeFixture = nullptr;
 
         BoxColliderComponent() = default;
         BoxColliderComponent(const BoxColliderComponent&) = default;

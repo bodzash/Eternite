@@ -13,6 +13,7 @@ namespace Apex {
 
 	void CameraController::OnUpdate(Timestep ts)
 	{
+		/*
 		if (Input::IsKeyPressed(AX_KEY_A))
 			m_CameraPosition.x -= m_CameraTranslationSpeed * ts;
 		else if (Input::IsKeyPressed(AX_KEY_D))
@@ -36,6 +37,7 @@ namespace Apex {
 		m_Camera.SetPosition(m_CameraPosition);
 
 		m_CameraTranslationSpeed = m_ZoomLevel;
+		*/
 	}
 
 	void CameraController::OnEvent(Event& e)

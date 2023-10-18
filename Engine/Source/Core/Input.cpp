@@ -1,48 +1,38 @@
 #include "axpch.h"
 #include "Input.h"
 #include "Core/Application.h"
-//#include "GLFW/glfw3.h"
+
+namespace Raylib {
+	#include <raylib.h>
+}
 
 namespace Apex {
 
 	Input* Input::s_Instance = new Input();
 
-	/*
-	bool Input::IsKeyPressed(int keycode)
+	bool Input::IsKeyPressed(int key)
 	{
-		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		auto state = glfwGetKey(window, keycode);
-		return state == GLFW_PRESS || state == GLFW_REPEAT;
+		return Raylib::IsKeyPressed(key);
 	}
 
-	bool Input::IsMouseButtonPressed(int button)
+	bool Input::IsMousePressed(int button)
 	{
-		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		auto state = glfwGetMouseButton(window, button);
-		return state == GLFW_PRESS;
+		return Raylib::IsMouseButtonPressed(button);
 	}
 
-	std::pair<float, float> Input::GetMousePosition()
+	glm::vec2 Input::GetMousePosition()
 	{
-		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		double xpos, ypos;
-		glfwGetCursorPos(window, &xpos, &ypos);
-
-		return { (float)xpos, (float)ypos };
+		Raylib::Vector2 mousePos = Raylib::GetMousePosition();
+		return { mousePos.x, mousePos.y };
 	}
 
 	float Input::GetMouseX()
 	{
-        float x, y;
-        std::tie(x, y) = GetMousePosition();
-        return x;
+		return static_cast<float>(Raylib::GetMouseX());
 	}
 
 	float Input::GetMouseY()
 	{
-        float x, y;
-        std::tie(x, y) = GetMousePosition();
-        return y;
+		return static_cast<float>(Raylib::GetMouseY());
 	}
-	*/
 }

@@ -30,8 +30,19 @@ public:
 		{
 			if (!HasComponent<RigidBodyComponent>())
 			{
-				AddComponent<RigidBodyComponent>();
+				auto& rbc = AddComponent<RigidBodyComponent>();
 				AddComponent<BoxColliderComponent>();
+
+				//rbc.SetTransform({tc.Translation.x + 5, 0, tc.Translation.z + 5}, 45);
+			}
+		}
+
+		if (Raylib::IsKeyPressed(Raylib::KEY_R))
+		{
+			if (HasComponent<RigidBodyComponent>())
+			{
+				auto& rbc = GetComponent<RigidBodyComponent>();
+				rbc.SetRotation(45);
 			}
 		}
 
@@ -46,6 +57,13 @@ public:
 
 		if (Raylib::IsKeyDown(Raylib::KEY_D))
 			tc.Translation.x += Speed * ts;
+
+		// Rot
+		if (Raylib::IsKeyDown(Raylib::KEY_Q))
+			tc.Rotation.y += Speed * 100.f * ts;
+		
+		if (Raylib::IsKeyDown(Raylib::KEY_E))
+			tc.Rotation.y -= Speed * 100.f * ts;
 	}
 
 	void OnDestroy() override

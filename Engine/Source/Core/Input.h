@@ -1,5 +1,6 @@
 #pragma once
 #include "Core.h"
+#include <glm/glm.hpp>
 
 namespace Apex {
 
@@ -9,10 +10,18 @@ namespace Apex {
 		Input(const Input&) = delete;
 		Input& operator=(const Input&) = delete;
 
-		static bool IsKeyPressed(int keycode);
+		static bool IsKeyPressed(int key);
+		static bool IsKeyDown(int key);
+		static bool IsKeyReleased(int key);
+		static bool IsKeyUp(int key);
 
-		static bool IsMouseButtonPressed(int button);
-		static std::pair<float, float> GetMousePosition();
+		static bool IsMousePressed(int button);
+		static bool IsMouseButtonDown(int button);
+		static bool IsMouseButtonReleased(int button);
+		static bool IsMouseButtonUp(int button);
+
+		static glm::vec2 GetMouseWheelMove();
+		static glm::vec2 GetMousePosition();
 		static float GetMouseX();
 		static float GetMouseY();
 

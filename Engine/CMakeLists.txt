@@ -35,6 +35,7 @@ add_library(Engine STATIC
 	# Scene
 	Source/Scene/Scene.cpp
 	Source/Scene/Entity.cpp
+	Source/Scene/Components.cpp
 
 	# Rendering
 	Source/Renderer/Camera.cpp

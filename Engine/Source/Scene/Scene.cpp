@@ -9,6 +9,10 @@
 #include <box2d/b2_fixture.h>
 #include <box2d/b2_polygon_shape.h>
 
+namespace Raylib {
+    #include <rlgl.h>
+}
+
 namespace Apex {
 
 // Template specialization must be defined before usage
@@ -166,7 +170,7 @@ namespace Apex {
                 const auto& pos = body->GetPosition();
                 tc.Translation.x = pos.x;
                 tc.Translation.z = pos.y;
-                tc.Rotation.y = body->GetAngle();
+                tc.Rotation.y = body->GetAngle() * (180.0f / 3.141592);
             }
         }
 
@@ -204,10 +208,12 @@ namespace Apex {
                     for (auto e : view)
                     {
                         auto [tf, model] = view.get<TransformComponent, ModelComponent>(e);
-                        // TODO: use the Ex version or someshit
-                        Raylib::DrawModel(model.Model,
+                        Raylib::DrawModelEx(model.Model,
                             { tf.Translation.x, tf.Translation.y, tf.Translation.z },
-                            0.01f, {255, 255, 255, 255});
+                            {0.f, 1.0f, 0.f}, tf.Rotation.y,
+                            //{ tf.Scale.x, tf.Scale.y, tf.Scale.z },
+                            { 0.01f, 0.01f, 0.01f }, // TEMPORARY
+                            Raylib::WHITE);
                     }
                 }
 
@@ -217,8 +223,14 @@ namespace Apex {
                     for (auto e : view)
                     {
                         auto [tf, box] = view.get<TransformComponent, BoxColliderComponent>(e);
-                        Raylib::DrawCubeWiresV({ tf.Translation.x, tf.Translation.y + 1.0f, tf.Translation.z},
+
+                        Raylib::rlPushMatrix();
+                        Raylib::rlTranslatef(tf.Translation.x, tf.Translation.y + 1.0f, tf.Translation.z);
+                        Raylib::rlRotatef(tf.Rotation.y, 0, 1, 0);
+                        // { tf.Translation.x, tf.Translation.y + 1.0f, tf.Translation.z}
+                        Raylib::DrawCubeWiresV({  0.f, 0.f, 0.f },
                             { box.Size.x * 2, 2.0f, box.Size.y * 2 }, {255, 255, 255, 255});
+                        Raylib::rlPopMatrix();
                     }
                 }
                 Raylib::EndMode3D();
