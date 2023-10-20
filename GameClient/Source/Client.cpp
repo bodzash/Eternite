@@ -20,13 +20,13 @@ public:
 	{
 		auto& tc = GetComponent<TransformComponent>();
 
-		if (Raylib::IsKeyPressed(Raylib::KEY_F))
+		if (Input::IsKeyPressed(Key::F))
 		{
 			RemoveComponent<RigidBodyComponent>();
 			RemoveComponent<BoxColliderComponent>();
 		}
 
-		if (Raylib::IsKeyPressed(Raylib::KEY_G))
+		if (Input::IsKeyPressed(Key::G))
 		{
 			if (!HasComponent<RigidBodyComponent>())
 			{
@@ -37,7 +37,7 @@ public:
 			}
 		}
 
-		if (Raylib::IsKeyPressed(Raylib::KEY_R))
+		if (Input::IsKeyPressed(Key::R))
 		{
 			if (HasComponent<RigidBodyComponent>())
 			{
@@ -46,23 +46,23 @@ public:
 			}
 		}
 
-		if (Raylib::IsKeyDown(Raylib::KEY_W))
+		if (Raylib::IsKeyDown(Key::W))
 			tc.Translation.z -= Speed * ts;
 
-		if (Raylib::IsKeyDown(Raylib::KEY_S))
+		if (Raylib::IsKeyDown(Key::S))
 			tc.Translation.z += Speed * ts;
 
-		if (Raylib::IsKeyDown(Raylib::KEY_A))
+		if (Raylib::IsKeyDown(Key::A))
 			tc.Translation.x -= Speed * ts;
 
-		if (Raylib::IsKeyDown(Raylib::KEY_D))
+		if (Raylib::IsKeyDown(Key::D))
 			tc.Translation.x += Speed * ts;
 
 		// Rot
-		if (Raylib::IsKeyDown(Raylib::KEY_Q))
+		if (Raylib::IsKeyDown(Key::Q))
 			tc.Rotation.y += Speed * 100.f * ts;
 		
-		if (Raylib::IsKeyDown(Raylib::KEY_E))
+		if (Raylib::IsKeyDown(Key::E))
 			tc.Rotation.y -= Speed * 100.f * ts;
 	}
 
@@ -82,7 +82,7 @@ public:
 
 	void OnUpdate(Timestep ts) override
 	{
-		if (Raylib::IsMouseButtonPressed(Raylib::MOUSE_BUTTON_RIGHT))
+		if (Raylib::IsMouseButtonPressed(Mouse::Right))
 		{
 			Enabled = !Enabled;
 

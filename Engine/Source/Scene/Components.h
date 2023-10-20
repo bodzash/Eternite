@@ -73,6 +73,8 @@ namespace Apex {
         void SetTransform(glm::vec2 position, float rotation);
         void SetPosition(glm::vec2 position);
         void SetRotation(float rotation);
+
+        void ApplyForce();
     };
 
     // TODO: create implicit constructors and hide Runtime_xxx stuff make Scene a friend

@@ -3,6 +3,7 @@
 #include "Scene/Components.h"
 #include "Scene/ComponentsGraphic.h"
 #include "Scene/Entity.h"
+#include "Math/Math.h"
 #include <glm/glm.hpp>
 #include <box2d/b2_world.h>
 #include <box2d/b2_body.h>
@@ -29,7 +30,7 @@ namespace Apex {
         b2BodyDef bodyDef;
         bodyDef.type = (b2BodyType)rbc.Type;
         bodyDef.position.Set(tc.Translation.x, tc.Translation.z);
-        bodyDef.angle = tc.Rotation.y;
+        bodyDef.angle = Math::DegToRad(tc.Rotation.y);
         // ...
         // add user data for coll and trig cb and things like that
 
@@ -46,7 +47,7 @@ namespace Apex {
 	{
         Entity entity = { e, this };
         auto& rbc = entity.GetComponent<RigidBodyComponent>();
-        m_PhysicsWorld->DestroyBody(static_cast<b2Body*>(rbc.RuntimeBody));
+        m_PhysicsWorld->DestroyBody(rbc.RuntimeBody);
 
         // TODO: should delete collider components as well since fixtures are axed too
         if (entity.HasComponent<BoxColliderComponent>())
@@ -77,7 +78,7 @@ namespace Apex {
             fixtureDef.friction = bcc.Friction;
             fixtureDef.restitution = bcc.Restitution;
             fixtureDef.restitutionThreshold = bcc.RestitutionThreshold;
-            static_cast<b2Body*>(rbc.RuntimeBody)->CreateFixture(&fixtureDef);
+            rbc.RuntimeBody->CreateFixture(&fixtureDef);
         }
         else
         {
@@ -166,11 +167,11 @@ namespace Apex {
                 auto& tc = entity.GetComponent<TransformComponent>();
                 auto& rbc = entity.GetComponent<RigidBodyComponent>();
 
-                b2Body* body = static_cast<b2Body*>(rbc.RuntimeBody);
+                b2Body* body = rbc.RuntimeBody;
                 const auto& pos = body->GetPosition();
                 tc.Translation.x = pos.x;
                 tc.Translation.z = pos.y;
-                tc.Rotation.y = body->GetAngle() * (180.0f / 3.141592);
+                tc.Rotation.y = Math::RadToDeg(body->GetAngle());
             }
         }
 

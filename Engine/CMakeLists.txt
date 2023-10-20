@@ -32,6 +32,9 @@ add_library(Engine STATIC
 	Source/Core/Window.cpp
 	Source/Core/Input.cpp
 
+	# Math
+	Source/Math/Math.cpp
+
 	# Scene
 	Source/Scene/Scene.cpp
 	Source/Scene/Entity.cpp
