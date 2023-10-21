@@ -18,25 +18,43 @@ public:
 
 	void OnAttach() override
 	{
-		//m_Scene.OnRuntimeStart();
+		m_Scene.OnRuntimeStart();
 		m_TestTexture = Raylib::LoadTexture("Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
+		//m_ViewportTexture = Raylib::LoadRenderTexture(640, 480);
+		// Scene Camera
+		Entity cam = m_Scene.CreateEntity();
+		cam.AddComponent<CameraComponent>().Primary = true;
+
+		// Player
+		Entity ent = m_Scene.CreateEntity();
+		ent.AddComponent<ModelComponent>("Data/Models/Leblanc/Leblanc_Skin04.gltf",
+			"Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
+		ent.AddComponent<RigidBodyComponent>();
+		ent.AddComponent<BoxColliderComponent>();
 	}
 
 	void OnDetach() override
 	{
-		//m_Scene.OnRuntimeStop();
+		m_Scene.OnRuntimeStop();
 	}
 
 	void OnUpdate(Timestep ts) override
 	{
-		//m_Scene.OnUpdate(ts);
+		m_Scene.OnUpdate(ts);
 	}
 
 	void OnImGuiRender() override
 	{
+		//Raylib::UpdateTexture(m_ViewportTexture, Raylib::LoadImageFromScreen().data);
+		/*
+		Raylib::BeginTextureMode(m_ViewportTexture);
+		Raylib::ClearBackground({255, 0, 0, 255});
+		Raylib::EndTextureMode();
+		*/
+
 		static bool dockspaceOpen = true;
 		static bool fullscreenPersistant = true;
-		static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
+		static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode;
 		bool optFullscreen = fullscreenPersistant;
 
 		ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -97,7 +115,7 @@ public:
 
 				if (ImGui::MenuItem("Exit", ""))
 				{
-					AX_INFO("Exiting editor...");
+					Application::Get().Close();
 				}
 
 				ImGui::EndMenu();
@@ -105,6 +123,11 @@ public:
 		}
 		ImGui::EndMenuBar(); // MenuBar
 		ImGui::End(); // Dockspace
+
+		ImGui::Begin("Viewport"); // Viewport
+		//ImGui::Image((ImTextureID)&m_ViewportTexture.texture, ImVec2{ 640.0f, 480.0f });
+		ImGui::End(); // Viewport
+
 
 		ImGui::Begin("Inspector"); // Inspector
 		ImGui::Text("Placeholder");
@@ -118,6 +141,8 @@ private:
 
 	glm::vec3 m_TestColor = glm::vec3(0.0f, 1.0f, 0.0f);
 	Raylib::Texture2D m_TestTexture;
+	Raylib::RenderTexture2D m_ViewportTexture;
+	Raylib::Texture2D m_Dawg;
 };
 
 class GameEditor : public Application

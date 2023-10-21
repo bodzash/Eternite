@@ -42,6 +42,8 @@ namespace Apex {
 	{
 		while (m_Running)
 		{
+			m_Running = !Raylib::WindowShouldClose();
+
 			Timestep timestep = Raylib::GetFrameTime();
 
 			Raylib::BeginDrawing();
@@ -58,16 +60,13 @@ namespace Apex {
 			}
 			m_ImGuiLayer->End();
 			Raylib::EndDrawing();
-
-			//m_Window->OnUpdate();
-			/*
-			Raylib::BeginDrawing();
-            	Raylib::ClearBackground({138, 142, 140, 255});
-			Raylib::EndDrawing();
-			*/
-
-			m_Running = !Raylib::WindowShouldClose();
 		}
+	}
+
+	void Application::Close()
+	{
+		m_Running = false;
+		//Raylib::CloseWindow();
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
