@@ -1,24 +1,20 @@
 #include "axpch.h"
 #include "Core/Application.h"
 #include "ImGuiLayer.h"
-/*
+
 #include <imgui.h>
-
-#include <backends/imgui_impl_glfw.h>
-//#include <backends/imgui_impl_dx9.cpp>
-//#include "imgui_impl_bgfx.h"
-
-#include <GLFW/glfw3.h>
-*/
+#include "rlImGui.h"
 
 namespace Apex
 {
 
-  ImGuiLayer::ImGuiLayer()
-    : Layer("ImGuiLayer") {}
+	ImGuiLayer::ImGuiLayer()
+	: Layer("ImGuiLayer") {}
 
-  void ImGuiLayer::OnAttach()
-  {
+	void ImGuiLayer::OnAttach()
+	{
+		rlImGuiSetup(true);
+		
 		/*
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -33,16 +29,15 @@ namespace Apex
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();
 
+
 		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 		ImGuiStyle& style = ImGui::GetStyle();
+		
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			style.WindowRounding = 0.0f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
-
-		Application& app = Application::Get();
-		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
 
 		ImGui_ImplGlfw_InitForOther(window, true);
 		ImGui_Implbgfx_Init(0);
@@ -56,6 +51,7 @@ namespace Apex
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 		*/
+		rlImGuiShutdown();
 	}
 
 	void ImGuiLayer::Begin()
@@ -65,6 +61,7 @@ namespace Apex
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		*/
+		rlImGuiBegin();
 	}
 
 	void ImGuiLayer::End()
@@ -86,6 +83,9 @@ namespace Apex
 			glfwMakeContextCurrent(backupCurrentContext);
 		}
 		*/
+		ImGui::ShowDemoWindow();
+
+		rlImGuiEnd();
 	}
 
 }
