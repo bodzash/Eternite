@@ -31,8 +31,8 @@
 #include "imgui_impl_raylib.h"
 
 namespace Raylib {
-    #include "raylib.h"
-    #include "rlgl.h"
+    #include <raylib.h>
+    #include <rlgl.h>
 }
 
 /*

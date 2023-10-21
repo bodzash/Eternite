@@ -27,6 +27,3 @@
 
 #include "ImGui/ImGuiLayer.h"
 //#include "ImGui/rlImGui.h"
-
-// Entry point
-#include "Core/EntryPoint.h"

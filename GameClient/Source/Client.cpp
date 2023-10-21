@@ -1,4 +1,5 @@
 #include <Apex.h>
+#include <ApexEntryPoint.h>
 #include <filesystem>
 
 namespace Raylib {

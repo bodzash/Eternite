@@ -20,7 +20,7 @@ namespace Apex {
 
     struct TagComponent
     {
-        std::string Tag;
+        std::string Tag = "";
 
         TagComponent() = default;
         TagComponent(const TagComponent&) = default;

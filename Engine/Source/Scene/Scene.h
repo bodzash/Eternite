@@ -40,6 +40,7 @@ namespace Apex {
 		void OnComponentRemoved(entt::entity e);
 
         friend class Entity;
+        friend class SceneHierarchyPanel;
     };
 
 }

@@ -8,6 +8,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_executable(Editor
     # Core
     Source/Editor.cpp
+    Source/EditorLayer.cpp
+
+    # Panels
+    Source/Panels/SceneHierarchyPanel.cpp
 )
 
 # Third party
