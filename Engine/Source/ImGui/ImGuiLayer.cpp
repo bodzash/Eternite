@@ -5,6 +5,10 @@
 #include <imgui.h>
 #include "rlImGui.h"
 
+namespace Raylib {
+	#include <raylib.h>
+}
+
 namespace Apex
 {
 
@@ -61,6 +65,8 @@ namespace Apex
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		*/
+		//Raylib::BeginDrawing();
+		//ClearBackground(Raylib::DARKGRAY);
 		rlImGuiBegin();
 	}
 
@@ -86,6 +92,7 @@ namespace Apex
 		ImGui::ShowDemoWindow();
 
 		rlImGuiEnd();
+		//Raylib::EndDrawing();
 	}
 
 }

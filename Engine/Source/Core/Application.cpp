@@ -12,7 +12,6 @@ namespace Apex {
 
 	Application* Application::s_Instance = nullptr;
 
-	// TODO: Implement a HeadlessApplication class for server
 	Application::Application()
 	{
 		AX_CORE_ASSERT(!s_Instance, "Application instance already exists!");
@@ -45,6 +44,8 @@ namespace Apex {
 		{
 			Timestep timestep = Raylib::GetFrameTime();
 
+			Raylib::BeginDrawing();
+			Raylib::ClearBackground({138, 142, 140, 255});
 			for (Layer* layer : m_LayerStack)
 			{
 				layer->OnUpdate(timestep);
@@ -56,6 +57,7 @@ namespace Apex {
 				layer->OnImGuiRender();
 			}
 			m_ImGuiLayer->End();
+			Raylib::EndDrawing();
 
 			//m_Window->OnUpdate();
 			/*

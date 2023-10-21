@@ -178,8 +178,8 @@ namespace Apex {
         // Rendering
         {
 #ifndef AX_HEADLESS
-            Raylib::BeginDrawing();
-            Raylib::ClearBackground({138, 142, 140, 255});
+            //Raylib::BeginDrawing();
+            //Raylib::ClearBackground({138, 142, 140, 255});
 
             Raylib::Camera3D* mainCamera = nullptr;
             TransformComponent cameraTransform;
@@ -240,7 +240,7 @@ namespace Apex {
             {
                 AX_CORE_WARN("There is no camera present in the scene!");
             }
-			Raylib::EndDrawing();
+			//Raylib::EndDrawing();
         }
 #endif // AX_HEADLESS
 	}
