@@ -24,12 +24,12 @@ public:
 
 			if (Enabled)
 			{
-				Raylib::HideCursor();
+				//Raylib::HideCursor();
 				Raylib::DisableCursor();
 			}
 			else
 			{
-				Raylib::ShowCursor();
+				//Raylib::ShowCursor();
 				Raylib::EnableCursor();
 			}
 		}

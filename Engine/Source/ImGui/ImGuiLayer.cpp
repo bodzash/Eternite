@@ -38,6 +38,7 @@ namespace Apex
 	{
 		ImGui_ImplRaylib_NewFrame();
         ImGui::NewFrame();
+		ImGui_ImplRaylib_ProcessEvents();
 	}
 
 	void ImGuiLayer::End()

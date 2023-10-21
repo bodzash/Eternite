@@ -25,8 +25,8 @@ void EditorLayer::OnAttach()
     Entity ent = m_Scene->CreateEntity("Player");
     ent.AddComponent<ModelComponent>("Data/Models/Leblanc/Leblanc_Skin04.gltf",
         "Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
-    ent.AddComponent<RigidBodyComponent>();
-    ent.AddComponent<BoxColliderComponent>();
+    //ent.AddComponent<RigidBodyComponent>();
+    //ent.AddComponent<BoxColliderComponent>();
 
     m_HierarchyPanel.SetContext(m_Scene);
 }

@@ -14,6 +14,10 @@ namespace Apex {
 
     private:
         Ref<Scene> m_Context;
+        Entity m_SelectionContext;
+
+        void RenderEntityNode(Entity entity);
+        void RenderComponents(Entity entity);
     };
 
 }

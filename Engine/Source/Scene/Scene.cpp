@@ -114,7 +114,7 @@ namespace Apex {
         entity.AddComponent<TransformComponent>();
 
         auto& tag = entity.AddComponent<TagComponent>();
-        tag.Tag = name.empty() ? "Unknown" : name;
+        tag.Tag = name.empty() ? "Unnamed Entity" : name;
 
         // TODO: should create relation component here :)
 
