@@ -2,7 +2,6 @@
 #include "axpch.h"
 #include "Core.h"
 #include "Events/Event.h"
-#include "Renderer/GraphicsContext.h"
 //#include "GLFW/glfw3.h"
 
 namespace Apex {

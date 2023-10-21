@@ -12,14 +12,6 @@ namespace Apex {
 		static void EndScene();
 
 		static void Submit();
-
-	private:
-		struct SceneData
-		{
-			glm::mat4 ViewProjectionMatrix;
-		};
-
-		static SceneData* s_SceneData;
 	};
 
 

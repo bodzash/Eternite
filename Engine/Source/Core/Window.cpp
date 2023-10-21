@@ -5,8 +5,6 @@
 #include "Events/MouseEvent.h"
 #include "Events/ApplicationEvent.h"
 
-#include "Renderer/GraphicsContext.h"
-
 namespace Apex {
 
 	static bool s_GLFWInitialized = false;

@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Create executable
 add_executable(Client
-    # ../Content/Metadata/Metadata.rc
+    # ../Data/Metadata/Metadata.rc
 
     # Core
     Source/Client.cpp

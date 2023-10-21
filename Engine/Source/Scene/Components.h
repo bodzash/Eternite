@@ -3,11 +3,13 @@
 #include <glm/gtx/quaternion.hpp>
 #include "NativeBehaviour.h"
 
-// TODO: put components into their own files probably
+// Fwd decl
+class b2Body;
+class b2Fixture;
 
 namespace Apex {
 
-    struct RelationComponent
+    struct HierarchyComponent
     {
         entt::entity Parent{entt::null};
         //std::array<> Children;
@@ -36,35 +38,6 @@ namespace Apex {
 		TransformComponent(const TransformComponent&) = default;
 		TransformComponent(const glm::vec3& translation)
 			: Translation(translation) {}
-
-		glm::mat4 GetTransform() const
-		{
-			glm::mat4 rotation = glm::toMat4(glm::quat(Rotation));
-
-            // Order is important! T->R->S
-			return glm::translate(glm::mat4(1.0f), Translation)
-				* rotation
-				* glm::scale(glm::mat4(1.0f), Scale);
-		}
-    };
-
-    struct MeshComponent
-    {
-        // TODO: do not use strings, use a smart pointer (ref or scope) :D
-        std::string Name;
-
-        MeshComponent() = default;
-        MeshComponent(const MeshComponent&) = default;
-        // should have one more constructor that takes in a smart pointer to the mesh
-    };
-
-    struct CameraComponent
-    {
-        //SceneCamera Camera;
-        bool Primary = false;
-
-        CameraComponent() = default;
-        CameraComponent(const CameraComponent&) = default;
     };
 
     struct ScriptComponent
@@ -80,6 +53,83 @@ namespace Apex {
             InstantiateScript = []() { return static_cast<NativeBehaviour*>(new T()); };
             DestroyScript = [](ScriptComponent* sc) { delete sc->Instance; sc->Instance = nullptr; };
         }
+    };
+
+    // TODO: create implicit constructors and hide Runtime_xxx stuff make Scene a friend
+    struct RigidBodyComponent
+    {
+        // NOTE: this lines up with b2BodyType enum
+        enum class BodyType { Static = 0, Kinematic, Dynamic };
+
+        BodyType Type = BodyType::Dynamic;
+        bool FixedRotation = false;
+
+        // Runtime storage
+        b2Body* RuntimeBody = nullptr;
+
+        RigidBodyComponent() = default;
+        RigidBodyComponent(const RigidBodyComponent&) = default;
+
+        void SetTransform(glm::vec2 position, float rotation);
+        void SetPosition(glm::vec2 position);
+        void SetRotation(float rotation);
+
+        void ApplyForce();
+    };
+
+    // TODO: create implicit constructors and hide Runtime_xxx stuff make Scene a friend
+    struct BoxColliderComponent
+    {
+        glm::vec2 Offset = { 0.f, 0.f };
+        glm::vec2 Size = { 0.5f, 0.5f };
+
+        float Density = 1.0f;
+        float Friction = 0.5f;
+        float Restitution = 0.0f;
+        float RestitutionThreshold = 0.1f;
+
+        // Runtime storage
+        b2Fixture* RuntimeFixture = nullptr;
+
+        BoxColliderComponent() = default;
+        BoxColliderComponent(const BoxColliderComponent&) = default;
+    };
+
+    // TODO: implement
+    struct CircleColliderComponent
+    {
+        glm::vec2 Offset = { 0.f, 0.f };
+        float Radius = 1.0f;
+
+        float Density = 1.0f;
+        float Friction = 0.5f;
+        float Restitution = 0.0f;
+        float RestitutionThreshold = 0.2f;
+
+        // Runtime storage
+        void* RuntimeFixture = nullptr;
+
+        CircleColliderComponent() = default;
+        CircleColliderComponent(const CircleColliderComponent&) = default;
+    };
+
+    // TODO: implement but later
+    struct PolygonColliderComponent
+    {
+        glm::vec2 Offset = { 0.f, 0.f };
+        /*
+            Needs vertices and some other shit
+        */
+        float Density = 1.0f;
+        float Friction = 0.5f;
+        float Restitution = 0.0f;
+        float RestitutionThreshold = 0.2f;
+
+        // Runtime storage
+        void* RuntimeFixture = nullptr;
+
+        PolygonColliderComponent() = default;
+        PolygonColliderComponent(const PolygonColliderComponent&) = default;
     };
 
 }
