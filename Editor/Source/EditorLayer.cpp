@@ -94,6 +94,11 @@ void EditorLayer::OnImGuiRender()
     {
         if (ImGui::BeginMenu("File"))
         {
+            if (ImGui::MenuItem("New Project", "Ctrl+N"))
+            {
+                AX_INFO("New project...");
+            }
+
             if (ImGui::MenuItem("Load Project", "Ctrl+O"))
             {
                 AX_INFO("Loading project...");
@@ -102,6 +107,11 @@ void EditorLayer::OnImGuiRender()
             if (ImGui::MenuItem("Save Project", "Ctrl+S"))
             {
                 AX_INFO("Saving project...");
+            }
+
+            if (ImGui::MenuItem("Save As", "Ctrl+Shift+S"))
+            {
+                AX_INFO("Saving as...");
             }
 
             if (ImGui::MenuItem("Exit", ""))
@@ -130,12 +140,11 @@ void EditorLayer::OnImGuiRender()
     ImGui::End(); // Viewport
     ImGui::PopStyleVar();
     */
-    /*
-    ImGui::Begin("Inspector"); // Inspector
-    ImGui::Text("Placeholder");
-    //ImGui::Image((ImTextureID)&m_TestTexture, ImVec2{ 256.0f, 256.0f });
-    ImGui::End(); // Inspector
-    */
+
+    ImGui::Begin("Settings");
+    ImGui::Text("FPS: %d", Raylib::GetFPS());
+    ImGui::Text("Press F1 to toggle camera controls");
+    ImGui::End();
 
     // Panels
     m_HierarchyPanel.OnImGuiRender();

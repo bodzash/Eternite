@@ -17,7 +17,7 @@ namespace Apex {
         ~Scene();
 
         Entity CreateEntity(const std::string& name = "");
-        //void DestroyEntity(Entity entity);
+        void DestroyEntity(Entity entity);
         // create entity with uuid
         // Find entity by id
         // find entity by name

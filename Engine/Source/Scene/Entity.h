@@ -40,6 +40,7 @@ namespace Apex {
 
         operator bool() const { return m_Handle != entt::null; }
         operator uint32_t() const { return (uint32_t)m_Handle; }
+        operator entt::entity() const { return m_Handle; }
 
         bool operator==(const Entity& other) const { return m_Handle == other.m_Handle && m_Scene == other.m_Scene; }
         bool operator!=(const Entity& other) const { return !(*this == other); }

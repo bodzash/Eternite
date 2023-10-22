@@ -116,20 +116,6 @@ namespace Apex {
     // TODO: implement but later
     struct PolygonColliderComponent
     {
-        glm::vec2 Offset = { 0.f, 0.f };
-        /*
-            Needs vertices and some other shit
-        */
-        float Density = 1.0f;
-        float Friction = 0.5f;
-        float Restitution = 0.0f;
-        float RestitutionThreshold = 0.2f;
-
-        // Runtime storage
-        void* RuntimeFixture = nullptr;
-
-        PolygonColliderComponent() = default;
-        PolygonColliderComponent(const PolygonColliderComponent&) = default;
     };
 
 }

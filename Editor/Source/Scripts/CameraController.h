@@ -18,18 +18,18 @@ public:
 
 	void OnUpdate(Timestep ts) override
 	{
-		if (Raylib::IsMouseButtonPressed(Mouse::Right))
+		if (Raylib::IsKeyPressed(Key::F1))
 		{
 			Enabled = !Enabled;
 
 			if (Enabled)
 			{
-				//Raylib::HideCursor();
+				Raylib::HideCursor();
 				Raylib::DisableCursor();
 			}
 			else
 			{
-				//Raylib::ShowCursor();
+				Raylib::ShowCursor();
 				Raylib::EnableCursor();
 			}
 		}

@@ -121,6 +121,11 @@ namespace Apex {
         return entity;
     }
 
+    void Scene::DestroyEntity(Entity entity)
+    {
+        m_Registry.destroy(entity);
+    }
+
 	void Scene::OnRuntimeStart()
     {
         m_PhysicsWorld = new b2World({ 0.f, 0.f });
@@ -238,7 +243,7 @@ namespace Apex {
             }
             else
             {
-                AX_CORE_WARN("There is no camera present in the scene!");
+                //AX_CORE_WARN("There is no camera present in the scene!");
             }
 			//Raylib::EndDrawing();
         }

@@ -15,26 +15,50 @@ namespace Apex {
     struct ModelComponent
     {
         // TODO: DO NOT LOAD MODELS, TEXTURES LIKE THIS, CREATE A RESOURCE MANAGER
+
+        // These are the "editor" things, for now we use paths, but later just filenames cuz rres
+        std::string ModelPath = "";
+        std::string TexturePath = "";
+        std::string AnimationPath = "";
+
+        // Maybe we can store unqie id's for these mf's, think about that
+
+        // These are the runtime things
+        // Load in the model and copy it (because animation fucks it up)
         Raylib::Model Model = { 0 };
+        Raylib::Texture2D Texture;
+        // Animation TODO: might be a seperate component maybe not idonfukinknow
         
         ModelComponent(std::string_view path)
         {
+            ModelPath = path.data();
             Model = Raylib::LoadModel(path.data());
         }
 
         ModelComponent(std::string_view modelPath, std::string_view materialPath)
         {
+            ModelPath = modelPath.data();
+            TexturePath = materialPath.data();
+
             Model = Raylib::LoadModel(modelPath.data());
 
             Raylib::Image img = Raylib::LoadImage(materialPath.data());
             Raylib::ImageMipmaps(&img);
-            Raylib::Texture2D texture = Raylib::LoadTextureFromImage(img);
-            Model.materials[0].maps[Raylib::MATERIAL_MAP_DIFFUSE].texture = texture;
+            Texture = Raylib::LoadTextureFromImage(img);
+            Model.materials[0].maps[Raylib::MATERIAL_MAP_DIFFUSE].texture = Texture;
             UnloadImage(img);
         }
+
+        ModelComponent(std::string_view modelPath, std::string_view materialPath, std::string_view animPath)
+        {
+        }
+
         ModelComponent() = default;
         ModelComponent(const ModelComponent&) = default;
-        // should have one more constructor that takes in a smart pointer to the mesh and shit
+
+        // SetModel
+        // SetTexture
+        // SetAnimation
     };
 
     /*
@@ -48,7 +72,7 @@ namespace Apex {
     struct CameraComponent
     {
         // NOTE: this lines up with Raylib's
-        enum class ProjectionType { Perspective = 0, Orthographic };
+        enum class ProjectionType { Perspective = 0, Orthographic = 1 };
 
         // TODO: abstract camera away man
         Raylib::Camera3D Camera = { 0 };
