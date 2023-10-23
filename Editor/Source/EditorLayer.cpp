@@ -1,8 +1,9 @@
 #include "EditorLayer.h"
+#include "FileDialog/FileDialog.h"
+#include "Scripts/EditorCameraController.h"
 #include <imgui.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Scripts/EditorCameraController.h"
 #include <Scene/SceneSerializer.h>
 
 namespace Raylib {
@@ -101,29 +102,47 @@ void EditorLayer::OnImGuiRender()
         {
             if (ImGui::MenuItem("New Project", "Ctrl+N"))
             {
-                AX_INFO("New project...");
-                // Just wipe out everything lol
-                //m_Scene->m_Registry.clear();
+                m_Scene = CreateRef<Scene>();
+                m_HierarchyPanel.SetContext(m_Scene);
+                Entity edcam = m_Scene->CreateEntity("EditorCamera");
+                edcam.RemoveComponent<TagComponent>();
+                edcam.AddComponent<ScriptComponent>().Bind<EditorCameraController>();
+                edcam.AddComponent<CameraComponent>().Primary = true;
             }
 
             if (ImGui::MenuItem("Load Project", "Ctrl+O"))
             {
-                AX_INFO("Loading project...");
-                //m_Scene->m_Registry.clear();
-                SceneSerializer serializer(m_Scene);
-                serializer.DeserializeText("Data/Scenes/Default.ascn");
+                auto path = FileDialog::OpenFile("Apex Scene (*.ascn)\0*.ascn\0");
+                if (!path.empty())
+                {
+                    m_Scene = CreateRef<Scene>();
+                    m_HierarchyPanel.SetContext(m_Scene);
+                    Entity edcam = m_Scene->CreateEntity("EditorCamera");
+                    edcam.RemoveComponent<TagComponent>();
+                    edcam.AddComponent<ScriptComponent>().Bind<EditorCameraController>();
+                    edcam.AddComponent<CameraComponent>().Primary = true;
+
+                    SceneSerializer serializer(m_Scene);
+                    serializer.DeserializeText(path);
+                }
             }
 
             if (ImGui::MenuItem("Save Project", "Ctrl+S"))
             {
-                AX_INFO("Saving project...");
+                /*
                 SceneSerializer serializer(m_Scene);
                 serializer.SerializeText("Data/Scenes/Default.ascn");
+                */
             }
 
             if (ImGui::MenuItem("Save As", "Ctrl+Shift+S"))
             {
-                AX_INFO("Saving as...");
+                auto path = FileDialog::SaveFile("Apex Scene (*.ascn)\0*.ascn\0");
+                if (!path.empty())
+                {
+                    SceneSerializer serializer(m_Scene);
+                    serializer.SerializeText(path);
+                }
             }
 
             if (ImGui::MenuItem("Exit", ""))

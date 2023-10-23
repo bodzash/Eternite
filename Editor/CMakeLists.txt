@@ -4,6 +4,14 @@
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Conditional soure files
+set(PLATFORM_SRC)
+
+# Platform check for source files
+if (WIN32)
+    set(PLATFORM_SRC ${PLATFORM_SRC} Source/FileDialog/FileDialogWindows.cpp)
+endif()
+
 # Create executable
 add_executable(Editor
     # Core
@@ -12,6 +20,9 @@ add_executable(Editor
 
     # Panels
     Source/Panels/HierarchyPanel.cpp
+
+    # Platform specific
+    ${PLATFORM_SRC}
 )
 
 # Third party
