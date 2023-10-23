@@ -89,9 +89,14 @@ namespace Apex
 		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 
+		// Resize
+		colors[ImGuiCol_ResizeGrip] = ImVec4{ 0.05, 0.46, 0.2, 1.0f };
+		colors[ImGuiCol_ResizeGripHovered] = ImVec4{ 0.05, 0.6, 0.4, 1.0f };
+		colors[ImGuiCol_ResizeGripActive] = ImVec4{ 0.15, 0.76, 0.5, 1.0f };
+
 		// Action?
 		colors[ImGuiCol_CheckMark] = ImVec4{ 0.15, 0.76, 0.5, 1.0f };
-		//colors[ImGuiCol_Border] = ImVec4{ 0.15, 0.76, 0.5, 1.0f };
+		colors[ImGuiCol_TextSelectedBg] = ImVec4{0.15, 0.76, 0.5, 1.0f};
 	}
 
 }

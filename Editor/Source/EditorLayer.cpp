@@ -2,7 +2,8 @@
 #include <imgui.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Scripts/CameraController.h"
+#include "Scripts/EditorCameraController.h"
+#include <Scene/SceneSerializer.h>
 
 namespace Raylib {
 	#include <raylib.h>
@@ -13,13 +14,17 @@ using namespace Apex;
 void EditorLayer::OnAttach()
 {
     m_Scene = CreateRef<Scene>();
-
     m_Scene->OnRuntimeStart();
+
+    // Editor Camera - NO DELETE
+    Entity edcam = m_Scene->CreateEntity("EditorCamera");
+    edcam.RemoveComponent<TagComponent>();
+    edcam.AddComponent<ScriptComponent>().Bind<EditorCameraController>();
+    edcam.AddComponent<CameraComponent>().Primary = true;
 
     // Scene Camera
     Entity cam = m_Scene->CreateEntity("Camera");
-    cam.AddComponent<ScriptComponent>().Bind<CameraController>();
-    cam.AddComponent<CameraComponent>().Primary = true;
+    cam.AddComponent<CameraComponent>();
 
     // Player
     Entity ent = m_Scene->CreateEntity("Player");
@@ -97,16 +102,23 @@ void EditorLayer::OnImGuiRender()
             if (ImGui::MenuItem("New Project", "Ctrl+N"))
             {
                 AX_INFO("New project...");
+                // Just wipe out everything lol
+                //m_Scene->m_Registry.clear();
             }
 
             if (ImGui::MenuItem("Load Project", "Ctrl+O"))
             {
                 AX_INFO("Loading project...");
+                //m_Scene->m_Registry.clear();
+                SceneSerializer serializer(m_Scene);
+                serializer.DeserializeText("Data/Scenes/Default.ascn");
             }
 
             if (ImGui::MenuItem("Save Project", "Ctrl+S"))
             {
                 AX_INFO("Saving project...");
+                SceneSerializer serializer(m_Scene);
+                serializer.SerializeText("Data/Scenes/Default.ascn");
             }
 
             if (ImGui::MenuItem("Save As", "Ctrl+Shift+S"))

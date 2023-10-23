@@ -1,0 +1,16 @@
+Scene: Name
+Entities:
+  - Entity: 6969
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [0.699999988, 3.5, 2.20000005]
+      Rotation: [2.5, 2.70000005, 1.79999995]
+      Scale: [1, 1, 1]
+  - Entity: 6969
+    TagComponent:
+      Tag: Player
+    TransformComponent:
+      Translation: [-6.30000019, 1.39999998, 1.39999998]
+      Rotation: [-2.4000001, 2.5, 1.39999998]
+      Scale: [-1.20000005, -0.699999988, 1.89999998]
