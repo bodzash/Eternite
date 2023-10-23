@@ -1,7 +1,7 @@
 #pragma once
 #include <Apex.h>
 #include <glm/glm.hpp>
-#include "Panels/SceneHierarchyPanel.h"
+#include "Panels/HierarchyPanel.h"
 
 class EditorLayer : public Apex::Layer
 {
@@ -19,5 +19,5 @@ private:
 	glm::vec2 m_ViewportSize;
 
 	// Panels
-	Apex::SceneHierarchyPanel m_HierarchyPanel;
+	Apex::HierarchyPanel m_HierarchyPanel;
 };

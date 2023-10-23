@@ -11,7 +11,7 @@ add_executable(Editor
     Source/EditorLayer.cpp
 
     # Panels
-    Source/Panels/SceneHierarchyPanel.cpp
+    Source/Panels/HierarchyPanel.cpp
 )
 
 # Third party

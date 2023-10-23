@@ -1,21 +1,21 @@
-#include "SceneHierarchyPanel.h"
+#include "HierarchyPanel.h"
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Apex {
 
-    SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
+    HierarchyPanel::HierarchyPanel(const Ref<Scene>& context)
     {
         SetContext(context);
     }
 
-    void SceneHierarchyPanel::SetContext(const Ref<Scene>& context)
+    void HierarchyPanel::SetContext(const Ref<Scene>& context)
     {
         m_Context = context;
     }
 
-    void SceneHierarchyPanel::OnImGuiRender()
+    void HierarchyPanel::OnImGuiRender()
     {
         ImGui::Begin("Hierarchy");
 
@@ -32,11 +32,12 @@ namespace Apex {
         }
 
         // TODO: change it to a button at the bottom of the panel
-        //ImGuiPopupFlags_NoOverItems
         if (ImGui::BeginPopupContextWindow("", ImGuiPopupFlags_NoOpenOverItems | ImGuiPopupFlags_MouseButtonRight))
         {
             if (ImGui::MenuItem("Create Entity"))
-                m_Context->CreateEntity();
+            {
+                m_SelectionContext = m_Context->CreateEntity();
+            }
 
             ImGui::EndPopup();
         }
@@ -49,35 +50,18 @@ namespace Apex {
         {
             RenderComponents(m_SelectionContext);
 
-            if (ImGui::Button("Add Component"))
-                ImGui::OpenPopup("AddComponent");
-
-            if (ImGui::BeginPopup("AddComponent"))
-            {
-                if (ImGui::MenuItem("Camera"))
-                {
-                    m_SelectionContext.AddComponent<CameraComponent>();
-                    ImGui::CloseCurrentPopup();
-                }
-
-                if (ImGui::MenuItem("Model"))
-                {
-                    m_SelectionContext.AddComponent<ModelComponent>();
-                    ImGui::CloseCurrentPopup();
-                }
-
-                ImGui::EndPopup();
-            }
+            
         }
 
         ImGui::End();
     }
 
-    void SceneHierarchyPanel::RenderEntityNode(Entity entity)
+    void HierarchyPanel::RenderEntityNode(Entity entity)
     {
         auto& tag = entity.GetComponent<TagComponent>().Tag;
 
         ImGuiTreeNodeFlags flags = ((m_SelectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+        flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
         bool opened = ImGui::TreeNodeEx((void*)(uint32_t)entity, flags, tag.c_str());
         if (ImGui::IsItemClicked())
         {
@@ -111,6 +95,9 @@ namespace Apex {
 
     static void RenderVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.f)
     {
+        ImGuiIO& io = ImGui::GetIO();
+        auto boldFont = io.Fonts->Fonts[0];
+
         ImGui::PushID(label.c_str());
 
         ImGui::Columns(2);
@@ -128,8 +115,10 @@ namespace Apex {
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.f });
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.f });
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.f });
+        ImGui::PushFont(boldFont);
         if (ImGui::Button("X", buttonSize))
             values.x = resetValue;
+        ImGui::PopFont();
         ImGui::PopStyleColor(3);
 
         ImGui::SameLine();
@@ -140,8 +129,10 @@ namespace Apex {
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.f });
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.f });
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.82, 0.7f, 0.3f, 1.f });
+        ImGui::PushFont(boldFont);
         if (ImGui::Button("Y", buttonSize))
             values.y = resetValue;
+        ImGui::PopFont();
         ImGui::PopStyleColor(3);
 
         ImGui::SameLine();
@@ -152,8 +143,10 @@ namespace Apex {
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.f });
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.3f, 0.9f, 1.f });
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.f });
+        ImGui::PushFont(boldFont);
         if (ImGui::Button("Z", buttonSize))
             values.z = resetValue;
+        ImGui::PopFont();
         ImGui::PopStyleColor(3);
 
         ImGui::SameLine();
@@ -167,119 +160,129 @@ namespace Apex {
         ImGui::PopID();
     }
 
-    void SceneHierarchyPanel::RenderComponents(Entity entity)
+    template<typename T, typename UIFunction>
+    static void RenderComponent(const std::string& name, Entity entity, UIFunction fn)
     {
-        // TagComponent
-        if (entity.HasComponent<TagComponent>())
+        const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+        if (entity.HasComponent<T>())
         {
-            auto& tag = entity.GetComponent<TagComponent>().Tag;
-            
-            char buffer[128];
-            memset(buffer, 0, sizeof(buffer));
-            strcpy_s(buffer, sizeof(buffer), tag.c_str());
-            if (ImGui::InputText("Tag", buffer, sizeof(buffer)))
-            {
-                tag = std::string(buffer);
-            }
-        }
+            auto& component = entity.GetComponent<T>();
+            ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
 
-        const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
-
-        // TransformComponent
-        if (entity.HasComponent<TransformComponent>())
-        {
-            bool open = ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), treeNodeFlags, "Transform");
-            if (open)
-            {
-                auto& tc = entity.GetComponent<TransformComponent>();
-                RenderVec3Control("Translation", tc.Translation);
-                RenderVec3Control("Rotation", tc.Rotation);
-                RenderVec3Control("Scale", tc.Scale, 1.0f);
-
-                ImGui::TreePop();
-            }
-        }
-
-        // CameraComponent
-        if (entity.HasComponent<CameraComponent>())
-        {
-            if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), treeNodeFlags, "Camera"))
-            {
-                auto& cc = entity.GetComponent<CameraComponent>();
-
-                ImGui::Checkbox("Primary", &cc.Primary);
-
-                const char* projTypeStrings[] = { "Perspective", "Orthographic" };
-                // TODO: get proj type
-                // TODO: implement SceneCamera (its a raylib Camera3D wrapper really...)
-                const char* currentProjTypeString = projTypeStrings[0];
-
-                if (ImGui::BeginCombo("Projection", currentProjTypeString))
-                {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        bool selected = currentProjTypeString == projTypeStrings[i];
-                        if (ImGui::Selectable(projTypeStrings[i], selected))
-                        {
-                            currentProjTypeString = projTypeStrings[i];
-                            // TODO: set proj type to [i]
-                        }
-
-                        if (selected)
-                            ImGui::SetItemDefaultFocus();
-                    }
-                    ImGui::EndCombo();
-                }
-
-                /*
-                if persp -> display persp stuff
-                if orthi -> display ortho stuff
-                */
-
-                ImGui::TreePop();
-            }
-        }
-
-        // ModelComponent
-        if (entity.HasComponent<ModelComponent>())
-        {
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
-            bool open = ImGui::TreeNodeEx((void*)typeid(ModelComponent).hash_code(), treeNodeFlags, "Model");
-            ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
-            if (ImGui::Button("+", ImVec2{ 20.f, 20.f }))
+            float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+            ImGui::Separator();
+
+            bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
+            ImGui::PopStyleVar();
+            ImGui::SameLine(contentRegionAvail.x - lineHeight * 0.5f);
+            if (ImGui::Button("...", ImVec2{ lineHeight, lineHeight }))
             {
                 ImGui::OpenPopup("ComponentSettings");
             }
-            ImGui::PopStyleVar();
 
             bool removeComponent = false;
             if (ImGui::BeginPopup("ComponentSettings"))
             {
                 if (ImGui::MenuItem("Remove Component"))
                     removeComponent = true;
-
                 ImGui::EndPopup();
             }
 
             if (open)
             {
-                auto& mc = entity.GetComponent<ModelComponent>();
-
-                // Model
-                ImGui::Text(mc.ModelPath.c_str());
-
-                // Texture
-                ImGui::Text(mc.TexturePath.c_str());
-                //ImGui::Image((ImTextureID)&mc.Texture, ImVec2{ 128.0f, 128.f });
-
-                // Animation
-                ImGui::Text(mc.AnimationPath.c_str());
-
+                fn(component);
                 ImGui::TreePop();
             }
 
             if (removeComponent)
-                entity.RemoveComponent<ModelComponent>();
+                entity.RemoveComponent<T>();
         }
+    }
+
+    void HierarchyPanel::RenderComponents(Entity entity)
+    {
+        // TagComponent
+        if (entity.HasComponent<TagComponent>())
+        {
+            auto& tag = entity.GetComponent<TagComponent>().Tag;
+            
+            char buffer[256];
+            memset(buffer, 0, sizeof(buffer));
+            strcpy_s(buffer, sizeof(buffer), tag.c_str());
+            if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
+            {
+                tag = std::string(buffer);
+            }
+        }
+
+        ImGui::SameLine();
+        ImGui::PushItemWidth(-1);
+
+        if (ImGui::Button("Add Component"))
+            ImGui::OpenPopup("AddComponent");
+
+        if (ImGui::BeginPopup("AddComponent"))
+        {
+            if (ImGui::MenuItem("Camera"))
+            {
+                m_SelectionContext.AddComponent<CameraComponent>();
+                ImGui::CloseCurrentPopup();
+            }
+
+            if (ImGui::MenuItem("Model"))
+            {
+                m_SelectionContext.AddComponent<ModelComponent>();
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::EndPopup();
+        }
+        ImGui::PopItemWidth();
+
+        RenderComponent<TransformComponent>("Transform", entity, [](auto& component)
+        {
+            RenderVec3Control("Translation", component.Translation);
+            RenderVec3Control("Rotation", component.Rotation);
+            RenderVec3Control("Scale", component.Scale, 1.0f);
+        });
+
+        RenderComponent<CameraComponent>("Camera", entity, [](auto& component)
+        {
+            ImGui::Checkbox("Primary", &component.Primary);
+
+            const char* projTypeStrings[] = { "Perspective", "Orthographic" };
+            // TODO: get proj type
+            // TODO: implement SceneCamera (its a raylib Camera3D wrapper really...)
+            const char* currentProjTypeString = projTypeStrings[0];
+
+            if (ImGui::BeginCombo("Projection", currentProjTypeString))
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    bool selected = currentProjTypeString == projTypeStrings[i];
+                    if (ImGui::Selectable(projTypeStrings[i], selected))
+                    {
+                        currentProjTypeString = projTypeStrings[i];
+                        // TODO: set proj type to [i]
+                    }
+                    if (selected)
+                        ImGui::SetItemDefaultFocus();
+                }
+                ImGui::EndCombo();
+            }
+            /*
+            if persp -> display persp stuff
+            if orthi -> display ortho stuff
+            */
+        });
+
+        RenderComponent<ModelComponent>("Model", entity, [](auto& component)
+        {
+            ImGui::Text(component.ModelPath.c_str());
+            ImGui::Text(component.TexturePath.c_str());
+            //ImGui::Image((ImTextureID)&mc.Texture, ImVec2{ 128.0f, 128.f });
+            ImGui::Text(component.AnimationPath.c_str());
+        });
     }
 }

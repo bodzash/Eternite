@@ -3,6 +3,8 @@
 
 namespace Apex {
 
+	enum class ImGuiLayerFonts { Bold = 0, Regular };
+
 	class ImGuiLayer : public Layer
 	{
 	public:
@@ -11,9 +13,10 @@ namespace Apex {
 
 		void OnAttach() override;
 		void OnDetach() override;
-
 		void Begin();
-		void End();
+		void End();	
+
+		void SetDarkThemeColors();
 
 	private:
 		float m_Time = 0.f;

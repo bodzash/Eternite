@@ -3,11 +3,11 @@
 
 namespace Apex {
 
-    class SceneHierarchyPanel
+    class HierarchyPanel
     {
     public:
-        SceneHierarchyPanel() = default;
-        SceneHierarchyPanel(const Ref<Scene>& context);
+        HierarchyPanel() = default;
+        HierarchyPanel(const Ref<Scene>& context);
 
         void SetContext(const Ref<Scene>& context);
         void OnImGuiRender();
