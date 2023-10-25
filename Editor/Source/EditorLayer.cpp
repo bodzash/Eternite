@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <Scene/SceneSerializer.h>
+#include <ImGuizmo.h>
 
 namespace Raylib {
 	#include <raylib.h>
@@ -171,6 +172,32 @@ void EditorLayer::OnImGuiRender()
     ImGui::End(); // Viewport
     ImGui::PopStyleVar();
     */
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+    ImGui::Begin("Viewport"); // Viewport
+
+    // Gizmos
+    Entity selectedEntity = m_HierarchyPanel.GetSelectedEntity();
+    if (selectedEntity)
+    {
+        //ImGuizmo::SetOrthographic(false);
+        //ImGuizmo::SetDrawList();
+        float windowWidth = (float)ImGui::GetWindowWidth();
+        float windowHeight = (float)ImGui::GetWindowHeight();
+        ImGuizmo::SetRect(ImGui::GetWindowPos().x ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+        auto cameraEntity = Entity{ 0, m_Scene.get() };
+        const auto& camera cameraEntity.GetComponent<CameraComponent>();
+        glm::mat4 cameraView = glm::inverse((glm::mat4)Raylib::GetCameraMatrix(camera.Camera));
+
+        // Selected
+        auto& tc = selectedEntity.GetComponent<TransformComponent>();
+
+        //ImGuizmo::Manipulate();
+    }
+
+    ImGui::End(); // Viewport
+    ImGui::PopStyleVar();
 
     ImGui::Begin("Settings");
     ImGui::Text("FPS: %d", Raylib::GetFPS());

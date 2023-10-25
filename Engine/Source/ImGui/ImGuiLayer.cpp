@@ -2,9 +2,10 @@
 #include "Core/Application.h"
 #include "ImGuiLayer.h"
 
-#include <imgui.h>
 #include "rlImGui.h"
+#include <imgui.h>
 #include "imgui_impl_raylib.h"
+//#include <ImGuizmo.h>
 
 namespace Raylib {
 	#include <raylib.h>
@@ -41,6 +42,9 @@ namespace Apex
 	{
 		ImGui_ImplRaylib_NewFrame();
         ImGui::NewFrame();
+		//ImGuizmo::NewFrame();
+
+		// Process Keyboard, Gamepad, Mouse
 		ImGui_ImplRaylib_ProcessEvents();
 	}
 

@@ -47,23 +47,23 @@ public:
 			}
 		}
 
-		if (Raylib::IsKeyDown(Key::W))
+		if (Input::IsKeyDown(Key::W))
 			tc.Translation.z -= Speed * ts;
 
-		if (Raylib::IsKeyDown(Key::S))
+		if (Input::IsKeyDown(Key::S))
 			tc.Translation.z += Speed * ts;
 
-		if (Raylib::IsKeyDown(Key::A))
+		if (Input::IsKeyDown(Key::A))
 			tc.Translation.x -= Speed * ts;
 
-		if (Raylib::IsKeyDown(Key::D))
+		if (Input::IsKeyDown(Key::D))
 			tc.Translation.x += Speed * ts;
 
 		// Rot
-		if (Raylib::IsKeyDown(Key::Q))
+		if (Input::IsKeyDown(Key::Q))
 			tc.Rotation.y += Speed * 100.f * ts;
 		
-		if (Raylib::IsKeyDown(Key::E))
+		if (Input::IsKeyDown(Key::E))
 			tc.Rotation.y -= Speed * 100.f * ts;
 	}
 
@@ -83,7 +83,7 @@ public:
 
 	void OnUpdate(Timestep ts) override
 	{
-		if (Raylib::IsMouseButtonPressed(Mouse::Right))
+		if (Input::IsMousePressed(Mouse::Right))
 		{
 			Enabled = !Enabled;
 

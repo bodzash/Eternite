@@ -1,5 +1,6 @@
 # Add defines
 add_compile_definitions(AX_ENABLE_ASSERTS)
+# SHOULD MAKE IT PUBLIC (so subproject also deifne it)
 #add_compile_definitions(AX_HEADLESS)
 
 # Set C++ standard
