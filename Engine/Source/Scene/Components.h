@@ -12,10 +12,12 @@ namespace Apex {
     struct HierarchyComponent
     {
         entt::entity Parent{entt::null};
-        //std::array<> Children;
-        //std::vector<> Children;
-        //std::set<> Children;
+        //std::vector<entt::entity> Children;
         //std::unordered_map<std::string, entt::entity> Children;
+    };
+
+    struct GroupComponent
+    {
     };
 
     struct TagComponent
@@ -52,6 +54,20 @@ namespace Apex {
         {
             InstantiateScript = []() { return static_cast<NativeBehaviour*>(new T()); };
             DestroyScript = [](ScriptComponent* sc) { delete sc->Instance; sc->Instance = nullptr; };
+        }
+    };
+
+    struct BehaviourComponent
+    {
+        NativeBehaviour* Instance = nullptr;
+
+        BehaviourComponent() = delete;
+        BehaviourComponent(NativeBehaviour* behaviour) { Instance = behaviour; }
+
+        template<typename G>
+        G& As()
+        {
+            return *static_cast<G*>(Instance);
         }
     };
 

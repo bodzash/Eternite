@@ -135,12 +135,44 @@ namespace Apex {
 	}
 #pragma endregion
 
+#pragma region BehaviourComponent
+    template<>
+	void Scene::OnComponentAdded<BehaviourComponent>(entt::entity e)
+	{
+        AX_CORE_INFO("ADDED: BehaviourComponent");
+        
+        Entity entity = { e, this };
+        auto& bc = entity.GetComponent<BehaviourComponent>();
+
+        if (bc.Instance)
+        {
+            bc.Instance->m_Entity = Entity{ entity, this };
+            bc.Instance->OnCreate();
+        }
+	}
+    template<>
+	void Scene::OnComponentRemoved<BehaviourComponent>(entt::entity e)
+	{
+        AX_CORE_INFO("REMOVED: BehaviourComponent");
+
+        Entity entity = { e, this };
+        auto& bc = entity.GetComponent<BehaviourComponent>();
+
+        if (bc.Instance)
+        {
+            bc.Instance->OnDestroy();
+            m_BehaviourCleanups.push_back(bc.Instance);
+        }
+	}
+#pragma endregion
+
 #pragma endregion
 
     Scene::Scene(/* args */)
     {
+        // TODO: create some MACRO to register a type youknowwhamisayin
+
         // Physics
-        // TODO: create some MACRO to register a type
         m_Registry.on_construct<RigidBodyComponent>().connect<&Scene::OnComponentAdded<RigidBodyComponent>>(this);
         m_Registry.on_destroy<RigidBodyComponent>().connect<&Scene::OnComponentRemoved<RigidBodyComponent>>(this);
 
@@ -149,6 +181,10 @@ namespace Apex {
 
         m_Registry.on_construct<CircleColliderComponent>().connect<&Scene::OnComponentAdded<CircleColliderComponent>>(this);
         m_Registry.on_destroy<CircleColliderComponent>().connect<&Scene::OnComponentRemoved<CircleColliderComponent>>(this);
+
+        // Behaviour
+        m_Registry.on_construct<BehaviourComponent>().connect<&Scene::OnComponentAdded<BehaviourComponent>>(this);
+        m_Registry.on_destroy<BehaviourComponent>().connect<&Scene::OnComponentRemoved<BehaviourComponent>>(this);
     }
 
     Scene::~Scene()
@@ -199,6 +235,28 @@ namespace Apex {
                 
                 sc.Instance->OnUpdate(ts);
             });
+
+            m_Registry.view<BehaviourComponent>().each([=](auto entity, auto& bc)
+            {
+                if (bc.Instance)
+                {
+                    bc.Instance->OnUpdate(ts);
+                }
+            });
+        }
+
+        // Clean up scripts
+        {
+            // Could use a reverse iterator for performance
+            if (m_BehaviourCleanups.size() > 0)
+            {
+                for (int i = 0; i < m_BehaviourCleanups.size(); i++)
+                {
+                    delete m_BehaviourCleanups[i];
+                    m_BehaviourCleanups[i] = nullptr;
+                }
+                m_BehaviourCleanups.clear();
+            }
         }
 
         // Physics

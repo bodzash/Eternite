@@ -13,7 +13,6 @@ namespace Apex {
         T& AddComponent(Args&&... args)
         {
             return m_Entity.AddComponent<T>(std::forward<Args>(args)...);
-            //return m_Entity.AddComponent<T>(args);
         }
 
         template<typename T>
@@ -34,6 +33,11 @@ namespace Apex {
             return m_Entity.HasComponent<T>();
         }
 
+        Entity CreateEntity()
+        {
+            return m_Entity.m_Scene->CreateEntity();
+        }
+
         // Get/HasParent()
         // Get/HasChildren
         // Get/HasChildByName(name)
@@ -49,7 +53,6 @@ namespace Apex {
     private:
         Entity m_Entity;
         friend class Scene;
-        //friend static void Scene::OnScriptCreated(entt::registry& reg, entt::entity ent);
     };
 
 }

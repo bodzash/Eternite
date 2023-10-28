@@ -9,6 +9,7 @@ namespace Apex {
 
     // Fwd decl
     class Entity;
+    class NativeBehaviour;
 
     class Scene
     {
@@ -31,6 +32,7 @@ namespace Apex {
 
     private:
         entt::registry m_Registry;
+        std::vector<NativeBehaviour*> m_BehaviourCleanups;
         b2World* m_PhysicsWorld = nullptr;
         //std::unordered_map<UUID, entt::entity> m_EntityMap;
 

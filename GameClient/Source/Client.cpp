@@ -9,7 +9,16 @@ namespace Raylib {
 
 using namespace Apex;
 
-class PlayerController : public NativeBehaviour
+class BulletLogic : public NativeBehaviour
+{
+public:
+	void OnUpdate(Timestep ts) override
+	{
+		GetComponent<RigidBodyComponent>().ApplyForce({ 20, 0 });
+	}
+};
+
+class PlayerLogic : public NativeBehaviour
 {
 public:
 	float Speed = 50.f;
@@ -38,6 +47,21 @@ public:
 			}
 		}
 
+		if (Input::IsMousePressed(Mouse::Left))
+		{
+			Entity ent = CreateEntity();
+			ent.GetComponent<TransformComponent>().Translation = tc.Translation;
+			ent.AddComponent<BehaviourComponent>(new BulletLogic());
+			ent.AddComponent<RigidBodyComponent>();
+			ent.AddComponent<BoxColliderComponent>();
+		}
+
+		if (Input::IsMousePressed(Mouse::Right))
+		{
+			RemoveComponent<BehaviourComponent>();
+			//RemoveComponent<ScriptComponent>();
+		}
+
 		if (Input::IsKeyDown(Key::W))
 			GetComponent<RigidBodyComponent>().ApplyForce({ 0, -Speed });
 
@@ -52,6 +76,8 @@ public:
 
 		if (Input::IsKeyPressed(Key::Q))
 		{
+			auto& ass = GetComponent<BehaviourComponent>().As<PlayerLogic>();
+			ass.Speed = 100.f;
 		}		
 
 		if (Input::IsKeyDown(Key::E))
@@ -61,6 +87,7 @@ public:
 
 	void OnDestroy() override
 	{
+		AX_TRACE("Script OnDestroy");
 	}
 };
 
@@ -120,7 +147,8 @@ public:
 
 		// Player
 		Entity ent = m_Scene.CreateEntity();
-		ent.AddComponent<ScriptComponent>().Bind<PlayerController>();
+		//ent.AddComponent<ScriptComponent>().Bind<PlayerController>();
+		ent.AddComponent<BehaviourComponent>(new PlayerLogic());
 		ent.AddComponent<ModelComponent>("Data/Models/Leblanc/Leblanc_Skin04.gltf",
 			"Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
 		auto& rbod = ent.AddComponent<RigidBodyComponent>();
@@ -132,7 +160,7 @@ public:
 		cam.Primary = true;
 		cam.Camera.position.x = 0.f;
 		cam.Camera.position.y = 10.f;
-		cam.Camera.position.z = 8.f;
+		cam.Camera.position.z = 10.f;
 
 		// Wall
 		Entity wall = m_Scene.CreateEntity();
