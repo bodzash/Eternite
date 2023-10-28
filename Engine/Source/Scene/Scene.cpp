@@ -33,12 +33,11 @@ namespace Apex {
         bodyDef.angle = glm::radians(tc.Rotation.y);
         bodyDef.linearDamping = rbc.LinearDamping;
         // ...
-        // add user data for coll and trig cb and things like that
 
         b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
         body->SetFixedRotation(rbc.FixedRotation);
+        body->GetUserData().pointer = (uintptr_t)e;
         // ...
-        // can set other things for the body
 
         rbc.RuntimeBody = body;
 	}
@@ -138,9 +137,7 @@ namespace Apex {
 #pragma region BehaviourComponent
     template<>
 	void Scene::OnComponentAdded<BehaviourComponent>(entt::entity e)
-	{
-        AX_CORE_INFO("ADDED: BehaviourComponent");
-        
+	{        
         Entity entity = { e, this };
         auto& bc = entity.GetComponent<BehaviourComponent>();
 
@@ -153,8 +150,6 @@ namespace Apex {
     template<>
 	void Scene::OnComponentRemoved<BehaviourComponent>(entt::entity e)
 	{
-        AX_CORE_INFO("REMOVED: BehaviourComponent");
-
         Entity entity = { e, this };
         auto& bc = entity.GetComponent<BehaviourComponent>();
 
@@ -212,6 +207,7 @@ namespace Apex {
 	void Scene::OnRuntimeStart()
     {
         m_PhysicsWorld = new b2World({ 0.f, 0.f });
+        m_PhysicsWorld->SetContactListener(&m_ContactListener);
     }
 
 	void Scene::OnRuntimeStop()

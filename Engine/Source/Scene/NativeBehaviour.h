@@ -46,13 +46,13 @@ namespace Apex {
         virtual void OnCreate() {}
         virtual void OnDestroy() {}
         virtual void OnUpdate(Timestep ts) {}
-        //virtual void OnCollision(Entity other) {} should use the ones bellow
-        //virtual void OnCollisionEnter(Entity other) {}
-        //virtual void OnCollisionLeave(Entity other) {}
+        virtual void OnCollisionEnter(Entity other) {}
+        virtual void OnCollisionLeave(Entity other) {}
 
     private:
         Entity m_Entity;
         friend class Scene;
+        friend class ContactListener2D;
     };
 
 }

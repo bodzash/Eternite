@@ -44,6 +44,9 @@ add_library(Engine STATIC
 	Source/Core/Input.cpp
 	Source/Core/AssetManager.cpp
 
+	# Physics
+	Source/Physics/ContactListener2D.cpp
+
 	# Scene
 	Source/Scene/Scene.cpp
 	Source/Scene/Entity.cpp

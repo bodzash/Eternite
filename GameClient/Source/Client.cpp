@@ -85,6 +85,11 @@ public:
 		}
 	}
 
+	void OnCollisionEnter(Entity other) override
+	{
+		AX_TRACE("Collided with: {0}", other.GetComponent<TagComponent>().Tag);
+	}
+
 	void OnDestroy() override
 	{
 		AX_TRACE("Script OnDestroy");

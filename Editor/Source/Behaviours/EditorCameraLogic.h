@@ -7,7 +7,7 @@ namespace Raylib {
 
 using namespace Apex;
 
-class EditorCameraController : public NativeBehaviour
+class EditorCameraLogic : public NativeBehaviour
 {
 public:
 	bool Enabled = false;
