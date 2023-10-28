@@ -22,4 +22,9 @@ namespace Apex {
     {
         RuntimeBody->ApplyForceToCenter({ force.x, force.y }, true);
     }
+
+    void RigidBodyComponent::SetFixedRotation(bool enable)
+    {
+        RuntimeBody->SetFixedRotation(enable);
+    }
 }

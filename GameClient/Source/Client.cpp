@@ -13,7 +13,6 @@ class PlayerController : public NativeBehaviour
 {
 public:
 	float Speed = 50.f;
-	//float Speed = 3.f;
 	glm::vec3 LookDir = { 0.f, 0.f, 0.f };
 
 	void OnCreate() override
@@ -30,24 +29,6 @@ public:
 		tc.Rotation.y = PointDirection(tc.Translation, LookDir);
 		tc.Rotation.y += 90.f; // needed cuz model imported improperly
 
-		/*
-		if (Input::IsKeyPressed(Key::F))
-		{
-			RemoveComponent<RigidBodyComponent>();
-			RemoveComponent<BoxColliderComponent>();
-		}
-
-		if (Input::IsKeyPressed(Key::G))
-		{
-			if (!HasComponent<RigidBodyComponent>())
-			{
-				auto& rbc = AddComponent<RigidBodyComponent>();
-				AddComponent<BoxColliderComponent>();
-				rbc.OwnRotation = false;
-			}
-		}
-		*/
-
 		if (Input::IsKeyPressed(Key::R))
 		{
 			if (HasComponent<RigidBodyComponent>())
@@ -56,20 +37,6 @@ public:
 				rbc.SetRotation(45);
 			}
 		}
-
-		/*
-		if (Input::IsKeyDown(Key::W))
-			tc.Translation.z -= Speed * ts;
-
-		if (Input::IsKeyDown(Key::S))
-			tc.Translation.z += Speed * ts;
-
-		if (Input::IsKeyDown(Key::A))
-			tc.Translation.x -= Speed * ts;
-
-		if (Input::IsKeyDown(Key::D))
-			tc.Translation.x += Speed * ts;
-		*/
 
 		if (Input::IsKeyDown(Key::W))
 			GetComponent<RigidBodyComponent>().ApplyForce({ 0, -Speed });
@@ -83,19 +50,13 @@ public:
 		if (Input::IsKeyDown(Key::D))
 			GetComponent<RigidBodyComponent>().ApplyForce({ Speed, 0 });
 
-		// Rot
 		if (Input::IsKeyPressed(Key::Q))
 		{
+		}		
 
-		}
-			//GetComponent<RigidBodyComponent>().ApplyForce({ 0, 50 });
-			//tc.Rotation.y += Speed * 100.f * ts;
-		
 		if (Input::IsKeyDown(Key::E))
 		{
-
 		}
-			//tc.Rotation.y -= Speed * 100.f * ts;
 	}
 
 	void OnDestroy() override
@@ -164,7 +125,9 @@ public:
 			"Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
 		auto& rbod = ent.AddComponent<RigidBodyComponent>();
 		rbod.OwnRotation = false;
-		ent.AddComponent<BoxColliderComponent>();
+		rbod.SetFixedRotation(true);
+		//ent.AddComponent<BoxColliderComponent>();
+		ent.AddComponent<CircleColliderComponent>();
 		auto& cam = ent.AddComponent<CameraComponent>();
 		cam.Primary = true;
 		cam.Camera.position.x = 0.f;

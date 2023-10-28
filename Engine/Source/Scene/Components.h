@@ -61,6 +61,8 @@ namespace Apex {
         // NOTE: this lines up with b2BodyType enum
         enum class BodyType { Static = 0, Kinematic, Dynamic };
 
+        // TODO: should remove all member variables, and use getters setter in this case
+
         // Body def (variables only read when created)
         BodyType Type = BodyType::Dynamic;
         float LinearDamping = 10.f;
@@ -78,6 +80,8 @@ namespace Apex {
         void SetTransform(glm::vec2 position, float rotation);
         void SetPosition(glm::vec2 position);
         void SetRotation(float rotation);
+
+        void SetFixedRotation(bool enable);
 
         void ApplyForce(glm::vec2 force);
     };
@@ -100,11 +104,11 @@ namespace Apex {
         BoxColliderComponent(const BoxColliderComponent&) = default;
     };
 
-    // TODO: implement
+    // TODO: create implicit constructors and hide Runtime_xxx stuff make Scene a friend
     struct CircleColliderComponent
     {
         glm::vec2 Offset = { 0.f, 0.f };
-        float Radius = 1.0f;
+        float Radius = 0.5f;
 
         float Density = 1.0f;
         float Friction = 0.5f;
@@ -112,7 +116,7 @@ namespace Apex {
         float RestitutionThreshold = 0.2f;
 
         // Runtime storage
-        void* RuntimeFixture = nullptr;
+        b2Fixture* RuntimeFixture = nullptr;
 
         CircleColliderComponent() = default;
         CircleColliderComponent(const CircleColliderComponent&) = default;

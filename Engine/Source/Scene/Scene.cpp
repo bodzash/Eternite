@@ -8,6 +8,7 @@
 #include <box2d/b2_body.h>
 #include <box2d/b2_fixture.h>
 #include <box2d/b2_polygon_shape.h>
+#include <box2d/b2_circle_shape.h>
 
 namespace Raylib {
     #include <rlgl.h>
@@ -54,10 +55,15 @@ namespace Apex {
         {
             entity.RemoveComponent<BoxColliderComponent>();
         }
+
+        if (entity.HasComponent<CircleColliderComponent>())
+        {
+            entity.RemoveComponent<CircleColliderComponent>();
+        }
 	}
 #pragma endregion
 
-#pragma region RigidBodyComponent
+#pragma region BoxColliderComponent
     template<>
 	void Scene::OnComponentAdded<BoxColliderComponent>(entt::entity e)
 	{
@@ -92,16 +98,57 @@ namespace Apex {
 	}
 #pragma endregion
 
+#pragma region CircleColliderComponent
+    template<>
+	void Scene::OnComponentAdded<CircleColliderComponent>(entt::entity e)
+	{
+        Entity entity = { e, this };
+        auto& tc = entity.GetComponent<TransformComponent>();
+        auto& ccc = entity.GetComponent<CircleColliderComponent>();
+
+        if (entity.HasComponent<RigidBodyComponent>())
+        {
+            auto& rbc = entity.GetComponent<RigidBodyComponent>();
+
+            b2CircleShape shape;
+            //shape.SetAsCircle();
+            shape.m_radius = ccc.Radius;
+            //shape.SetAsBox(tc.Scale.x * bcc.Size.x, tc.Scale.z * bcc.Size.y);
+
+            b2FixtureDef fixtureDef;
+            fixtureDef.shape = &shape;
+            fixtureDef.density = ccc.Density;
+            fixtureDef.friction = ccc.Friction;
+            fixtureDef.restitution = ccc.Restitution;
+            fixtureDef.restitutionThreshold = ccc.RestitutionThreshold;
+            rbc.RuntimeBody->CreateFixture(&fixtureDef);
+        }
+        else
+        {
+            AX_ASSERT(false, "Before adding CircleColliderComponent, RigidBodyComponent must be present!");
+        }
+    }
+
+    template<>
+	void Scene::OnComponentRemoved<CircleColliderComponent>(entt::entity e)
+	{
+	}
+#pragma endregion
+
 #pragma endregion
 
     Scene::Scene(/* args */)
     {
         // Physics
+        // TODO: create some MACRO to register a type
         m_Registry.on_construct<RigidBodyComponent>().connect<&Scene::OnComponentAdded<RigidBodyComponent>>(this);
         m_Registry.on_destroy<RigidBodyComponent>().connect<&Scene::OnComponentRemoved<RigidBodyComponent>>(this);
 
         m_Registry.on_construct<BoxColliderComponent>().connect<&Scene::OnComponentAdded<BoxColliderComponent>>(this);
         m_Registry.on_destroy<BoxColliderComponent>().connect<&Scene::OnComponentRemoved<BoxColliderComponent>>(this);
+
+        m_Registry.on_construct<CircleColliderComponent>().connect<&Scene::OnComponentAdded<CircleColliderComponent>>(this);
+        m_Registry.on_destroy<CircleColliderComponent>().connect<&Scene::OnComponentRemoved<CircleColliderComponent>>(this);
     }
 
     Scene::~Scene()
@@ -236,6 +283,16 @@ namespace Apex {
                         Raylib::rlRotatef(glm::degrees(rb.RuntimeBody->GetAngle()), 0, 1, 0);
                         Raylib::DrawCubeWiresV({  0.f, 0.f, 0.f }, { box.Size.x * 2, 2.0f, box.Size.y * 2 }, {255, 255, 255, 255});
                         Raylib::rlPopMatrix();
+                    }
+                }
+                // Debug CircleCollider
+                {
+                    auto view = m_Registry.view<TransformComponent, CircleColliderComponent>();
+                    for (auto e : view)
+                    {
+                        auto [tf, circ] = view.get<TransformComponent, CircleColliderComponent>(e);
+
+                        Raylib::DrawCylinderWires({tf.Translation.x, 0.f, tf.Translation.z}, circ.Radius, circ.Radius, 2.f, 15, {255, 255, 255, 255});
                     }
                 }
                 Raylib::EndMode3D();
