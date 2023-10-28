@@ -61,8 +61,13 @@ namespace Apex {
         // NOTE: this lines up with b2BodyType enum
         enum class BodyType { Static = 0, Kinematic, Dynamic };
 
+        // Body def (variables only read when created)
         BodyType Type = BodyType::Dynamic;
+        float LinearDamping = 10.f;
         bool FixedRotation = false;
+
+        // Other def
+        bool OwnRotation = true;
 
         // Runtime storage
         b2Body* RuntimeBody = nullptr;
@@ -74,7 +79,7 @@ namespace Apex {
         void SetPosition(glm::vec2 position);
         void SetRotation(float rotation);
 
-        void ApplyForce();
+        void ApplyForce(glm::vec2 force);
     };
 
     // TODO: create implicit constructors and hide Runtime_xxx stuff make Scene a friend

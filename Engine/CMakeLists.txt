@@ -42,9 +42,7 @@ add_library(Engine STATIC
 	Source/Core/LayerStack.cpp
 	Source/Core/Window.cpp
 	Source/Core/Input.cpp
-
-	# Math
-	Source/Math/Math.cpp
+	Source/Core/AssetManager.cpp
 
 	# Scene
 	Source/Scene/Scene.cpp

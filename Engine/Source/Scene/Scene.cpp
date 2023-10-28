@@ -3,7 +3,6 @@
 #include "Scene/Components.h"
 #include "Scene/ComponentsGraphic.h"
 #include "Scene/Entity.h"
-#include "Math/Math.h"
 #include <glm/glm.hpp>
 #include <box2d/b2_world.h>
 #include <box2d/b2_body.h>
@@ -16,7 +15,7 @@ namespace Raylib {
 
 namespace Apex {
 
-// Template specialization must be defined before usage
+// Template specialization must be defined before usage very unfortunate :(
 #pragma region ComponentLifeCycle
 
 #pragma region RigidBodyComponent
@@ -30,7 +29,8 @@ namespace Apex {
         b2BodyDef bodyDef;
         bodyDef.type = (b2BodyType)rbc.Type;
         bodyDef.position.Set(tc.Translation.x, tc.Translation.z);
-        bodyDef.angle = Math::DegToRad(tc.Rotation.y);
+        bodyDef.angle = glm::radians(tc.Rotation.y);
+        bodyDef.linearDamping = rbc.LinearDamping;
         // ...
         // add user data for coll and trig cb and things like that
 
@@ -143,9 +143,6 @@ namespace Apex {
         {
             m_Registry.view<ScriptComponent>().each([=](auto entity, auto& sc)
             {
-                // TODO: move to OnStart, or rather OnComponentAdded<ScriptComponent>
-                // TODO: call destroy on this when OnComponentRemoved<ScriptComponent>
-                // ... need to use entt's bullshit for this, and call it when OnStop
                 if (!sc.Instance)
                 {
                     sc.Instance = sc.InstantiateScript();
@@ -176,7 +173,11 @@ namespace Apex {
                 const auto& pos = body->GetPosition();
                 tc.Translation.x = pos.x;
                 tc.Translation.z = pos.y;
-                tc.Rotation.y = Math::RadToDeg(body->GetAngle());
+
+                if (rbc.OwnRotation)
+                {
+                    tc.Rotation.y = glm::degrees(body->GetAngle());
+                }
             }
         }
 
@@ -225,17 +226,15 @@ namespace Apex {
 
                 // Debug BoxCollider
                 {
-                    auto view = m_Registry.view<TransformComponent, BoxColliderComponent>();
+                    auto view = m_Registry.view<TransformComponent, RigidBodyComponent, BoxColliderComponent>();
                     for (auto e : view)
                     {
-                        auto [tf, box] = view.get<TransformComponent, BoxColliderComponent>(e);
+                        auto [tf, rb, box] = view.get<TransformComponent, RigidBodyComponent, BoxColliderComponent>(e);
 
                         Raylib::rlPushMatrix();
                         Raylib::rlTranslatef(tf.Translation.x, tf.Translation.y + 1.0f, tf.Translation.z);
-                        Raylib::rlRotatef(tf.Rotation.y, 0, 1, 0);
-                        // { tf.Translation.x, tf.Translation.y + 1.0f, tf.Translation.z}
-                        Raylib::DrawCubeWiresV({  0.f, 0.f, 0.f },
-                            { box.Size.x * 2, 2.0f, box.Size.y * 2 }, {255, 255, 255, 255});
+                        Raylib::rlRotatef(glm::degrees(rb.RuntimeBody->GetAngle()), 0, 1, 0);
+                        Raylib::DrawCubeWiresV({  0.f, 0.f, 0.f }, { box.Size.x * 2, 2.0f, box.Size.y * 2 }, {255, 255, 255, 255});
                         Raylib::rlPopMatrix();
                     }
                 }

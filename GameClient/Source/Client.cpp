@@ -1,6 +1,7 @@
 #include <Apex.h>
 #include <ApexEntryPoint.h>
 #include <filesystem>
+#include "Utils/Utils.h"
 
 namespace Raylib {
 	#include <raylib.h>
@@ -11,7 +12,9 @@ using namespace Apex;
 class PlayerController : public NativeBehaviour
 {
 public:
-	float Speed = 3.f;
+	float Speed = 50.f;
+	//float Speed = 3.f;
+	glm::vec3 LookDir = { 0.f, 0.f, 0.f };
 
 	void OnCreate() override
 	{
@@ -20,7 +23,14 @@ public:
 	void OnUpdate(Timestep ts) override
 	{
 		auto& tc = GetComponent<TransformComponent>();
+		auto& cc = GetComponent<CameraComponent>();
 
+		// Look towards mouse
+		LookDir = GetScreenFloorRay(Input::GetMousePosition(), cc.Camera);
+		tc.Rotation.y = PointDirection(tc.Translation, LookDir);
+		tc.Rotation.y += 90.f; // needed cuz model imported improperly
+
+		/*
 		if (Input::IsKeyPressed(Key::F))
 		{
 			RemoveComponent<RigidBodyComponent>();
@@ -33,10 +43,10 @@ public:
 			{
 				auto& rbc = AddComponent<RigidBodyComponent>();
 				AddComponent<BoxColliderComponent>();
-
-				//rbc.SetTransform({tc.Translation.x + 5, 0, tc.Translation.z + 5}, 45);
+				rbc.OwnRotation = false;
 			}
 		}
+		*/
 
 		if (Input::IsKeyPressed(Key::R))
 		{
@@ -47,6 +57,7 @@ public:
 			}
 		}
 
+		/*
 		if (Input::IsKeyDown(Key::W))
 			tc.Translation.z -= Speed * ts;
 
@@ -58,13 +69,33 @@ public:
 
 		if (Input::IsKeyDown(Key::D))
 			tc.Translation.x += Speed * ts;
+		*/
+
+		if (Input::IsKeyDown(Key::W))
+			GetComponent<RigidBodyComponent>().ApplyForce({ 0, -Speed });
+
+		if (Input::IsKeyDown(Key::S))
+			GetComponent<RigidBodyComponent>().ApplyForce({ 0, Speed });
+
+		if (Input::IsKeyDown(Key::A))
+			GetComponent<RigidBodyComponent>().ApplyForce({ -Speed, 0 });
+
+		if (Input::IsKeyDown(Key::D))
+			GetComponent<RigidBodyComponent>().ApplyForce({ Speed, 0 });
 
 		// Rot
-		if (Input::IsKeyDown(Key::Q))
-			tc.Rotation.y += Speed * 100.f * ts;
+		if (Input::IsKeyPressed(Key::Q))
+		{
+
+		}
+			//GetComponent<RigidBodyComponent>().ApplyForce({ 0, 50 });
+			//tc.Rotation.y += Speed * 100.f * ts;
 		
 		if (Input::IsKeyDown(Key::E))
-			tc.Rotation.y -= Speed * 100.f * ts;
+		{
+
+		}
+			//tc.Rotation.y -= Speed * 100.f * ts;
 	}
 
 	void OnDestroy() override
@@ -122,17 +153,23 @@ public:
 		m_Scene.OnRuntimeStart();
 
 		// Scene Camera
-		Entity cam = m_Scene.CreateEntity();
-		cam.AddComponent<CameraComponent>().Primary = true;
-		cam.AddComponent<ScriptComponent>().Bind<CameraController>();
+		//Entity cam = m_Scene.CreateEntity();
+		//cam.AddComponent<CameraComponent>().Primary = true;
+		//cam.AddComponent<ScriptComponent>().Bind<CameraController>();
 
 		// Player
 		Entity ent = m_Scene.CreateEntity();
 		ent.AddComponent<ScriptComponent>().Bind<PlayerController>();
 		ent.AddComponent<ModelComponent>("Data/Models/Leblanc/Leblanc_Skin04.gltf",
 			"Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
-		ent.AddComponent<RigidBodyComponent>();
+		auto& rbod = ent.AddComponent<RigidBodyComponent>();
+		rbod.OwnRotation = false;
 		ent.AddComponent<BoxColliderComponent>();
+		auto& cam = ent.AddComponent<CameraComponent>();
+		cam.Primary = true;
+		cam.Camera.position.x = 0.f;
+		cam.Camera.position.y = 10.f;
+		cam.Camera.position.z = 8.f;
 
 		// Wall
 		Entity wall = m_Scene.CreateEntity();
