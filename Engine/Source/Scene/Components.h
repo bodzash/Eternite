@@ -12,15 +12,17 @@ namespace Apex {
     struct HierarchyComponent
     {
         entt::entity Parent{entt::null};
-        //std::array<> Children;
-        //std::vector<> Children;
-        //std::set<> Children;
+        //std::vector<entt::entity> Children;
         //std::unordered_map<std::string, entt::entity> Children;
+    };
+
+    struct GroupComponent
+    {
     };
 
     struct TagComponent
     {
-        std::string Tag;
+        std::string Tag = "";
 
         TagComponent() = default;
         TagComponent(const TagComponent&) = default;
@@ -55,14 +57,35 @@ namespace Apex {
         }
     };
 
+    struct BehaviourComponent
+    {
+        NativeBehaviour* Instance = nullptr;
+
+        BehaviourComponent() = delete;
+        BehaviourComponent(NativeBehaviour* behaviour) { Instance = behaviour; }
+
+        template<typename G>
+        G& As()
+        {
+            return *static_cast<G*>(Instance);
+        }
+    };
+
     // TODO: create implicit constructors and hide Runtime_xxx stuff make Scene a friend
     struct RigidBodyComponent
     {
         // NOTE: this lines up with b2BodyType enum
         enum class BodyType { Static = 0, Kinematic, Dynamic };
 
+        // TODO: should remove all member variables, and use getters setter in this case
+
+        // Body def (variables only read when created)
         BodyType Type = BodyType::Dynamic;
+        float LinearDamping = 10.f;
         bool FixedRotation = false;
+
+        // Other def
+        bool OwnRotation = true;
 
         // Runtime storage
         b2Body* RuntimeBody = nullptr;
@@ -74,7 +97,9 @@ namespace Apex {
         void SetPosition(glm::vec2 position);
         void SetRotation(float rotation);
 
-        void ApplyForce();
+        void SetFixedRotation(bool enable);
+
+        void ApplyForce(glm::vec2 force);
     };
 
     // TODO: create implicit constructors and hide Runtime_xxx stuff make Scene a friend
@@ -95,11 +120,11 @@ namespace Apex {
         BoxColliderComponent(const BoxColliderComponent&) = default;
     };
 
-    // TODO: implement
+    // TODO: create implicit constructors and hide Runtime_xxx stuff make Scene a friend
     struct CircleColliderComponent
     {
         glm::vec2 Offset = { 0.f, 0.f };
-        float Radius = 1.0f;
+        float Radius = 0.5f;
 
         float Density = 1.0f;
         float Friction = 0.5f;
@@ -107,7 +132,7 @@ namespace Apex {
         float RestitutionThreshold = 0.2f;
 
         // Runtime storage
-        void* RuntimeFixture = nullptr;
+        b2Fixture* RuntimeFixture = nullptr;
 
         CircleColliderComponent() = default;
         CircleColliderComponent(const CircleColliderComponent&) = default;
@@ -116,20 +141,6 @@ namespace Apex {
     // TODO: implement but later
     struct PolygonColliderComponent
     {
-        glm::vec2 Offset = { 0.f, 0.f };
-        /*
-            Needs vertices and some other shit
-        */
-        float Density = 1.0f;
-        float Friction = 0.5f;
-        float Restitution = 0.0f;
-        float RestitutionThreshold = 0.2f;
-
-        // Runtime storage
-        void* RuntimeFixture = nullptr;
-
-        PolygonColliderComponent() = default;
-        PolygonColliderComponent(const PolygonColliderComponent&) = default;
     };
 
 }

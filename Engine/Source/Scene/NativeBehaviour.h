@@ -13,7 +13,6 @@ namespace Apex {
         T& AddComponent(Args&&... args)
         {
             return m_Entity.AddComponent<T>(std::forward<Args>(args)...);
-            //return m_Entity.AddComponent<T>(args);
         }
 
         template<typename T>
@@ -34,6 +33,11 @@ namespace Apex {
             return m_Entity.HasComponent<T>();
         }
 
+        Entity CreateEntity()
+        {
+            return m_Entity.m_Scene->CreateEntity();
+        }
+
         // Get/HasParent()
         // Get/HasChildren
         // Get/HasChildByName(name)
@@ -42,14 +46,13 @@ namespace Apex {
         virtual void OnCreate() {}
         virtual void OnDestroy() {}
         virtual void OnUpdate(Timestep ts) {}
-        //virtual void OnCollision(Entity other) {} should use the ones bellow
-        //virtual void OnCollisionEnter(Entity other) {}
-        //virtual void OnCollisionLeave(Entity other) {}
+        virtual void OnCollisionEnter(Entity other) {}
+        virtual void OnCollisionLeave(Entity other) {}
 
     private:
         Entity m_Entity;
         friend class Scene;
-        //friend static void Scene::OnScriptCreated(entt::registry& reg, entt::entity ent);
+        friend class ContactListener2D;
     };
 
 }

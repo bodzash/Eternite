@@ -16,3 +16,9 @@
 [submodule "Engine/External/box2d"]
 	path = Engine/External/box2d
 	url = https://github.com/erincatto/box2d.git
+[submodule "Engine/External/yaml-cpp"]
+	path = Engine/External/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp.git
+[submodule "Engine/External/ImGuizmo"]
+	path = Engine/External/ImGuizmo
+	url = https://github.com/CedricGuillemet/ImGuizmo.git

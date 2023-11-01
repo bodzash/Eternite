@@ -10,6 +10,9 @@ add_executable(Client
 
     # Core
     Source/Client.cpp
+
+    # TEMPORARY
+    Source/Utils/Utils.cpp
 )
 
 # Third party

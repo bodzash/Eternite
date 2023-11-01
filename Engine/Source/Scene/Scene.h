@@ -1,6 +1,7 @@
 #pragma once
-#include "entt/entt.hpp"
+#include <entt/entt.hpp>
 #include "Core/Timestep.h"
+#include "Physics/ContactListener2D.h"
 
 // Fwd decl
 class b2World;
@@ -9,6 +10,7 @@ namespace Apex {
 
     // Fwd decl
     class Entity;
+    class NativeBehaviour;
 
     class Scene
     {
@@ -17,7 +19,7 @@ namespace Apex {
         ~Scene();
 
         Entity CreateEntity(const std::string& name = "");
-        //void DestroyEntity(Entity entity);
+        void DestroyEntity(Entity entity);
         // create entity with uuid
         // Find entity by id
         // find entity by name
@@ -31,7 +33,9 @@ namespace Apex {
 
     private:
         entt::registry m_Registry;
+        std::vector<NativeBehaviour*> m_BehaviourCleanups;
         b2World* m_PhysicsWorld = nullptr;
+        ContactListener2D m_ContactListener{ this };
         //std::unordered_map<UUID, entt::entity> m_EntityMap;
 
         template<typename T>
@@ -40,6 +44,8 @@ namespace Apex {
 		void OnComponentRemoved(entt::entity e);
 
         friend class Entity;
+        friend class HierarchyPanel;
+        friend class SceneSerializer;
     };
 
 }

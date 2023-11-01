@@ -24,8 +24,8 @@ namespace Apex {
     	Raylib::InitWindow(800, 600, "Eternite");
 		Raylib::SetTargetFPS(60);
 
-		m_ImGuiLayer = new ImGuiLayer();
-		PushOverlay(m_ImGuiLayer);
+		// m_ImGuiLayer = new ImGuiLayer();
+		// PushOverlay(m_ImGuiLayer);
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -53,12 +53,14 @@ namespace Apex {
 				layer->OnUpdate(timestep);
 			}
 
+			/*
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
 			{
 				layer->OnImGuiRender();
 			}
 			m_ImGuiLayer->End();
+			*/
 			Raylib::EndDrawing();
 		}
 	}

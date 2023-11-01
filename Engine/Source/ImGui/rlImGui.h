@@ -32,7 +32,7 @@
 
 
 namespace Raylib {
-    #include "raylib.h"
+    #include <raylib.h>
 }
 
 #ifdef __cplusplus

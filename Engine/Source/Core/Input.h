@@ -1,5 +1,6 @@
 #pragma once
-#include "Core.h"
+#include "KeyCodes.h"
+#include "MouseCodes.h"
 #include <glm/glm.hpp>
 
 namespace Apex {
@@ -7,27 +8,35 @@ namespace Apex {
 	class Input
 	{
 	public:
-		Input(const Input&) = delete;
-		Input& operator=(const Input&) = delete;
+		Input() = delete;
 
-		static bool IsKeyPressed(int key);
-		static bool IsKeyDown(int key);
-		static bool IsKeyReleased(int key);
-		static bool IsKeyUp(int key);
+		static bool IsKeyPressed(KeyCode key);
+		static bool IsKeyDown(KeyCode key);
+		static bool IsKeyReleased(KeyCode key);
+		static bool IsKeyUp(KeyCode key);
+		static KeyCode GetKeyPressed();
+    	static KeyCode GetCharPressed();
 
-		static bool IsMousePressed(int button);
-		static bool IsMouseButtonDown(int button);
-		static bool IsMouseButtonReleased(int button);
-		static bool IsMouseButtonUp(int button);
+		static bool IsMousePressed(MouseCode button);
+		static bool IsMouseDown(MouseCode button);
+		static bool IsMouseReleased(MouseCode button);
+		static bool IsMouseUp(MouseCode button);
 
-		static glm::vec2 GetMouseWheelMove();
 		static glm::vec2 GetMousePosition();
+		static glm::vec2 GetMouseWheelMove();
 		static float GetMouseX();
 		static float GetMouseY();
 
-	private:
-		Input() = default;
-		static Input* s_Instance;
+		/*
+		Implement these only if needed for some reason
+		static glm::vec2 GetMouseDelta();
+		static void SetMousePosition(int x, int y);
+		static void SetMouseOffset(int offsetX, int offsetY);
+		static void SetMouseScale(float scaleX, float scaleY);
+		static float GetMouseWheelMove();
+		static glm::vec2 GetMouseWheelMoveV();
+		static void SetMouseCursor(int cursor); 
+		*/
 	};
 
 }

@@ -1,5 +1,7 @@
 #include <Apex.h>
+#include <ApexEntryPoint.h>
 #include <filesystem>
+#include "Utils/Utils.h"
 
 namespace Raylib {
 	#include <raylib.h>
@@ -7,10 +9,20 @@ namespace Raylib {
 
 using namespace Apex;
 
-class PlayerController : public NativeBehaviour
+class BulletLogic : public NativeBehaviour
 {
 public:
-	float Speed = 3.f;
+	void OnUpdate(Timestep ts) override
+	{
+		GetComponent<RigidBodyComponent>().ApplyForce({ 20, 0 });
+	}
+};
+
+class PlayerLogic : public NativeBehaviour
+{
+public:
+	float Speed = 50.f;
+	glm::vec3 LookDir = { 0.f, 0.f, 0.f };
 
 	void OnCreate() override
 	{
@@ -19,23 +31,15 @@ public:
 	void OnUpdate(Timestep ts) override
 	{
 		auto& tc = GetComponent<TransformComponent>();
+		auto& cc = GetComponent<CameraComponent>();
 
-		if (Input::IsKeyPressed(Key::F))
-		{
-			RemoveComponent<RigidBodyComponent>();
-			RemoveComponent<BoxColliderComponent>();
-		}
+		// Look towards mouse
+		LookDir = GetScreenFloorRay(Input::GetMousePosition(), cc.Camera);
+		tc.Rotation.y = PointDirection(tc.Translation, LookDir);
+		tc.Rotation.y += 90.f; // needed cuz model imported improperly
 
-		if (Input::IsKeyPressed(Key::G))
-		{
-			if (!HasComponent<RigidBodyComponent>())
-			{
-				auto& rbc = AddComponent<RigidBodyComponent>();
-				AddComponent<BoxColliderComponent>();
-
-				//rbc.SetTransform({tc.Translation.x + 5, 0, tc.Translation.z + 5}, 45);
-			}
-		}
+		cc.Camera.position = { tc.Translation.x, 10.f, tc.Translation.z + 9.f };
+		cc.Camera.target = { tc.Translation.x, 0.f, tc.Translation.z };
 
 		if (Input::IsKeyPressed(Key::R))
 		{
@@ -46,28 +50,59 @@ public:
 			}
 		}
 
-		if (Raylib::IsKeyDown(Key::W))
-			tc.Translation.z -= Speed * ts;
+		if (Input::IsMousePressed(Mouse::Left))
+		{
+			Entity ent = CreateEntity();
+			ent.GetComponent<TransformComponent>().Translation = tc.Translation;
+			ent.AddComponent<BehaviourComponent>(new BulletLogic());
+			ent.AddComponent<RigidBodyComponent>();
+			ent.AddComponent<BoxColliderComponent>();
+		}
 
-		if (Raylib::IsKeyDown(Key::S))
-			tc.Translation.z += Speed * ts;
+		if (Input::IsMousePressed(Mouse::Right))
+		{
+			RemoveComponent<BehaviourComponent>();
+			//RemoveComponent<ScriptComponent>();
+		}
 
-		if (Raylib::IsKeyDown(Key::A))
-			tc.Translation.x -= Speed * ts;
+		if (Input::IsKeyDown(Key::W))
+			GetComponent<RigidBodyComponent>().ApplyForce({ 0, -Speed });
 
-		if (Raylib::IsKeyDown(Key::D))
-			tc.Translation.x += Speed * ts;
+		if (Input::IsKeyDown(Key::S))
+			GetComponent<RigidBodyComponent>().ApplyForce({ 0, Speed });
 
-		// Rot
-		if (Raylib::IsKeyDown(Key::Q))
-			tc.Rotation.y += Speed * 100.f * ts;
-		
-		if (Raylib::IsKeyDown(Key::E))
-			tc.Rotation.y -= Speed * 100.f * ts;
+		if (Input::IsKeyDown(Key::A))
+			GetComponent<RigidBodyComponent>().ApplyForce({ -Speed, 0 });
+
+		if (Input::IsKeyDown(Key::D))
+			GetComponent<RigidBodyComponent>().ApplyForce({ Speed, 0 });
+
+		if (Input::IsKeyPressed(Key::E))
+		{
+			auto& ass = GetComponent<BehaviourComponent>().As<PlayerLogic>();
+			ass.Speed = 100.f;
+		}
+
+		if (Input::IsKeyPressed(Key::Q))
+		{
+			auto& amc = GetComponent<ModelComponent>();
+			amc.AnimIndex++;
+			if (amc.AnimIndex > amc.AnimsCount - 1)
+			{
+				amc.AnimIndex = 0;
+			}
+			amc.AnimCurrentFrame = 0;
+		}
+	}
+
+	void OnCollisionEnter(Entity other) override
+	{
+		AX_TRACE("Collided with: {0}", other.GetComponent<TagComponent>().Tag);
 	}
 
 	void OnDestroy() override
 	{
+		AX_TRACE("Script OnDestroy");
 	}
 };
 
@@ -82,7 +117,7 @@ public:
 
 	void OnUpdate(Timestep ts) override
 	{
-		if (Raylib::IsMouseButtonPressed(Mouse::Right))
+		if (Input::IsMousePressed(Mouse::Right))
 		{
 			Enabled = !Enabled;
 
@@ -121,17 +156,28 @@ public:
 		m_Scene.OnRuntimeStart();
 
 		// Scene Camera
-		Entity cam = m_Scene.CreateEntity();
-		cam.AddComponent<CameraComponent>().Primary = true;
-		cam.AddComponent<ScriptComponent>().Bind<CameraController>();
+		//Entity cam = m_Scene.CreateEntity();
+		//cam.AddComponent<CameraComponent>().Primary = true;
+		//cam.AddComponent<ScriptComponent>().Bind<CameraController>();
 
 		// Player
 		Entity ent = m_Scene.CreateEntity();
-		ent.AddComponent<ScriptComponent>().Bind<PlayerController>();
-		ent.AddComponent<ModelComponent>("Data/Models/Leblanc/Leblanc_Skin04.gltf",
-			"Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
-		ent.AddComponent<RigidBodyComponent>();
-		ent.AddComponent<BoxColliderComponent>();
+		//ent.AddComponent<ScriptComponent>().Bind<PlayerController>();
+		ent.AddComponent<BehaviourComponent>(new PlayerLogic());
+		//ent.AddComponent<ModelComponent>("Data/Models/Leblanc/Leblanc_Skin04.gltf",
+		//	"Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
+		ent.AddComponent<ModelComponent>("Data/Models/Characters/Rogue_Hooded.glb",
+			"Data/Models/Characters/rogue_texture.png", "Data/Models/Characters/Rogue_Hooded.glb");
+		auto& rbod = ent.AddComponent<RigidBodyComponent>();
+		rbod.OwnRotation = false;
+		rbod.SetFixedRotation(true);
+		//ent.AddComponent<BoxColliderComponent>();
+		ent.AddComponent<CircleColliderComponent>();
+		auto& cam = ent.AddComponent<CameraComponent>();
+		cam.Primary = true;
+		cam.Camera.position.x = 0.f;
+		cam.Camera.position.y = 10.f;
+		cam.Camera.position.z = 10.f;
 
 		// Wall
 		Entity wall = m_Scene.CreateEntity();

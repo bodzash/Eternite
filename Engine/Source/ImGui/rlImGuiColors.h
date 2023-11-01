@@ -31,11 +31,11 @@
 #pragma once
 
 namespace Raylib {
-    #include "raylib.h"
+    #include <raylib.h>
 }
 
 
-#include "imgui.h"
+#include <imgui.h>
 
 namespace rlImGuiColors
 {
