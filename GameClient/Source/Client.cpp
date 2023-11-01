@@ -38,6 +38,9 @@ public:
 		tc.Rotation.y = PointDirection(tc.Translation, LookDir);
 		tc.Rotation.y += 90.f; // needed cuz model imported improperly
 
+		cc.Camera.position = { tc.Translation.x, 10.f, tc.Translation.z + 9.f };
+		cc.Camera.target = { tc.Translation.x, 0.f, tc.Translation.z };
+
 		if (Input::IsKeyPressed(Key::R))
 		{
 			if (HasComponent<RigidBodyComponent>())
@@ -74,14 +77,21 @@ public:
 		if (Input::IsKeyDown(Key::D))
 			GetComponent<RigidBodyComponent>().ApplyForce({ Speed, 0 });
 
-		if (Input::IsKeyPressed(Key::Q))
+		if (Input::IsKeyPressed(Key::E))
 		{
 			auto& ass = GetComponent<BehaviourComponent>().As<PlayerLogic>();
 			ass.Speed = 100.f;
-		}		
+		}
 
-		if (Input::IsKeyDown(Key::E))
+		if (Input::IsKeyPressed(Key::Q))
 		{
+			auto& amc = GetComponent<ModelComponent>();
+			amc.AnimIndex++;
+			if (amc.AnimIndex > amc.AnimsCount - 1)
+			{
+				amc.AnimIndex = 0;
+			}
+			amc.AnimCurrentFrame = 0;
 		}
 	}
 
@@ -156,8 +166,8 @@ public:
 		ent.AddComponent<BehaviourComponent>(new PlayerLogic());
 		//ent.AddComponent<ModelComponent>("Data/Models/Leblanc/Leblanc_Skin04.gltf",
 		//	"Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
-		ent.AddComponent<ModelComponent>("Data/Models/Characters/Rogue.glb",
-			"Data/Models/Characters/rogue_texture.png");
+		ent.AddComponent<ModelComponent>("Data/Models/Characters/Rogue_Hooded.glb",
+			"Data/Models/Characters/rogue_texture.png", "Data/Models/Characters/Rogue_Hooded.glb");
 		auto& rbod = ent.AddComponent<RigidBodyComponent>();
 		rbod.OwnRotation = false;
 		rbod.SetFixedRotation(true);

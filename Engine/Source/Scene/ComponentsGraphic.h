@@ -12,6 +12,7 @@ namespace Raylib {
 
 namespace Apex {
 
+    // Rename to AnimatedModel or SkinnedModel
     struct ModelComponent
     {
         // TODO: DO NOT LOAD MODELS, TEXTURES LIKE THIS, CREATE A RESOURCE MANAGER
@@ -27,6 +28,10 @@ namespace Apex {
         // Load in the model and copy it (because animation fucks it up)
         Raylib::Model Model = { 0 };
         Raylib::Texture2D Texture;
+        Raylib::ModelAnimation* Animations;
+        int AnimsCount = 0;
+        unsigned int AnimIndex = 0;
+        unsigned int AnimCurrentFrame = 0;
         // Animation TODO: might be a seperate component maybe not idonfukinknow
         
         ModelComponent(std::string_view path)
@@ -51,6 +56,18 @@ namespace Apex {
 
         ModelComponent(std::string_view modelPath, std::string_view materialPath, std::string_view animPath)
         {
+            ModelPath = modelPath.data();
+            TexturePath = materialPath.data();
+
+            Model = Raylib::LoadModel(modelPath.data());
+
+            Raylib::Image img = Raylib::LoadImage(materialPath.data());
+            Raylib::ImageMipmaps(&img);
+            Texture = Raylib::LoadTextureFromImage(img);
+            Model.materials[0].maps[Raylib::MATERIAL_MAP_DIFFUSE].texture = Texture;
+            UnloadImage(img);
+
+            Animations = Raylib::LoadModelAnimations(animPath.data(), &AnimsCount);
         }
 
         ModelComponent() = default;
@@ -59,6 +76,16 @@ namespace Apex {
         // SetModel
         // SetTexture
         // SetAnimation
+    };
+
+    struct BillboardComponent
+    {
+        // You know what this is
+    };
+
+    struct StaticModelComponent
+    {
+        // This is just a non-bone animated model
     };
 
     /*

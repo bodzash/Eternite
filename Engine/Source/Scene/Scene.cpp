@@ -16,6 +16,8 @@ namespace Raylib {
 
 namespace Apex {
 
+static bool s_DebugRender = false;
+
 // Template specialization must be defined before usage very unfortunate :(
 #pragma region ComponentLifeCycle
 
@@ -310,12 +312,26 @@ namespace Apex {
                 Raylib::BeginMode3D(*mainCamera);
                 Raylib::DrawGrid(20, 1.0f);
 
-                // Model rendering
+                // AnimatedModel rendering
                 {
                     auto view = m_Registry.view<TransformComponent, ModelComponent>();
                     for (auto e : view)
                     {
                         auto [tf, model] = view.get<TransformComponent, ModelComponent>(e);
+                        
+                        // Update model animation
+                        if (model.AnimsCount > 0)
+                        {
+                            Raylib::ModelAnimation anim = model.Animations[model.AnimIndex];
+                            if (anim.frameCount)
+                            {
+                                model.AnimCurrentFrame = (model.AnimCurrentFrame + 1) % anim.frameCount;
+                                Raylib::UpdateModelAnimation(model.Model, anim, model.AnimCurrentFrame);
+                            }
+                            //model.AnimCurrentFrame = (model.AnimCurrentFrame + 1) % model.Animations[model.AnimIndex].frameCount;
+                            //Raylib::UpdateModelAnimation(model.Model, model.Animations[model.AnimIndex], model.AnimCurrentFrame);
+                        }
+
                         Raylib::DrawModelEx(model.Model,
                             { tf.Translation.x, tf.Translation.y, tf.Translation.z },
                             {0.f, 1.0f, 0.f}, tf.Rotation.y,
@@ -325,28 +341,41 @@ namespace Apex {
                     }
                 }
 
-                // Debug BoxCollider
+                // StaticModel rendering
                 {
-                    auto view = m_Registry.view<TransformComponent, RigidBodyComponent, BoxColliderComponent>();
-                    for (auto e : view)
-                    {
-                        auto [tf, rb, box] = view.get<TransformComponent, RigidBodyComponent, BoxColliderComponent>(e);
-
-                        Raylib::rlPushMatrix();
-                        Raylib::rlTranslatef(tf.Translation.x, tf.Translation.y + 1.0f, tf.Translation.z);
-                        Raylib::rlRotatef(glm::degrees(rb.RuntimeBody->GetAngle()), 0, 1, 0);
-                        Raylib::DrawCubeWiresV({  0.f, 0.f, 0.f }, { box.Size.x * 2, 2.0f, box.Size.y * 2 }, {255, 255, 255, 255});
-                        Raylib::rlPopMatrix();
-                    }
                 }
-                // Debug CircleCollider
-                {
-                    auto view = m_Registry.view<TransformComponent, CircleColliderComponent>();
-                    for (auto e : view)
-                    {
-                        auto [tf, circ] = view.get<TransformComponent, CircleColliderComponent>(e);
 
-                        Raylib::DrawCylinderWires({tf.Translation.x, 0.f, tf.Translation.z}, circ.Radius, circ.Radius, 2.f, 15, {255, 255, 255, 255});
+                // Temporary?
+                if (Raylib::IsKeyPressed(Raylib::KEY_F8))
+                {
+                    s_DebugRender = !s_DebugRender;
+                }
+
+                if (s_DebugRender)
+                {
+                    // Debug BoxCollider
+                    {
+                        auto view = m_Registry.view<TransformComponent, RigidBodyComponent, BoxColliderComponent>();
+                        for (auto e : view)
+                        {
+                            auto [tf, rb, box] = view.get<TransformComponent, RigidBodyComponent, BoxColliderComponent>(e);
+
+                            Raylib::rlPushMatrix();
+                            Raylib::rlTranslatef(tf.Translation.x, tf.Translation.y + 1.0f, tf.Translation.z);
+                            Raylib::rlRotatef(glm::degrees(rb.RuntimeBody->GetAngle()), 0, 1, 0);
+                            Raylib::DrawCubeWiresV({  0.f, 0.f, 0.f }, { box.Size.x * 2, 2.0f, box.Size.y * 2 }, {255, 255, 255, 255});
+                            Raylib::rlPopMatrix();
+                        }
+                    }
+                    // Debug CircleCollider
+                    {
+                        auto view = m_Registry.view<TransformComponent, CircleColliderComponent>();
+                        for (auto e : view)
+                        {
+                            auto [tf, circ] = view.get<TransformComponent, CircleColliderComponent>(e);
+
+                            Raylib::DrawCylinderWires({tf.Translation.x, 0.f, tf.Translation.z}, circ.Radius, circ.Radius, 2.f, 15, {255, 255, 255, 255});
+                        }
                     }
                 }
                 Raylib::EndMode3D();
