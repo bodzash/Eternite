@@ -319,8 +319,8 @@ namespace Apex {
                         Raylib::DrawModelEx(model.Model,
                             { tf.Translation.x, tf.Translation.y, tf.Translation.z },
                             {0.f, 1.0f, 0.f}, tf.Rotation.y,
-                            //{ tf.Scale.x, tf.Scale.y, tf.Scale.z },
-                            { 0.01f, 0.01f, 0.01f }, // TEMPORARY
+                            { tf.Scale.x, tf.Scale.y, tf.Scale.z },
+                            //{ 0.01f, 0.01f, 0.01f }, // TEMPORARY
                             Raylib::WHITE);
                     }
                 }

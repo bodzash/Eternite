@@ -154,8 +154,10 @@ public:
 		Entity ent = m_Scene.CreateEntity();
 		//ent.AddComponent<ScriptComponent>().Bind<PlayerController>();
 		ent.AddComponent<BehaviourComponent>(new PlayerLogic());
-		ent.AddComponent<ModelComponent>("Data/Models/Leblanc/Leblanc_Skin04.gltf",
-			"Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
+		//ent.AddComponent<ModelComponent>("Data/Models/Leblanc/Leblanc_Skin04.gltf",
+		//	"Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
+		ent.AddComponent<ModelComponent>("Data/Models/Characters/Rogue.glb",
+			"Data/Models/Characters/rogue_texture.png");
 		auto& rbod = ent.AddComponent<RigidBodyComponent>();
 		rbod.OwnRotation = false;
 		rbod.SetFixedRotation(true);
