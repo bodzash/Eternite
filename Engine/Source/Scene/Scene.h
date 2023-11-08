@@ -43,6 +43,8 @@ namespace Apex {
         template<typename T>
 		void OnComponentRemoved(entt::entity e);
 
+        void RegisterComponentCallbacks();
+
         friend class Entity;
         friend class HierarchyPanel;
         friend class SceneSerializer;

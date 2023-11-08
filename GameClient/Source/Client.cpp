@@ -65,17 +65,14 @@ public:
 			//RemoveComponent<ScriptComponent>();
 		}
 
-		if (Input::IsKeyDown(Key::W))
-			GetComponent<RigidBodyComponent>().ApplyForce({ 0, -Speed });
+		// Movement
+		glm::vec2 moveInput = { 0.f, 0.f };
+		moveInput.x = (float)Input::IsKeyDown(Key::D) - (float)Input::IsKeyDown(Key::A);
+		moveInput.y = (float)Input::IsKeyDown(Key::S) - (float)Input::IsKeyDown(Key::W);
+		glm::vec2 move = glm::normalize(moveInput);
 
-		if (Input::IsKeyDown(Key::S))
-			GetComponent<RigidBodyComponent>().ApplyForce({ 0, Speed });
-
-		if (Input::IsKeyDown(Key::A))
-			GetComponent<RigidBodyComponent>().ApplyForce({ -Speed, 0 });
-
-		if (Input::IsKeyDown(Key::D))
-			GetComponent<RigidBodyComponent>().ApplyForce({ Speed, 0 });
+		if (moveInput.x || moveInput.y)
+			GetComponent<RigidBodyComponent>().ApplyForce({ move.x * Speed, move.y * Speed });
 
 		if (Input::IsKeyPressed(Key::E))
 		{
@@ -164,14 +161,12 @@ public:
 		Entity ent = m_Scene.CreateEntity();
 		//ent.AddComponent<ScriptComponent>().Bind<PlayerController>();
 		ent.AddComponent<BehaviourComponent>(new PlayerLogic());
-		//ent.AddComponent<ModelComponent>("Data/Models/Leblanc/Leblanc_Skin04.gltf",
-		//	"Data/Models/Leblanc/leblanc_Skin04_TX_CM.png");
-		ent.AddComponent<ModelComponent>("Data/Models/Characters/Rogue_Hooded.glb",
-			"Data/Models/Characters/rogue_texture.png", "Data/Models/Characters/Rogue_Hooded.glb");
+		//ent.AddComponent<ModelComponent>("Data/Models/Characters/Rogue_Hooded.glb",
+		//	"Data/Models/Characters/rogue_texture.png", "Data/Models/Characters/Rogue_Hooded.glb");
+		ent.AddComponent<ModelComponent>("Data/Models/Characters/Rogue_Hooded.glb",	"Data/Models/Characters/rogue_texture.png");
 		auto& rbod = ent.AddComponent<RigidBodyComponent>();
 		rbod.OwnRotation = false;
 		rbod.SetFixedRotation(true);
-		//ent.AddComponent<BoxColliderComponent>();
 		ent.AddComponent<CircleColliderComponent>();
 		auto& cam = ent.AddComponent<CameraComponent>();
 		cam.Primary = true;
@@ -181,8 +176,10 @@ public:
 
 		// Wall
 		Entity wall = m_Scene.CreateEntity();
+		//wall.GetComponent<TransformComponent>().Scale = glm::vec3{ 1.25f, 1.25f, 1.25f };
 		wall.AddComponent<RigidBodyComponent>(RigidBodyComponent::BodyType::Static);
 		wall.AddComponent<BoxColliderComponent>(glm::vec2{ 0.f, 0.f }, glm::vec2{ 1.f, 1.f });
+		wall.AddComponent<ModelComponent>("Data/Models/Environment/box_large.gltf.glb");
 	}
 
 	void OnDetach() override
