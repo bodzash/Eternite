@@ -61,20 +61,6 @@ namespace Apex {
 	{
 		// Update scripts
         {
-            /*
-            m_Registry.view<ScriptComponent>().each([=](auto entity, auto& sc)
-            {
-                if (!sc.Instance)
-                {
-                    sc.Instance = sc.InstantiateScript();
-                    sc.Instance->m_Entity = Entity{ entity, this };
-                    sc.Instance->OnCreate();
-                }
-                
-                sc.Instance->OnUpdate(ts);
-            });
-            */
-
             m_Registry.view<BehaviourComponent>().each([=](auto entity, auto& bc)
             {
                 if (bc.Instance)
@@ -292,7 +278,9 @@ namespace Apex {
             fixtureDef.friction = bcc.Friction;
             fixtureDef.restitution = bcc.Restitution;
             fixtureDef.restitutionThreshold = bcc.RestitutionThreshold;
-            rbc.RuntimeBody->CreateFixture(&fixtureDef);
+            fixtureDef.filter.groupIndex = 0;
+            bcc.RuntimeFixture = rbc.RuntimeBody->CreateFixture(&fixtureDef);
+            AX_TRACE("BoxColliderComponent Added!");
         }
         else
         {
@@ -327,7 +315,8 @@ namespace Apex {
             fixtureDef.friction = ccc.Friction;
             fixtureDef.restitution = ccc.Restitution;
             fixtureDef.restitutionThreshold = ccc.RestitutionThreshold;
-            rbc.RuntimeBody->CreateFixture(&fixtureDef);
+            fixtureDef.filter.groupIndex = 0;
+            ccc.RuntimeFixture = rbc.RuntimeBody->CreateFixture(&fixtureDef);
         }
         else
         {
@@ -369,17 +358,17 @@ namespace Apex {
 #pragma endregion
 
     #define REGISTER_COMPONENT_CB(type) m_Registry.on_construct<##type>().connect<&Scene::OnComponentAdded<##type>>(this); \
-    m_Registry.on_destroy<##type>().connect<&Scene::OnComponentRemoved<##type>>(this);
+    m_Registry.on_destroy<##type>().connect<&Scene::OnComponentRemoved<##type>>(this)
 
     void Scene::RegisterComponentCallbacks()
     {
         // Physics
-        REGISTER_COMPONENT_CB(RigidBodyComponent)
-        REGISTER_COMPONENT_CB(BoxColliderComponent)
-        REGISTER_COMPONENT_CB(CircleColliderComponent)
+        REGISTER_COMPONENT_CB(RigidBodyComponent);
+        REGISTER_COMPONENT_CB(BoxColliderComponent);
+        REGISTER_COMPONENT_CB(CircleColliderComponent);
 
         // Script
-        REGISTER_COMPONENT_CB(BehaviourComponent)
+        REGISTER_COMPONENT_CB(BehaviourComponent);
     }
 
 #pragma endregion

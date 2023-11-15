@@ -9,6 +9,15 @@ namespace Raylib {
 
 using namespace Apex;
 
+enum class CollisionGroup : uint16_t
+{
+	None = 0,
+	World = 1 << 1,
+	Team0 = 1 << 2,
+	Team1 = 1 << 3,
+	Team2 = 1 << 4
+};
+
 class BulletLogic : public NativeBehaviour
 {
 public:
@@ -167,7 +176,9 @@ public:
 		auto& rbod = ent.AddComponent<RigidBodyComponent>();
 		rbod.OwnRotation = false;
 		rbod.SetFixedRotation(true);
-		ent.AddComponent<CircleColliderComponent>();
+		auto& cc = ent.AddComponent<CircleColliderComponent>();
+		cc.SetFilterCategory(3);
+		cc.SetFilterMask(4);
 		auto& cam = ent.AddComponent<CameraComponent>();
 		cam.Primary = true;
 		cam.Camera.position.x = 0.f;
@@ -178,7 +189,9 @@ public:
 		Entity wall = m_Scene.CreateEntity();
 		//wall.GetComponent<TransformComponent>().Scale = glm::vec3{ 1.25f, 1.25f, 1.25f };
 		wall.AddComponent<RigidBodyComponent>(RigidBodyComponent::BodyType::Static);
-		wall.AddComponent<BoxColliderComponent>(glm::vec2{ 0.f, 0.f }, glm::vec2{ 1.f, 1.f });
+		auto& bx = wall.AddComponent<BoxColliderComponent>(glm::vec2{ 0.f, 0.f }, glm::vec2{ 1.f, 1.f });
+		bx.SetFilterCategory(1);
+		bx.SetFilterMask(2);
 		wall.AddComponent<ModelComponent>("Data/Models/Environment/box_large.gltf.glb");
 	}
 

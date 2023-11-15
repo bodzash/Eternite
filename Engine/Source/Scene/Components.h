@@ -113,6 +113,9 @@ namespace Apex {
         float Restitution = 0.0f;
         float RestitutionThreshold = 0.1f;
 
+        void SetFilterCategory(uint16_t category);
+        void SetFilterMask(uint16_t mask);
+
         // Runtime storage
         b2Fixture* RuntimeFixture = nullptr;
 
@@ -130,6 +133,9 @@ namespace Apex {
         float Friction = 0.5f;
         float Restitution = 0.0f;
         float RestitutionThreshold = 0.2f;
+
+        void SetFilterCategory(uint16_t category);
+        void SetFilterMask(uint16_t mask);
 
         // Runtime storage
         b2Fixture* RuntimeFixture = nullptr;
