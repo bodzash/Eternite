@@ -1,6 +1,5 @@
 # Add defines
 add_compile_definitions(AX_ENABLE_ASSERTS)
-# SHOULD MAKE IT PUBLIC (so subproject also deifne it)
 #add_compile_definitions(AX_HEADLESS)
 
 # Set C++ standard
@@ -17,17 +16,17 @@ set(BOX2D_BUILD_DOCS OFF)
 set(BOX2D_USER_SETTINGS OFF)
 
 # Set rules for YAML-CPP
-set(YAML_CPP_BUILD_CONTRIB OFF)
-set(YAML_CPP_BUILD_TOOLS OFF)
-set(YAML_BUILD_SHARED_LIBS OFF)
-set(YAML_CPP_INSTALL OFF)
-set(YAML_CPP_FORMAT_SOURCE OFF)
-set(YAML_CPP_BUILD_TESTS OFF)
+#set(YAML_CPP_BUILD_CONTRIB OFF)
+#set(YAML_CPP_BUILD_TOOLS OFF)
+#set(YAML_BUILD_SHARED_LIBS OFF)
+#set(YAML_CPP_INSTALL OFF)
+#set(YAML_CPP_FORMAT_SOURCE OFF)
+#set(YAML_CPP_BUILD_TESTS OFF)
 
 # Add subdirectories
 add_subdirectory(External/raylib)
 add_subdirectory(External/box2d)
-add_subdirectory(External/yaml-cpp)
+#add_subdirectory(External/yaml-cpp)
 
 # Idk why is this here
 set(BOX2D_USER_SETTINGS OFF)
@@ -36,7 +35,7 @@ set(BOX2D_USER_SETTINGS OFF)
 add_library(Engine STATIC
 	# Core
 	Source/Core/Application.cpp
-	Source/Core/HeadlessApplication.cpp
+	Source/Core/HeadlessApp.cpp
 	Source/Core/Log.cpp
 	Source/Core/Layer.cpp
 	Source/Core/LayerStack.cpp
@@ -51,7 +50,7 @@ add_library(Engine STATIC
 	Source/Scene/Scene.cpp
 	Source/Scene/Entity.cpp
 	Source/Scene/Components.cpp
-	Source/Scene/SceneSerializer.cpp
+	# Source/Scene/SceneSerializer.cpp
 
 	# Rendering
 	Source/Renderer/Camera.cpp
@@ -70,13 +69,13 @@ target_include_directories(Engine PUBLIC External/glm)
 target_include_directories(Engine PUBLIC External/entt/src)
 target_include_directories(Engine PUBLIC External/raylib/src)
 target_include_directories(Engine PUBLIC External/box2d/include)
-target_include_directories(Engine PUBLIC External/yaml-cpp/include)
+#target_include_directories(Engine PUBLIC External/yaml-cpp/include)
 
 # Self include directories
 target_include_directories(Engine PUBLIC Source)
 
 # Link libraries
-target_link_libraries(Engine PRIVATE raylib box2d yaml-cpp)
+target_link_libraries(Engine PRIVATE raylib box2d)
 
 # PCH
 target_precompile_headers(Engine PRIVATE Source/axpch.h)

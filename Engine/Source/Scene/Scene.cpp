@@ -33,7 +33,7 @@ namespace Apex {
         entity.AddComponent<TransformComponent>();
 
         auto& tag = entity.AddComponent<TagComponent>();
-        tag.Tag = name.empty() ? "Unnamed Entity" : name;
+        tag.Tag = name.empty() ? "" : name;
 
         // TODO: should create relation component here :)
 

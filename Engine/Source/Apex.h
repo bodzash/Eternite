@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Application.h"
-#include "Core/HeadlessApplication.h"
+#include "Core/HeadlessApp.h"
 #include "Core/Timestep.h"
 #include "Core/Layer.h"
 #include "Core/Log.h"

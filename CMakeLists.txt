@@ -10,6 +10,5 @@ project(Eternite)
 
 # Define sub-projects
 add_subdirectory(Engine)
-add_subdirectory(Editor)
-add_subdirectory(GameClient)
-add_subdirectory(GameServer)
+add_subdirectory(Client)
+add_subdirectory(Server)

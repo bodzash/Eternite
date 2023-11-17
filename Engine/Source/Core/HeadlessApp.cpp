@@ -1,27 +1,27 @@
 #include "axpch.h"
-#include "HeadlessApplication.h"
+#include "HeadlessApp.h"
 #include "Log.h"
 
 namespace Apex {
 
-	#define BIND_EVENT_FN(x) std::bind(&HeadlessApplication::x, this, std::placeholders::_1)
+	#define BIND_EVENT_FN(x) std::bind(&HeadlessApp::x, this, std::placeholders::_1)
 
-	HeadlessApplication* HeadlessApplication::s_Instance = nullptr;
+	HeadlessApp* HeadlessApp::s_Instance = nullptr;
 
-	HeadlessApplication::HeadlessApplication()
+	HeadlessApp::HeadlessApp()
 	{
-		AX_CORE_ASSERT(!s_Instance, "HeadlessApplication instance already exists!");
+		AX_CORE_ASSERT(!s_Instance, "HeadlessApp instance already exists!");
 		s_Instance = this;
 
 		// Setup a "window" and set this trhread to run 60fps
 	}
 
-	void HeadlessApplication::PushLayer(Layer* layer)
+	void HeadlessApp::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
 	}
 
-	void HeadlessApplication::Run()
+	void HeadlessApp::Run()
 	{
 		while (m_Running)
 		{
@@ -40,7 +40,7 @@ namespace Apex {
 		}
 	}
 
-	void HeadlessApplication::OnEvent(Event& e)
+	void HeadlessApp::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
         // Dispatch binded event shit like this:

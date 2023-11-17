@@ -7,24 +7,24 @@
 
 namespace Apex {
 
-	class HeadlessApplication
+	class HeadlessApp
 	{
 	public:
-		HeadlessApplication();
-		virtual ~HeadlessApplication() = default;
+		HeadlessApp();
+		virtual ~HeadlessApp() = default;
 		void Run();
 		void OnEvent(Event& e);
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
-		inline static HeadlessApplication& Get() { return *s_Instance; }
+		inline static HeadlessApp& Get() { return *s_Instance; }
 
 	private:
 		bool m_Running = true;
 		LayerStack m_LayerStack;
-		static HeadlessApplication* s_Instance;
+		static HeadlessApp* s_Instance;
 	};
 
 	// To be defined in Server program
-	HeadlessApplication* CreateHeadlessApplication();
+	HeadlessApp* CreateHeadlessApp();
 
 }

@@ -9,18 +9,38 @@ namespace Raylib {
 
 using namespace Apex;
 
+// Wonderful bits in decimal
 enum class CollisionGroup : uint16_t
 {
 	None = 0,
-	World = 1 << 1,
-	Team0 = 1 << 2,
-	Team1 = 1 << 3,
-	Team2 = 1 << 4
+	World = 1,
+	Team0 = 2,
+	Team1 = 4,
+	Team2 = 8,
+	Group0 = 16,
+	Group1 = 32,
+	Group2 = 64,
+	Group3 = 128,
+	Group4 = 256,
+	Group5 = 512,
+	Group6 = 1024,
+	Group7 = 2048,
+	Group8 = 4096,
+	Group9 = 8192,
+	Group10 = 16384,
+	Group11 = 32768
 };
 
 class BulletLogic : public NativeBehaviour
 {
 public:
+	void OnCreate() override
+	{
+		auto& cc = GetComponent<BoxColliderComponent>();
+		cc.SetFilterCategory((uint16_t)CollisionGroup::Team1);
+		cc.SetFilterMask((uint16_t)CollisionGroup::World);
+	}
+
 	void OnUpdate(Timestep ts) override
 	{
 		GetComponent<RigidBodyComponent>().ApplyForce({ 20, 0 });
@@ -63,9 +83,10 @@ public:
 		{
 			Entity ent = CreateEntity();
 			ent.GetComponent<TransformComponent>().Translation = tc.Translation;
-			ent.AddComponent<BehaviourComponent>(new BulletLogic());
 			ent.AddComponent<RigidBodyComponent>();
 			ent.AddComponent<BoxColliderComponent>();
+			// TODO: need to change when OnCreate is called of the Behaviour
+			ent.AddComponent<BehaviourComponent>(new BulletLogic());
 		}
 
 		if (Input::IsMousePressed(Mouse::Right))
@@ -177,8 +198,8 @@ public:
 		rbod.OwnRotation = false;
 		rbod.SetFixedRotation(true);
 		auto& cc = ent.AddComponent<CircleColliderComponent>();
-		cc.SetFilterCategory(3);
-		cc.SetFilterMask(4);
+		cc.SetFilterCategory((uint16_t)CollisionGroup::Team0);
+		cc.SetFilterMask((uint16_t)CollisionGroup::Team0 | (uint16_t)CollisionGroup::World);
 		auto& cam = ent.AddComponent<CameraComponent>();
 		cam.Primary = true;
 		cam.Camera.position.x = 0.f;
@@ -190,8 +211,8 @@ public:
 		//wall.GetComponent<TransformComponent>().Scale = glm::vec3{ 1.25f, 1.25f, 1.25f };
 		wall.AddComponent<RigidBodyComponent>(RigidBodyComponent::BodyType::Static);
 		auto& bx = wall.AddComponent<BoxColliderComponent>(glm::vec2{ 0.f, 0.f }, glm::vec2{ 1.f, 1.f });
-		bx.SetFilterCategory(1);
-		bx.SetFilterMask(2);
+		bx.SetFilterCategory((uint16_t)CollisionGroup::World);
+		//bx.SetFilterMask(2);
 		wall.AddComponent<ModelComponent>("Data/Models/Environment/box_large.gltf.glb");
 	}
 

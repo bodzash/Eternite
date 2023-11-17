@@ -1,13 +1,15 @@
 # Eternite game
 
+Multiplayer Online Game
+
 ## Building
 
-### Prerequisites: (for now Windows, later Linux too)
+### Prerequisites: (for now only Windows, later Linux, Android, iOS too)
 - CMake
 - Visual Studio 2019 
 
 ### Steps
-- git clone --recursive (Submodules!!!)
+- git clone --recursive (Submodules!)
 - mkdir Build
 - cd Build
 - cmake ..
@@ -16,11 +18,5 @@
 
 Or use your fancy IDE (VSCode Cmake Extension)
 
-## Engine
-Work in progress, screenshot soon
-
-## Client
-Work in progress, screenshot soon
-
-## Server
-Work in progress, screenshot soon
+## Shitty Screenshots
+![Image](/Docs/Demo2.png)
