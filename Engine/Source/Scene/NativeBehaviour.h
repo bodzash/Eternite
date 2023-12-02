@@ -33,9 +33,19 @@ namespace Apex {
             return m_Entity.HasComponent<T>();
         }
 
+        Entity GetSelf()
+        {
+            return m_Entity;
+        }
+
         Entity CreateEntity()
         {
             return m_Entity.m_Scene->CreateEntity();
+        }
+
+        void DestroyEntity(Entity entity)
+        {
+            entity.AddComponent<MarkedRemoveInternal>();
         }
 
         // Get/HasParent()

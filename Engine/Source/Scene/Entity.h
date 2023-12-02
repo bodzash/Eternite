@@ -47,7 +47,7 @@ namespace Apex {
     private:
         entt::entity m_Handle = entt::null;
         Scene* m_Scene = nullptr;
-        // SHOULD BE WEAK_REF or Ref<Scene> (ref is shared ptr)
+        // SHOULD BE WEAK_REF or Ref<Scene>
 
         friend class NativeBehaviour;
     };

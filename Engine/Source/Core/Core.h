@@ -32,5 +32,9 @@ namespace Apex {
 	}
 
 	// TODO: implement weakref might need it :D
+	/*
+	template<typename T>
+	using WeakRef = std::weak_ptr<T>;
+	*/
 
 }

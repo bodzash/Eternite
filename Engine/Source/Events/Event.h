@@ -44,7 +44,6 @@ namespace Apex {
 		}
 		bool Handled = false;
 
-		//protected:
 		friend class EventDispatcher;
 	};
 

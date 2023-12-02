@@ -9,41 +9,60 @@ namespace Raylib {
 
 using namespace Apex;
 
-// Wonderful bits in decimal
+// Bits masked from 0-15 in decimal
 enum class CollisionGroup : uint16_t
 {
-	None = 0,
-	World = 1,
-	Team0 = 2,
-	Team1 = 4,
-	Team2 = 8,
-	Group0 = 16,
-	Group1 = 32,
-	Group2 = 64,
-	Group3 = 128,
-	Group4 = 256,
-	Group5 = 512,
-	Group6 = 1024,
-	Group7 = 2048,
-	Group8 = 4096,
-	Group9 = 8192,
-	Group10 = 16384,
-	Group11 = 32768
+	Group0 = 1,
+	Group1 = 2,
+	Group2 = 4,
+	Group3 = 8,
+	Group4 = 16,
+	Group5 = 32,
+	Group6 = 64,
+	Group7 = 128,
+	Group8 = 256,
+	Group9 = 512,
+	Group10 = 1024,
+	Group11 = 2048,
+	Group12 = 4096,
+	Group13 = 8192,
+	Group14 = 16384,
+	Group15 = 32768
 };
 
 class BulletLogic : public NativeBehaviour
 {
 public:
+	float Direction = 0.0f;
+
 	void OnCreate() override
 	{
+		/*
 		auto& cc = GetComponent<BoxColliderComponent>();
-		cc.SetFilterCategory((uint16_t)CollisionGroup::Team1);
-		cc.SetFilterMask((uint16_t)CollisionGroup::World);
+		cc.SetFilterCategory((uint16_t)CollisionGroup::Group2);
+		cc.SetFilterMask((uint16_t)CollisionGroup::Group0);
+		*/
+	}
+
+	void OnDestroy() override
+	{
+		AX_TRACE("Dis boolet haz been deztroied :D");
 	}
 
 	void OnUpdate(Timestep ts) override
 	{
 		GetComponent<RigidBodyComponent>().ApplyForce({ 20, 0 });
+	}
+
+	void OnCollisionEnter(Entity other) override
+	{
+		DestroyEntity(GetSelf());
+		DestroyEntity(other);
+
+		if (other.HasComponent<BehaviourComponent>())
+		{
+			AX_TRACE("Collided with: {0}", other.GetComponent<TagComponent>().Tag);
+		}
 	}
 };
 
@@ -67,7 +86,7 @@ public:
 		tc.Rotation.y = PointDirection(tc.Translation, LookDir);
 		tc.Rotation.y += 90.f; // needed cuz model imported improperly
 
-		cc.Camera.position = { tc.Translation.x, 10.f, tc.Translation.z + 9.f };
+		cc.Camera.position = { tc.Translation.x, 15.f, tc.Translation.z + 7.f };
 		cc.Camera.target = { tc.Translation.x, 0.f, tc.Translation.z };
 
 		if (Input::IsKeyPressed(Key::R))
@@ -84,9 +103,11 @@ public:
 			Entity ent = CreateEntity();
 			ent.GetComponent<TransformComponent>().Translation = tc.Translation;
 			ent.AddComponent<RigidBodyComponent>();
-			ent.AddComponent<BoxColliderComponent>();
+			auto& bcc = ent.AddComponent<BoxColliderComponent>();
 			// TODO: need to change when OnCreate is called of the Behaviour
 			ent.AddComponent<BehaviourComponent>(new BulletLogic());
+			bcc.SetFilterCategory((uint16_t)CollisionGroup::Group2);
+			bcc.SetFilterMask((uint16_t)CollisionGroup::Group0);
 		}
 
 		if (Input::IsMousePressed(Mouse::Right))
@@ -102,12 +123,19 @@ public:
 		glm::vec2 move = glm::normalize(moveInput);
 
 		if (moveInput.x || moveInput.y)
+		{
 			GetComponent<RigidBodyComponent>().ApplyForce({ move.x * Speed, move.y * Speed });
+		}
 
 		if (Input::IsKeyPressed(Key::E))
 		{
 			auto& ass = GetComponent<BehaviourComponent>().As<PlayerLogic>();
 			ass.Speed = 100.f;
+		}
+
+		if (Input::IsKeyPressed(Key::Space))
+		{
+			tc.Translation.x += 3;
 		}
 
 		if (Input::IsKeyPressed(Key::Q))
@@ -124,7 +152,7 @@ public:
 
 	void OnCollisionEnter(Entity other) override
 	{
-		AX_TRACE("Collided with: {0}", other.GetComponent<TagComponent>().Tag);
+		//AX_TRACE("Collided with: {0}", other.GetComponent<TagComponent>().Tag);
 	}
 
 	void OnDestroy() override
@@ -188,6 +216,8 @@ public:
 		//cam.AddComponent<ScriptComponent>().Bind<CameraController>();
 
 		// Player
+		//Prefabs::Player(m_Scene);
+
 		Entity ent = m_Scene.CreateEntity();
 		//ent.AddComponent<ScriptComponent>().Bind<PlayerController>();
 		ent.AddComponent<BehaviourComponent>(new PlayerLogic());
@@ -198,21 +228,23 @@ public:
 		rbod.OwnRotation = false;
 		rbod.SetFixedRotation(true);
 		auto& cc = ent.AddComponent<CircleColliderComponent>();
-		cc.SetFilterCategory((uint16_t)CollisionGroup::Team0);
-		cc.SetFilterMask((uint16_t)CollisionGroup::Team0 | (uint16_t)CollisionGroup::World);
+		cc.SetFilterCategory((uint16_t)CollisionGroup::Group1);
+		cc.SetFilterMask((uint16_t)CollisionGroup::Group1 | (uint16_t)CollisionGroup::Group0);
 		auto& cam = ent.AddComponent<CameraComponent>();
 		cam.Primary = true;
 		cam.Camera.position.x = 0.f;
-		cam.Camera.position.y = 10.f;
-		cam.Camera.position.z = 10.f;
+		cam.Camera.position.y = 15.f;
+		cam.Camera.position.z = 7.f;
 
 		// Wall
 		Entity wall = m_Scene.CreateEntity();
 		//wall.GetComponent<TransformComponent>().Scale = glm::vec3{ 1.25f, 1.25f, 1.25f };
-		wall.AddComponent<RigidBodyComponent>(RigidBodyComponent::BodyType::Static);
-		auto& bx = wall.AddComponent<BoxColliderComponent>(glm::vec2{ 0.f, 0.f }, glm::vec2{ 1.f, 1.f });
-		bx.SetFilterCategory((uint16_t)CollisionGroup::World);
-		//bx.SetFilterMask(2);
+		auto& rb = wall.AddComponent<RigidBodyComponent>(RigidBodyComponent::BodyType::Static);
+		auto& bx = wall.AddComponent<BoxColliderComponent>(glm::vec2{ 0.f, 0.f }, glm::vec2{ 0.75f, 0.75f });
+		bx.SetFilterCategory((uint16_t)CollisionGroup::Group0);
+		rb.SetRotation(45);
+		rb.OwnRotation = true;
+		wall.GetComponent<TransformComponent>().Rotation.y = 0;
 		wall.AddComponent<ModelComponent>("Data/Models/Environment/box_large.gltf.glb");
 	}
 
@@ -244,7 +276,7 @@ Apex::Application* Apex::CreateApplication()
 	// TODO: ONLY PRESENT IN INTERNAL BUILD, NOT IN DIST
 	auto path = std::filesystem::current_path().parent_path().parent_path().parent_path();
 	std::filesystem::current_path(path);
-	AX_INFO("Path changed: {0}", path);
+	AX_WARN("Path changed: {0}", path);
 
 	return new GameClient();
 }

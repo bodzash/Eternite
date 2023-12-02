@@ -50,4 +50,10 @@ namespace Apex {
         friend class SceneSerializer;
     };
 
+    struct MarkedRemoveInternal
+    {
+        // Need to have some data here... :D
+        bool ShouldDelete = true;
+    };
+
 }

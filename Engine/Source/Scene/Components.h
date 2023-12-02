@@ -16,10 +16,6 @@ namespace Apex {
         //std::unordered_map<std::string, entt::entity> Children;
     };
 
-    struct GroupComponent
-    {
-    };
-
     struct TagComponent
     {
         std::string Tag = "";
@@ -84,7 +80,7 @@ namespace Apex {
         float LinearDamping = 10.f;
         bool FixedRotation = false;
 
-        // Other def
+        // Does the physics "own" the y rotation
         bool OwnRotation = true;
 
         // Runtime storage
@@ -97,6 +93,7 @@ namespace Apex {
         void SetPosition(glm::vec2 position);
         void SetRotation(float rotation);
 
+        // If enabled pyhsics system wont rotate it when colliding
         void SetFixedRotation(bool enable);
 
         void ApplyForce(glm::vec2 force);

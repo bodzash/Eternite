@@ -70,19 +70,6 @@ namespace Apex {
             });
         }
 
-        // Cleanup Script instances
-        {
-            if (m_BehaviourCleanups.size() > 0)
-            {
-                for (int i = 0; i < m_BehaviourCleanups.size(); i++)
-                {
-                    delete m_BehaviourCleanups[i];
-                    m_BehaviourCleanups[i] = nullptr;
-                }
-                m_BehaviourCleanups.clear();
-            }
-        }
-
         // Physics
         {
             const int32_t velocityIteration = 6;
@@ -107,6 +94,28 @@ namespace Apex {
                 {
                     tc.Rotation.y = glm::degrees(body->GetAngle());
                 }
+            }
+        }
+
+        // Clean up marked to delete entites
+        {
+            auto view = m_Registry.view<MarkedRemoveInternal>();
+            for (auto e : view)
+            {
+                m_Registry.destroy(e);
+            }
+        }
+
+        // Cleanup Script instances
+        {
+            if (m_BehaviourCleanups.size() > 0)
+            {
+                for (int i = 0; i < m_BehaviourCleanups.size(); i++)
+                {
+                    delete m_BehaviourCleanups[i];
+                    m_BehaviourCleanups[i] = nullptr;
+                }
+                m_BehaviourCleanups.clear();
             }
         }
 

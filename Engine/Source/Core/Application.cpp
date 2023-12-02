@@ -52,15 +52,6 @@ namespace Apex {
 			{
 				layer->OnUpdate(timestep);
 			}
-
-			/*
-			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-			{
-				layer->OnImGuiRender();
-			}
-			m_ImGuiLayer->End();
-			*/
 			Raylib::EndDrawing();
 		}
 	}
@@ -68,7 +59,7 @@ namespace Apex {
 	void Application::Close()
 	{
 		m_Running = false;
-		//Raylib::CloseWindow();
+		Raylib::CloseWindow();
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
