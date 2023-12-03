@@ -12,28 +12,28 @@ namespace Apex {
         Entity(const Entity& other) = default;
 
         template<typename T, typename... Args>
-        T& AddComponent(Args&&... args)
+        T& Add(Args&&... args)
         {
-            AX_CORE_ASSERT(!HasComponent<T>(), "Entity already has component!");
+            AX_CORE_ASSERT(!Has<T>(), "Entity already has component!");
             return m_Scene->m_Registry.emplace<T>(m_Handle, std::forward<Args>(args)...);
         }
 
         template<typename T>
-        T& GetComponent()
+        T& Get()
         {
-            AX_CORE_ASSERT(HasComponent<T>(), "Entity doesn't have component!");
+            AX_CORE_ASSERT(Has<T>(), "Entity doesn't have component!");
             return m_Scene->m_Registry.get<T>(m_Handle);
         }
 
         template<typename T>
-        void RemoveComponent()
+        void Remove()
         {
-            AX_CORE_ASSERT(HasComponent<T>(), "Entity doesn't have component!");
+            AX_CORE_ASSERT(Has<T>(), "Entity doesn't have component!");
             m_Scene->m_Registry.remove<T>(m_Handle);
         }
 
         template<typename T>
-        bool HasComponent()
+        bool Has()
         {
             return m_Scene->m_Registry.any_of<T>(m_Handle);
         }
@@ -49,7 +49,7 @@ namespace Apex {
         Scene* m_Scene = nullptr;
         // SHOULD BE WEAK_REF or Ref<Scene>
 
-        friend class NativeBehaviour;
+        friend class NativeScript;
     };
 
 }

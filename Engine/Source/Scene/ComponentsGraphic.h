@@ -13,7 +13,7 @@ namespace Raylib {
 namespace Apex {
 
     // Rename to AnimatedModel or SkinnedModel
-    struct ModelComponent
+    struct CModel
     {
         // TODO: DO NOT LOAD MODELS, TEXTURES LIKE THIS, CREATE A RESOURCE MANAGER
 
@@ -34,13 +34,13 @@ namespace Apex {
         unsigned int AnimCurrentFrame = 0;
         // Animation TODO: might be a seperate component maybe not idonfukinknow
         
-        ModelComponent(std::string_view path)
+        CModel(std::string_view path)
         {
             ModelPath = path.data();
             Model = Raylib::LoadModel(path.data());
         }
 
-        ModelComponent(std::string_view modelPath, std::string_view materialPath)
+        CModel(std::string_view modelPath, std::string_view materialPath)
         {
             ModelPath = modelPath.data();
             TexturePath = materialPath.data();
@@ -54,7 +54,7 @@ namespace Apex {
             UnloadImage(img);
         }
 
-        ModelComponent(std::string_view modelPath, std::string_view materialPath, std::string_view animPath)
+        CModel(std::string_view modelPath, std::string_view materialPath, std::string_view animPath)
         {
             ModelPath = modelPath.data();
             TexturePath = materialPath.data();
@@ -70,8 +70,8 @@ namespace Apex {
             Animations = Raylib::LoadModelAnimations(animPath.data(), &AnimsCount);
         }
 
-        ModelComponent() = default;
-        ModelComponent(const ModelComponent&) = default;
+        CModel() = default;
+        CModel(const CModel&) = default;
 
         // SetModel
         // SetTexture
@@ -96,7 +96,7 @@ namespace Apex {
     };
     */
 
-    struct CameraComponent
+    struct CCamera
     {
         // NOTE: this lines up with Raylib's
         enum class ProjectionType { Perspective = 0, Orthographic = 1 };
@@ -105,11 +105,11 @@ namespace Apex {
         Raylib::Camera3D Camera = { 0 };
         bool Primary = false;
 
-        CameraComponent(Raylib::Camera3D camera)
+        CCamera(Raylib::Camera3D camera)
         {
             Camera = camera;
         }
-        CameraComponent()
+        CCamera()
         {
             // Default camera
             Camera.position = { 5.0f, 5.0f, 5.0f };
@@ -118,7 +118,7 @@ namespace Apex {
             Camera.fovy = 63.0f;
             Camera.projection = (int)ProjectionType::Perspective;
         }
-        CameraComponent(const CameraComponent&) = default;
+        CCamera(const CCamera&) = default;
     };
     
 }

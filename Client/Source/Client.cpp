@@ -30,19 +30,22 @@ enum class CollisionGroup : uint16_t
 	Group15 = 32768
 };
 
-class BulletLogic : public NativeBehaviour
+
+class BoxLogic : public NativeScript
+{
+public:
+	int Health = 5;
+
+	void OnDestroy() override
+	{
+		AX_TRACE("BoxLogic::OnDestroy");
+	}
+};
+
+class BulletLogic : public NativeScript
 {
 public:
 	float Direction = 0.0f;
-
-	void OnCreate() override
-	{
-		/*
-		auto& cc = GetComponent<BoxColliderComponent>();
-		cc.SetFilterCategory((uint16_t)CollisionGroup::Group2);
-		cc.SetFilterMask((uint16_t)CollisionGroup::Group0);
-		*/
-	}
 
 	void OnDestroy() override
 	{
@@ -51,22 +54,30 @@ public:
 
 	void OnUpdate(Timestep ts) override
 	{
-		GetComponent<RigidBodyComponent>().ApplyForce({ 20, 0 });
+		Get<CRigidBody>().ApplyForce({ 20, 0 });
 	}
 
 	void OnCollisionEnter(Entity other) override
 	{
-		DestroyEntity(GetSelf());
-		DestroyEntity(other);
-
-		if (other.HasComponent<BehaviourComponent>())
+		if (other.Has<CScript>())
 		{
-			AX_TRACE("Collided with: {0}", other.GetComponent<TagComponent>().Tag);
+			if (other.Get<CScript>().Is<BoxLogic>())
+			{
+				auto& otherScript = other.Get<CScript>().As<BoxLogic>();
+				otherScript.Health--;
+				AX_TRACE("Other Health: {}", otherScript.Health);
+				if (otherScript.Health == 0)
+				{
+					DestroyEntity(other);
+				}
+			}
 		}
+
+		DestroyEntity(GetSelfEntity());
 	}
 };
 
-class PlayerLogic : public NativeBehaviour
+class PlayerLogic : public NativeScript
 {
 public:
 	float Speed = 50.f;
@@ -78,8 +89,8 @@ public:
 
 	void OnUpdate(Timestep ts) override
 	{
-		auto& tc = GetComponent<TransformComponent>();
-		auto& cc = GetComponent<CameraComponent>();
+		auto& tc = Get<CTransform>();
+		auto& cc = Get<CCamera>();
 
 		// Look towards mouse
 		LookDir = GetScreenFloorRay(Input::GetMousePosition(), cc.Camera);
@@ -91,9 +102,9 @@ public:
 
 		if (Input::IsKeyPressed(Key::R))
 		{
-			if (HasComponent<RigidBodyComponent>())
+			if (Has<CRigidBody>())
 			{
-				auto& rbc = GetComponent<RigidBodyComponent>();
+				auto& rbc = Get<CRigidBody>();
 				rbc.SetRotation(45);
 			}
 		}
@@ -101,19 +112,17 @@ public:
 		if (Input::IsMousePressed(Mouse::Left))
 		{
 			Entity ent = CreateEntity();
-			ent.GetComponent<TransformComponent>().Translation = tc.Translation;
-			ent.AddComponent<RigidBodyComponent>();
-			auto& bcc = ent.AddComponent<BoxColliderComponent>();
-			// TODO: need to change when OnCreate is called of the Behaviour
-			ent.AddComponent<BehaviourComponent>(new BulletLogic());
+			ent.Get<CTransform>().Translation = tc.Translation;
+			ent.Add<CRigidBody>();
+			auto& bcc = ent.Add<CBoxCollider>();
+			ent.Add<CScript>(new BulletLogic());
 			bcc.SetFilterCategory((uint16_t)CollisionGroup::Group2);
 			bcc.SetFilterMask((uint16_t)CollisionGroup::Group0);
 		}
 
 		if (Input::IsMousePressed(Mouse::Right))
 		{
-			RemoveComponent<BehaviourComponent>();
-			//RemoveComponent<ScriptComponent>();
+			Remove<CScript>();
 		}
 
 		// Movement
@@ -124,12 +133,12 @@ public:
 
 		if (moveInput.x || moveInput.y)
 		{
-			GetComponent<RigidBodyComponent>().ApplyForce({ move.x * Speed, move.y * Speed });
+			Get<CRigidBody>().ApplyForce({ move.x * Speed, move.y * Speed });
 		}
 
 		if (Input::IsKeyPressed(Key::E))
 		{
-			auto& ass = GetComponent<BehaviourComponent>().As<PlayerLogic>();
+			auto& ass = Get<CScript>().As<PlayerLogic>();
 			ass.Speed = 100.f;
 		}
 
@@ -140,7 +149,7 @@ public:
 
 		if (Input::IsKeyPressed(Key::Q))
 		{
-			auto& amc = GetComponent<ModelComponent>();
+			auto& amc = Get<CModel>();
 			amc.AnimIndex++;
 			if (amc.AnimIndex > amc.AnimsCount - 1)
 			{
@@ -152,16 +161,11 @@ public:
 
 	void OnCollisionEnter(Entity other) override
 	{
-		//AX_TRACE("Collided with: {0}", other.GetComponent<TagComponent>().Tag);
-	}
-
-	void OnDestroy() override
-	{
-		AX_TRACE("Script OnDestroy");
+		//AX_TRACE("Collided with: {0}", other.Get<TagComponent>().Tag);
 	}
 };
 
-class CameraController : public NativeBehaviour
+class CameraController : public NativeScript
 {
 public:
 	bool Enabled = false;
@@ -190,7 +194,7 @@ public:
 
 		if (Enabled)
 		{
-			auto& cc = GetComponent<CameraComponent>();
+			auto& cc = Get<CCamera>();
 			Raylib::UpdateCamera(&cc.Camera, Raylib::CAMERA_FREE);
 		}
 	}
@@ -212,25 +216,25 @@ public:
 
 		// Scene Camera
 		//Entity cam = m_Scene.CreateEntity();
-		//cam.AddComponent<CameraComponent>().Primary = true;
-		//cam.AddComponent<ScriptComponent>().Bind<CameraController>();
+		//cam.Add<CCamera>().Primary = true;
+		//cam.Add<ScriptComponent>().Bind<CameraController>();
 
 		// Player
 		//Prefabs::Player(m_Scene);
 
 		Entity ent = m_Scene.CreateEntity();
-		//ent.AddComponent<ScriptComponent>().Bind<PlayerController>();
-		ent.AddComponent<BehaviourComponent>(new PlayerLogic());
-		//ent.AddComponent<ModelComponent>("Data/Models/Characters/Rogue_Hooded.glb",
+		//ent.Add<ScriptComponent>().Bind<PlayerController>();
+		ent.Add<CScript>(new PlayerLogic());
+		//ent.Add<CModel>("Data/Models/Characters/Rogue_Hooded.glb",
 		//	"Data/Models/Characters/rogue_texture.png", "Data/Models/Characters/Rogue_Hooded.glb");
-		ent.AddComponent<ModelComponent>("Data/Models/Characters/Rogue_Hooded.glb",	"Data/Models/Characters/rogue_texture.png");
-		auto& rbod = ent.AddComponent<RigidBodyComponent>();
+		ent.Add<CModel>("Data/Models/Characters/Rogue_Hooded.glb",	"Data/Models/Characters/rogue_texture.png");
+		auto& rbod = ent.Add<CRigidBody>();
 		rbod.OwnRotation = false;
 		rbod.SetFixedRotation(true);
-		auto& cc = ent.AddComponent<CircleColliderComponent>();
+		auto& cc = ent.Add<CCircleCollider>();
 		cc.SetFilterCategory((uint16_t)CollisionGroup::Group1);
 		cc.SetFilterMask((uint16_t)CollisionGroup::Group1 | (uint16_t)CollisionGroup::Group0);
-		auto& cam = ent.AddComponent<CameraComponent>();
+		auto& cam = ent.Add<CCamera>();
 		cam.Primary = true;
 		cam.Camera.position.x = 0.f;
 		cam.Camera.position.y = 15.f;
@@ -238,14 +242,15 @@ public:
 
 		// Wall
 		Entity wall = m_Scene.CreateEntity();
-		//wall.GetComponent<TransformComponent>().Scale = glm::vec3{ 1.25f, 1.25f, 1.25f };
-		auto& rb = wall.AddComponent<RigidBodyComponent>(RigidBodyComponent::BodyType::Static);
-		auto& bx = wall.AddComponent<BoxColliderComponent>(glm::vec2{ 0.f, 0.f }, glm::vec2{ 0.75f, 0.75f });
+		//wall.Get<CTransform>().Scale = glm::vec3{ 1.25f, 1.25f, 1.25f };
+		auto& rb = wall.Add<CRigidBody>(CRigidBody::BodyType::Static);
+		auto& bx = wall.Add<CBoxCollider>(glm::vec2{ 0.f, 0.f }, glm::vec2{ 0.75f, 0.75f });
 		bx.SetFilterCategory((uint16_t)CollisionGroup::Group0);
 		rb.SetRotation(45);
 		rb.OwnRotation = true;
-		wall.GetComponent<TransformComponent>().Rotation.y = 0;
-		wall.AddComponent<ModelComponent>("Data/Models/Environment/box_large.gltf.glb");
+		wall.Get<CTransform>().Rotation.y = 0;
+		wall.Add<CModel>("Data/Models/Environment/box_large.gltf.glb");
+		wall.Add<CScript>(new BoxLogic());
 	}
 
 	void OnDetach() override

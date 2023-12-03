@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
-#include "NativeBehaviour.h"
+#include "NativeScript.h"
 
 // Fwd decl
 class b2Body;
@@ -9,66 +9,82 @@ class b2Fixture;
 
 namespace Apex {
 
-    struct HierarchyComponent
+    struct CHierarchy
     {
         entt::entity Parent{entt::null};
         //std::vector<entt::entity> Children;
         //std::unordered_map<std::string, entt::entity> Children;
     };
 
-    struct TagComponent
+    struct CTag
     {
         std::string Tag = "";
 
-        TagComponent() = default;
-        TagComponent(const TagComponent&) = default;
-        TagComponent(const std::string& tag)
+        CTag() = default;
+        CTag(const CTag&) = default;
+        CTag(const std::string& tag)
             : Tag(tag) {}
     };
     
-    struct TransformComponent
+    struct CTransform
     {
         glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
 
-		TransformComponent() = default;
-		TransformComponent(const TransformComponent&) = default;
-		TransformComponent(const glm::vec3& translation)
+		CTransform() = default;
+		CTransform(const CTransform&) = default;
+		CTransform(const glm::vec3& translation)
 			: Translation(translation) {}
     };
 
+    /*
+    OLD SHIT
     struct ScriptComponent
     {
-        NativeBehaviour* Instance = nullptr;
+        NativeScript* Instance = nullptr;
 
-        NativeBehaviour*(*InstantiateScript)();
+        NativeScript*(*InstantiateScript)();
         void(*DestroyScript)(ScriptComponent*);
 
         template<typename T>
         void Bind()
         {
-            InstantiateScript = []() { return static_cast<NativeBehaviour*>(new T()); };
+            InstantiateScript = []() { return static_cast<NativeScript*>(new T()); };
             DestroyScript = [](ScriptComponent* sc) { delete sc->Instance; sc->Instance = nullptr; };
         }
-    };
+    };*/
 
-    struct BehaviourComponent
+    struct CScript
     {
-        NativeBehaviour* Instance = nullptr;
+        NativeScript* Instance = nullptr;
 
-        BehaviourComponent() = delete;
-        BehaviourComponent(NativeBehaviour* behaviour) { Instance = behaviour; }
+        CScript() = delete;
+        CScript(NativeScript* script) { Instance = script; }
 
-        template<typename G>
-        G& As()
+        /*
+        template<typename T>
+        void Bind()
         {
-            return *static_cast<G*>(Instance);
+            Instance = new T();
+        }
+        */
+
+        template<typename T>
+        T& As()
+        {
+            return *static_cast<T*>(Instance);
+        }
+
+        template<typename T>
+        bool Is()
+        {
+            return dynamic_cast<T*>(Instance);
         }
     };
 
     // TODO: create implicit constructors and hide Runtime_xxx stuff make Scene a friend
-    struct RigidBodyComponent
+    struct CRigidBody
     {
         // NOTE: this lines up with b2BodyType enum
         enum class BodyType { Static = 0, Kinematic, Dynamic };
@@ -86,8 +102,8 @@ namespace Apex {
         // Runtime storage
         b2Body* RuntimeBody = nullptr;
 
-        RigidBodyComponent() = default;
-        RigidBodyComponent(const RigidBodyComponent&) = default;
+        CRigidBody() = default;
+        CRigidBody(const CRigidBody&) = default;
 
         void SetTransform(glm::vec2 position, float rotation);
         void SetPosition(glm::vec2 position);
@@ -100,7 +116,7 @@ namespace Apex {
     };
 
     // TODO: create implicit constructors and hide Runtime_xxx stuff make Scene a friend
-    struct BoxColliderComponent
+    struct CBoxCollider
     {
         glm::vec2 Offset = { 0.f, 0.f };
         glm::vec2 Size = { 0.5f, 0.5f };
@@ -116,12 +132,12 @@ namespace Apex {
         // Runtime storage
         b2Fixture* RuntimeFixture = nullptr;
 
-        BoxColliderComponent() = default;
-        BoxColliderComponent(const BoxColliderComponent&) = default;
+        CBoxCollider() = default;
+        CBoxCollider(const CBoxCollider&) = default;
     };
 
     // TODO: create implicit constructors and hide Runtime_xxx stuff make Scene a friend
-    struct CircleColliderComponent
+    struct CCircleCollider
     {
         glm::vec2 Offset = { 0.f, 0.f };
         float Radius = 0.5f;
@@ -137,13 +153,15 @@ namespace Apex {
         // Runtime storage
         b2Fixture* RuntimeFixture = nullptr;
 
-        CircleColliderComponent() = default;
-        CircleColliderComponent(const CircleColliderComponent&) = default;
+        CCircleCollider() = default;
+        CCircleCollider(const CCircleCollider&) = default;
     };
 
-    // TODO: implement but later
-    struct PolygonColliderComponent
+    // TODO: implement later
+    struct CPolygonCollider
     {
+        CPolygonCollider() = default;
+        CPolygonCollider(const CPolygonCollider&) = default;
     };
 
 }

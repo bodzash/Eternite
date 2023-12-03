@@ -21,15 +21,15 @@ namespace Apex {
         Entity a = { entityA, m_Scene };
         Entity b = { entityB, m_Scene };
 
-        if (a.HasComponent<BehaviourComponent>())
+        if (a.Has<CScript>())
         {
-            auto& nb = a.GetComponent<BehaviourComponent>();
+            auto& nb = a.Get<CScript>();
             nb.Instance->OnCollisionEnter(b);
         }
 
-        if (b.HasComponent<BehaviourComponent>())
+        if (b.Has<CScript>())
         {
-            auto& nb = b.GetComponent<BehaviourComponent>();
+            auto& nb = b.Get<CScript>();
             nb.Instance->OnCollisionEnter(a);
         }
     }
@@ -42,15 +42,15 @@ namespace Apex {
         Entity a = { entityA, m_Scene };
         Entity b = { entityB, m_Scene };
 
-        if (a.HasComponent<BehaviourComponent>())
+        if (a.Has<CScript>())
         {
-            auto& nb = a.GetComponent<BehaviourComponent>();
+            auto& nb = a.Get<CScript>();
             nb.Instance->OnCollisionLeave(b);
         }
 
-        if (b.HasComponent<BehaviourComponent>())
+        if (b.Has<CScript>())
         {
-            auto& nb = b.GetComponent<BehaviourComponent>();
+            auto& nb = b.Get<CScript>();
             nb.Instance->OnCollisionLeave(a);
         }
     }

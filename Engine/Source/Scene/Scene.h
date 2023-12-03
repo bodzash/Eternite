@@ -10,7 +10,7 @@ namespace Apex {
 
     // Fwd decl
     class Entity;
-    class NativeBehaviour;
+    class NativeScript;
 
     class Scene
     {
@@ -24,6 +24,9 @@ namespace Apex {
         // Find entity by id
         // find entity by name
         // get primary camera
+        void GetEntityByID();
+        void GetEntityByName();
+        std::vector<Entity>& GetEntitiesByName();
 
         void OnRuntimeStart();
         void OnRuntimeStop();
@@ -33,7 +36,7 @@ namespace Apex {
 
     private:
         entt::registry m_Registry;
-        std::vector<NativeBehaviour*> m_BehaviourCleanups;
+        std::vector<NativeScript*> m_BehaviourCleanups;
         b2World* m_PhysicsWorld = nullptr;
         ContactListener2D m_ContactListener{ this };
         //std::unordered_map<UUID, entt::entity> m_EntityMap;

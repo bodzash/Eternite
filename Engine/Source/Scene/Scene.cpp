@@ -30,9 +30,9 @@ namespace Apex {
     Entity Scene::CreateEntity(const std::string& name)
     {
         Entity entity = { m_Registry.create(), this };
-        entity.AddComponent<TransformComponent>();
+        entity.Add<CTransform>();
 
-        auto& tag = entity.AddComponent<TagComponent>();
+        auto& tag = entity.Add<CTag>();
         tag.Tag = name.empty() ? "" : name;
 
         // TODO: should create relation component here :)
@@ -61,7 +61,7 @@ namespace Apex {
 	{
 		// Update scripts
         {
-            m_Registry.view<BehaviourComponent>().each([=](auto entity, auto& bc)
+            m_Registry.view<CScript>().each([=](auto entity, auto& bc)
             {
                 if (bc.Instance)
                 {
@@ -77,13 +77,13 @@ namespace Apex {
             m_PhysicsWorld->Step(ts, velocityIteration, positionIteration);
 
             // Retrieve transforms
-            auto view = m_Registry.view<RigidBodyComponent>();
+            auto view = m_Registry.view<CRigidBody>();
             for (auto e : view)
             {
                 Entity entity = { e, this };
                 
-                auto& tc = entity.GetComponent<TransformComponent>();
-                auto& rbc = entity.GetComponent<RigidBodyComponent>();
+                auto& tc = entity.Get<CTransform>();
+                auto& rbc = entity.Get<CRigidBody>();
 
                 b2Body* body = rbc.RuntimeBody;
                 const auto& pos = body->GetPosition();
@@ -123,12 +123,12 @@ namespace Apex {
 #ifndef AX_HEADLESS
         {
             Raylib::Camera3D* mainCamera = nullptr;
-            TransformComponent cameraTransform;
+            CTransform cameraTransform;
             {
-                auto view = m_Registry.view<TransformComponent, CameraComponent>();
+                auto view = m_Registry.view<CTransform, CCamera>();
                 for (auto e : view)
                 {
-                    auto [transform, camera] = view.get<TransformComponent, CameraComponent>(e);
+                    auto [transform, camera] = view.get<CTransform, CCamera>(e);
 
                     if (camera.Primary)
                     {
@@ -145,10 +145,10 @@ namespace Apex {
 
                 // AnimatedModel rendering
                 {
-                    auto view = m_Registry.view<TransformComponent, ModelComponent>();
+                    auto view = m_Registry.view<CTransform, CModel>();
                     for (auto e : view)
                     {
-                        auto [tf, model] = view.get<TransformComponent, ModelComponent>(e);
+                        auto [tf, model] = view.get<CTransform, CModel>(e);
                         
                         // Update model animation
                         if (model.AnimsCount > 0)
@@ -189,10 +189,10 @@ namespace Apex {
 
                     // Debug BoxCollider
                     {
-                        auto view = m_Registry.view<TransformComponent, RigidBodyComponent, BoxColliderComponent>();
+                        auto view = m_Registry.view<CTransform, CRigidBody, CBoxCollider>();
                         for (auto e : view)
                         {
-                            auto [tf, rb, box] = view.get<TransformComponent, RigidBodyComponent, BoxColliderComponent>(e);
+                            auto [tf, rb, box] = view.get<CTransform, CRigidBody, CBoxCollider>(e);
 
                             Raylib::rlPushMatrix();
                             Raylib::rlTranslatef(tf.Translation.x, tf.Translation.y + 1.0f, tf.Translation.z);
@@ -203,10 +203,10 @@ namespace Apex {
                     }
                     // Debug CircleCollider
                     {
-                        auto view = m_Registry.view<TransformComponent, CircleColliderComponent>();
+                        auto view = m_Registry.view<CTransform, CCircleCollider>();
                         for (auto e : view)
                         {
-                            auto [tf, circ] = view.get<TransformComponent, CircleColliderComponent>(e);
+                            auto [tf, circ] = view.get<CTransform, CCircleCollider>(e);
 
                             Raylib::DrawCylinderWires({tf.Translation.x, 0.f, tf.Translation.z}, circ.Radius, circ.Radius, 2.f, 15, {255, 255, 255, 255});
                         }
@@ -224,13 +224,13 @@ namespace Apex {
 
 #pragma region ComponentLifeCycle
 
-#pragma region RigidBodyComponent
+#pragma region CRigidBody
     template<>
-	void Scene::OnComponentAdded<RigidBodyComponent>(entt::entity e)
+	void Scene::OnComponentAdded<CRigidBody>(entt::entity e)
 	{
         Entity entity = { e, this };
-        auto& tc = entity.GetComponent<TransformComponent>();
-        auto& rbc = entity.GetComponent<RigidBodyComponent>();
+        auto& tc = entity.Get<CTransform>();
+        auto& rbc = entity.Get<CRigidBody>();
 
         b2BodyDef bodyDef;
         bodyDef.type = (b2BodyType)rbc.Type;
@@ -248,35 +248,35 @@ namespace Apex {
 	}
 
     template<>
-	void Scene::OnComponentRemoved<RigidBodyComponent>(entt::entity e)
+	void Scene::OnComponentRemoved<CRigidBody>(entt::entity e)
 	{
         Entity entity = { e, this };
-        auto& rbc = entity.GetComponent<RigidBodyComponent>();
+        auto& rbc = entity.Get<CRigidBody>();
         m_PhysicsWorld->DestroyBody(rbc.RuntimeBody);
 
-        if (entity.HasComponent<BoxColliderComponent>())
+        if (entity.Has<CBoxCollider>())
         {
-            entity.RemoveComponent<BoxColliderComponent>();
+            entity.Remove<CBoxCollider>();
         }
 
-        if (entity.HasComponent<CircleColliderComponent>())
+        if (entity.Has<CCircleCollider>())
         {
-            entity.RemoveComponent<CircleColliderComponent>();
+            entity.Remove<CCircleCollider>();
         }
 	}
 #pragma endregion
 
-#pragma region BoxColliderComponent
+#pragma region CBoxCollider
     template<>
-	void Scene::OnComponentAdded<BoxColliderComponent>(entt::entity e)
+	void Scene::OnComponentAdded<CBoxCollider>(entt::entity e)
 	{
         Entity entity = { e, this };
-        auto& tc = entity.GetComponent<TransformComponent>();
-        auto& bcc = entity.GetComponent<BoxColliderComponent>();
+        auto& tc = entity.Get<CTransform>();
+        auto& bcc = entity.Get<CBoxCollider>();
 
-        if (entity.HasComponent<RigidBodyComponent>())
+        if (entity.Has<CRigidBody>())
         {
-            auto& rbc = entity.GetComponent<RigidBodyComponent>();
+            auto& rbc = entity.Get<CRigidBody>();
 
             b2PolygonShape shape;
             shape.SetAsBox(tc.Scale.x * bcc.Size.x, tc.Scale.z * bcc.Size.y);
@@ -289,31 +289,30 @@ namespace Apex {
             fixtureDef.restitutionThreshold = bcc.RestitutionThreshold;
             fixtureDef.filter.groupIndex = 0;
             bcc.RuntimeFixture = rbc.RuntimeBody->CreateFixture(&fixtureDef);
-            AX_TRACE("BoxColliderComponent Added!");
         }
         else
         {
-            AX_ASSERT(false, "Before adding BoxColliderComponent, RigidBodyComponent must be present!");
+            AX_ASSERT(false, "Before adding CBoxCollider, CRigidBody must be present!");
         }
     }
 
     template<>
-	void Scene::OnComponentRemoved<BoxColliderComponent>(entt::entity e)
+	void Scene::OnComponentRemoved<CBoxCollider>(entt::entity e)
 	{
 	}
 #pragma endregion
 
-#pragma region CircleColliderComponent
+#pragma region CCircleCollider
     template<>
-	void Scene::OnComponentAdded<CircleColliderComponent>(entt::entity e)
+	void Scene::OnComponentAdded<CCircleCollider>(entt::entity e)
 	{
         Entity entity = { e, this };
-        auto& tc = entity.GetComponent<TransformComponent>();
-        auto& ccc = entity.GetComponent<CircleColliderComponent>();
+        auto& tc = entity.Get<CTransform>();
+        auto& ccc = entity.Get<CCircleCollider>();
 
-        if (entity.HasComponent<RigidBodyComponent>())
+        if (entity.Has<CRigidBody>())
         {
-            auto& rbc = entity.GetComponent<RigidBodyComponent>();
+            auto& rbc = entity.Get<CRigidBody>();
 
             b2CircleShape shape;
             shape.m_radius = ccc.Radius;
@@ -329,22 +328,22 @@ namespace Apex {
         }
         else
         {
-            AX_ASSERT(false, "Before adding CircleColliderComponent, RigidBodyComponent must be present!");
+            AX_ASSERT(false, "Before adding CCircleCollider, CRigidBody must be present!");
         }
     }
 
     template<>
-	void Scene::OnComponentRemoved<CircleColliderComponent>(entt::entity e)
+	void Scene::OnComponentRemoved<CCircleCollider>(entt::entity e)
 	{
 	}
 #pragma endregion
 
-#pragma region BehaviourComponent
+#pragma region CScript
     template<>
-	void Scene::OnComponentAdded<BehaviourComponent>(entt::entity e)
+	void Scene::OnComponentAdded<CScript>(entt::entity e)
 	{        
         Entity entity = { e, this };
-        auto& bc = entity.GetComponent<BehaviourComponent>();
+        auto& bc = entity.Get<CScript>();
 
         if (bc.Instance)
         {
@@ -353,10 +352,10 @@ namespace Apex {
         }
 	}
     template<>
-	void Scene::OnComponentRemoved<BehaviourComponent>(entt::entity e)
+	void Scene::OnComponentRemoved<CScript>(entt::entity e)
 	{
         Entity entity = { e, this };
-        auto& bc = entity.GetComponent<BehaviourComponent>();
+        auto& bc = entity.Get<CScript>();
 
         if (bc.Instance)
         {
@@ -372,12 +371,12 @@ namespace Apex {
     void Scene::RegisterComponentCallbacks()
     {
         // Physics
-        REGISTER_COMPONENT_CB(RigidBodyComponent);
-        REGISTER_COMPONENT_CB(BoxColliderComponent);
-        REGISTER_COMPONENT_CB(CircleColliderComponent);
+        REGISTER_COMPONENT_CB(CRigidBody);
+        REGISTER_COMPONENT_CB(CBoxCollider);
+        REGISTER_COMPONENT_CB(CCircleCollider);
 
         // Script
-        REGISTER_COMPONENT_CB(BehaviourComponent);
+        REGISTER_COMPONENT_CB(CScript);
     }
 
 #pragma endregion

@@ -4,48 +4,48 @@
 
 namespace Apex {
 
-    class NativeBehaviour
+    class NativeScript
     {
     public:
-        virtual ~NativeBehaviour() {}
+        virtual ~NativeScript() {}
 
         template<typename T, typename... Args>
-        T& AddComponent(Args&&... args)
+        T& Add(Args&&... args)
         {
-            return m_Entity.AddComponent<T>(std::forward<Args>(args)...);
+            return m_Entity.Add<T>(std::forward<Args>(args)...);
         }
 
         template<typename T>
-        T& GetComponent()
+        T& Get()
         {
-            return m_Entity.GetComponent<T>();
+            return m_Entity.Get<T>();
         }
 
         template<typename T>
-        void RemoveComponent()
+        void Remove()
         {
-            m_Entity.RemoveComponent<T>();
+            m_Entity.Remove<T>();
         }
 
         template<typename T>
-        bool HasComponent()
+        bool Has()
         {
-            return m_Entity.HasComponent<T>();
+            return m_Entity.Has<T>();
         }
 
-        Entity GetSelf()
+        Entity GetSelfEntity()
         {
             return m_Entity;
         }
 
-        Entity CreateEntity()
+        Entity CreateEntity(const std::string& name = "")
         {
-            return m_Entity.m_Scene->CreateEntity();
+            return m_Entity.m_Scene->CreateEntity(name);
         }
 
         void DestroyEntity(Entity entity)
         {
-            entity.AddComponent<MarkedRemoveInternal>();
+            entity.Add<MarkedRemoveInternal>();
         }
 
         // Get/HasParent()

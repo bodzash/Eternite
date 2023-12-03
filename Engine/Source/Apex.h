@@ -15,7 +15,7 @@
 
 #include "Scene/Scene.h"
 #include "Scene/Entity.h"
-#include "Scene/NativeBehaviour.h"
+#include "Scene/NativeScript.h"
 #include "Scene/Components.h"
 // TODO: temporary
 #include "Scene/ComponentsGraphic.h"
